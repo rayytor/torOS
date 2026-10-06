@@ -1,0 +1,7 @@
+#!/bin/sh
+# torOS: keep this service's output in a file readable without root
+# (there is no syslog daemon). Rotated by svlogd: 3 files of 200 kB.
+D=/var/log/toros/bluetoothd
+mkdir -p "$D" && chmod 755 /var/log/toros "$D"
+[ -e "$D/config" ] || printf 's200000\nn3\n' > "$D/config"
+exec svlogd -tt "$D"

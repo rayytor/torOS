@@ -1,0 +1,18 @@
+#!/bin/sh
+# Start another entry of the boot menu on the next start only:
+#   bootonce [recovery|toros]     (default: recovery, Void's kernel)
+# The start after that is the normal one again. This sets a variable that only
+# torOS's own boot loader (systemd-boot on the stick) reads; the firmware's
+# boot order is not touched. Run as root.
+E=${1:-recovery}
+VAR=/sys/firmware/efi/efivars/LoaderEntryOneShot-4a67b082-0a4c-41cf-b6c7-440b29bb8c4f
+[ -e "/boot/loader/entries/$E.conf" ] || { echo "bootonce: no boot entry '$E'" >&2; exit 1; }
+[ -d /sys/firmware/efi/efivars ] || { echo "bootonce: no EFI variables here" >&2; exit 1; }
+TMP=$(mktemp) || exit 1
+# 4 bytes of attributes (non-volatile, boot and runtime access), then the
+# entry's file name as UTF-16
+{ printf '\007\000\000\000'; printf '%s\000' "$E.conf" | iconv -f ASCII -t UTF-16LE; } > "$TMP"
+[ -e "$VAR" ] && chattr -i "$VAR" 2>/dev/null
+cat "$TMP" > "$VAR"; rc=$?
+rm -f "$TMP"
+[ $rc = 0 ] && echo "next start: $E" || { echo "bootonce: could not set the boot entry" >&2; exit 1; }

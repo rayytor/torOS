@@ -1,0 +1,23 @@
+#!/bin/sh
+# Write a world-readable hardware report to /var/log/toros-hw-<tag>.log.
+# Run as root: from /etc/rc.local at boot, and through sudo by toros-bt when
+# Bluetooth pairing fails.
+OUT="/var/log/toros-hw-${1:-manual}.log"
+{
+	echo "### $(date) ($1)"
+	echo "### memory";        free -m
+	awk '/^(MemTotal|MemFree|Buffers|Cached|SReclaimable):/ {v[$1]=$2}
+	     END {printf "RAM used (total - free - buffers - cache): %d MB\n",
+	          (v["MemTotal:"]-v["MemFree:"]-v["Buffers:"]-v["Cached:"]-v["SReclaimable:"])/1024}' /proc/meminfo
+	ps -eo rss,user,args --sort=-rss | head -25 | cut -c1-110
+	echo "### splash";        cat /run/toros-splash.log
+	echo "### swap";          zramctl; sysctl vm.swappiness vm.page-cluster
+	echo "### rfkill";        rfkill list
+	echo "### usb";           lsusb
+	echo "### bluetooth";     bluetoothctl show; bluetoothctl devices
+	echo "### services";      for s in /var/service/*; do sv status "$s"; done
+	echo "### network";       ip -br addr
+	echo "### modules";       lsmod | grep -E '^(bt|bluetooth|rfcomm|bnep|mt79|snd_sof|i915|ideapad)'
+	echo "### kernel log";    dmesg
+} > "$OUT" 2>&1
+chmod 644 "$OUT"

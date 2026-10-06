@@ -1,0 +1,17 @@
+#!/bin/sh
+# Thorium (this is /usr/bin/thorium-browser). The screen-sharing portal runs
+# for as long as the browser does and is stopped again afterwards: it is about
+# 30 MB that an idle desktop does not need. D-Bus cannot start it by itself
+# (the build removes its service file), because every GTK app would.
+REAL=/opt/chromium.org/thorium/thorium-browser
+PORTAL='^/usr/libexec/xdg-(desktop-portal|desktop-portal-wlr|document-portal|permission-store)$'
+uid=$(id -u)
+
+if [ -n "${WAYLAND_DISPLAY:-}" ] && ! pgrep -u "$uid" -f '^/usr/libexec/xdg-desktop-portal$' >/dev/null; then
+	/usr/libexec/xdg-desktop-portal >/dev/null 2>&1 &
+fi
+"$REAL" "$@"
+status=$?
+# a second "thorium-browser URL" only hands the address to the running browser
+pgrep -u "$uid" -x thorium >/dev/null || pkill -u "$uid" -f "$PORTAL"
+exit $status

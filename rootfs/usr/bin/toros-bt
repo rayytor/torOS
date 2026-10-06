@@ -1,0 +1,72 @@
+#!/bin/sh
+# Connect or disconnect the hearing aid whose address is in /etc/toros/hearing-aid.
+#   toros-bt toggle | connect | disconnect | status
+# The first connect pairs the device, so the aid must be in pairing mode then
+# (for Phonak: switch it off and on; it stays pairable for about 3 minutes).
+# What happened is logged in ~/.local/state/toros/bluetooth.log.
+
+MAC=$(sed -e 's/#.*//' -e '/^[[:space:]]*$/d' /etc/toros/hearing-aid 2>/dev/null | head -n1)
+[ -n "$MAC" ] || { echo "toros-bt: no address in /etc/toros/hearing-aid" >&2; exit 1; }
+
+LOG="${XDG_STATE_HOME:-$HOME/.local/state}/toros/bluetooth.log"
+mkdir -p "$(dirname "$LOG")"
+log() { echo "[$(date '+%F %T')] $*" >> "$LOG"; }
+
+say() {
+	echo "$1"; log "$1"
+	[ -n "$WAYLAND_DISPLAY" ] && notify-send -a Bluetooth -i audio-headphones-symbolic "Hearing aid" "$1" 2>/dev/null
+}
+is() { bluetoothctl info "$MAC" 2>/dev/null | grep -q "$1: yes"; }
+seen() { bluetoothctl devices 2>/dev/null | grep -qi "$MAC"; }
+
+fail() {
+	say "$1"
+	{ echo "--- adapter"; bluetoothctl show; echo "--- devices"; bluetoothctl devices; } >> "$LOG" 2>&1
+	sudo -n /usr/lib/toros/hwlog bluetooth 2>/dev/null
+	return 1
+}
+
+# Scan, pair, trust and connect inside one bluetoothctl session, so discovery
+# stays active while pairing and a pairing agent is registered.
+pair() {
+	say "Pairing… switch the hearing aid off and on now."
+	{
+		echo "agent NoInputNoOutput"; echo "default-agent"; echo "scan on"
+		i=0
+		while [ $i -lt 40 ] && ! seen; do sleep 1; i=$((i + 1)); done
+		if seen; then
+			echo "pair $MAC"; sleep 10
+			echo "trust $MAC"; sleep 1
+			echo "connect $MAC"; sleep 8
+		fi
+		echo "scan off"; echo "quit"
+	} | bluetoothctl >> "$LOG" 2>&1
+}
+
+connect() {
+	if ! bluetoothctl show 2>/dev/null | grep -q '^Controller'; then
+		fail "No Bluetooth adapter found."; return 1
+	fi
+	sudo -n /usr/bin/rfkill unblock bluetooth 2>> "$LOG"
+	bluetoothctl power on >> "$LOG" 2>&1
+	if ! bluetoothctl show | grep -q 'Powered: yes'; then
+		fail "Bluetooth could not be switched on (blocked?)."; return 1
+	fi
+	if ! is Paired; then
+		pair
+		seen || { fail "Hearing aid not found. Is it in pairing mode and not connected to another device?"; return 1; }
+		is Paired || { fail "Found the hearing aid, but pairing failed."; return 1; }
+	fi
+	is Trusted || bluetoothctl trust "$MAC" >> "$LOG" 2>&1
+	is Connected || bluetoothctl connect "$MAC" >> "$LOG" 2>&1
+	if is Connected; then say "Connected."; else fail "Could not connect. Is it switched on and not connected to another device?"; fi
+}
+
+log "toros-bt ${1:-toggle}"
+case "${1:-toggle}" in
+toggle)     if is Connected; then bluetoothctl disconnect "$MAC" >> "$LOG" 2>&1 && say "Disconnected."; else connect; fi ;;
+connect)    connect ;;
+disconnect) bluetoothctl disconnect "$MAC" >> "$LOG" 2>&1 && say "Disconnected." ;;
+status)     if is Connected; then echo connected; elif is Paired; then echo paired; else echo unpaired; fi ;;
+*)          echo "usage: toros-bt toggle|connect|disconnect|status" >&2; exit 2 ;;
+esac

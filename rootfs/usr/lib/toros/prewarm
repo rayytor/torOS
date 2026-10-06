@@ -1,0 +1,22 @@
+#!/bin/sh
+# Read the libraries and data that every GTK4/libadwaita app needs into the
+# page cache, so the first app after login starts as fast as the second one.
+# Run once from labwc's autostart at the lowest CPU and disk priority. It only
+# fills the cache (memory the kernel gives back at once when it is needed).
+sleep 4
+{
+	for lib in libgtk-4.so.1 libadwaita-1.so.0 libgio-2.0.so.0 libglib-2.0.so.0 libgobject-2.0.so.0 \
+		libpango-1.0.so.0 libpangocairo-1.0.so.0 libcairo.so.2 libharfbuzz.so.0 libgraphene-1.0.so.0 \
+		libgdk_pixbuf-2.0.so.0 librsvg-2.so.2 libepoxy.so.0 libEGL.so.1 libGLdispatch.so.0 \
+		libgallium*.so libxml2.so.* libicuuc.so.* libicudata.so.* libfontconfig.so.1 libfreetype.so.6 \
+		libgtksourceview-5.so.0 libwayland-client.so.0 libxkbcommon.so.0; do
+		ls /usr/lib/$lib 2>/dev/null
+	done
+	ls /usr/lib/dri/iris_dri.so /usr/lib/gio/modules/*.so /usr/lib/gdk-pixbuf-2.0/*/loaders.cache 2>/dev/null
+	ls /usr/share/glib-2.0/schemas/gschemas.compiled /usr/share/icons/Adwaita/icon-theme.cache \
+		/usr/share/icons/hicolor/icon-theme.cache /usr/share/mime/mime.cache 2>/dev/null
+	ls /usr/share/fonts/*/Inter*.ttf /usr/share/fonts/*/Inter*.otf /usr/share/fonts/*/AdwaitaMono-Regular.ttf \
+		/var/cache/fontconfig/* 2>/dev/null
+} | while read -r f; do
+	cat "$f" > /dev/null 2>&1
+done

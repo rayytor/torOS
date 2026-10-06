@@ -1,0 +1,16 @@
+# torOS desktop defaults (read by GTK3, GTK4/libadwaita and Thorium).
+# toros-theme changes gtk-theme and color-scheme for the dark desktop.
+[org.gnome.desktop.interface]
+font-name='Inter 11'
+document-font-name='Inter 11'
+monospace-font-name='Adwaita Mono 11'
+gtk-theme='adw-gtk3'
+accent-color='green'
+icon-theme='Adwaita'
+cursor-theme='Adwaita'
+color-scheme='default'
+font-antialiasing='grayscale'
+font-hinting='slight'
+
+[org.gnome.desktop.wm.preferences]
+titlebar-font='Inter Bold 11'

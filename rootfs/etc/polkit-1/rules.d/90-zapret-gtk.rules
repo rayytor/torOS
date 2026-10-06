@@ -1,0 +1,9 @@
+// torOS: zapret-gtk changes the DPI bypass through its root helper
+// (pkexec /usr/bin/zapret-control). Allowed for the wheel group, nothing else.
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.policykit.exec" &&
+        action.lookup("program") == "/usr/bin/zapret-control" &&
+        subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+    }
+});

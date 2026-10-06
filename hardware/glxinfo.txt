@@ -1,0 +1,8 @@
+rayyan@rayyan:~
+$ glxinfo | grep renderer
+    GLX_MESA_copy_sub_buffer, GLX_MESA_gl_interop, GLX_MESA_query_renderer, 
+    GLX_MESA_copy_sub_buffer, GLX_MESA_gl_interop, GLX_MESA_query_renderer, 
+Extended renderer info (GLX_MESA_query_renderer):
+OpenGL renderer string: Mesa Intel(R) UHD Graphics 600 (GLK 2)
+rayyan@rayyan:~
+$ 

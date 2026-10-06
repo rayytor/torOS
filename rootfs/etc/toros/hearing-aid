@@ -1,0 +1,4 @@
+# Bluetooth address of the hearing aid, on one line, as XX:XX:XX:XX:XX:XX.
+# Used by the panel's headphone button, the quick settings and Super+B
+# (toros-bt). The real address is not in the repository: the image build
+# takes this file from local/hearing-aid on the build PC when that exists.

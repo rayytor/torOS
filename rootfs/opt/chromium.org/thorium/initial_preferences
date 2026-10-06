@@ -1,0 +1,17 @@
+{
+  "distribution": {
+    "skip_first_run_ui": true,
+    "import_bookmarks": false,
+    "make_chrome_default": false,
+    "suppress_first_run_default_browser_prompt": true
+  },
+  "browser": {
+    "custom_chrome_frame": true,
+    "check_default_browser": false
+  },
+  "extensions": { "theme": { "system_theme": 1 } },
+  "webkit": { "webprefs": { "fonts": {
+    "standard": { "Zyyy": "Inter" },
+    "sansserif": { "Zyyy": "Inter" }
+  } } }
+}

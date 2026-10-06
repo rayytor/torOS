@@ -1,0 +1,20 @@
+#!/bin/sh
+# torOS: point the boot menu's recovery entry at Void's kernel that was just
+# installed. (The normal entry, toros.conf, is the kernel built by
+# build/kernel.sh and is written by the image build.)
+# Arguments: $1 = package name, $2 = kernel version
+
+VERSION="$2"
+[ -e "/boot/vmlinuz-${VERSION}" ] || exit 0
+
+CMDLINE="root=LABEL=torOS rw"
+[ -r /etc/toros/boot.conf ] && . /etc/toros/boot.conf
+
+mkdir -p /boot/loader/entries
+{
+	echo "title   torOS recovery (Void kernel ${VERSION})"
+	echo "linux   /vmlinuz-${VERSION}"
+	[ -e /boot/intel-ucode.img ] && echo "initrd  /intel-ucode.img"
+	echo "initrd  /initramfs-${VERSION}.img"
+	echo "options ${CMDLINE}"
+} > /boot/loader/entries/recovery.conf

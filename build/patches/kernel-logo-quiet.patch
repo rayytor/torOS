@@ -1,0 +1,18 @@
+torOS: show the boot logo on a quiet boot too.
+
+fbcon leaves the logo out when the kernel is started with "quiet", so that a
+firmware picture is not replaced by a penguin. torOS wants exactly that
+replacement: its own logo and no messages.
+
+--- a/drivers/video/fbdev/core/fbcon.c	2026-10-06 07:34:27.340563383 +0300
++++ b/drivers/video/fbdev/core/fbcon.c	2026-10-06 07:34:27.347984338 +0300
+@@ -1036,9 +1036,6 @@
+ 
+ 	info = fbcon_info_from_console(vc->vc_num);
+ 
+-	if (logo_shown < 0 && console_loglevel <= CONSOLE_LOGLEVEL_QUIET)
+-		logo_shown = FBCON_LOGO_DONTSHOW;
+-
+ 	if (vc != svc || logo_shown == FBCON_LOGO_DONTSHOW ||
+ 	    (info->fix.type == FB_TYPE_TEXT))
+ 		logo = 0;

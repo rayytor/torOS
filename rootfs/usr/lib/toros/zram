@@ -1,0 +1,15 @@
+#!/bin/sh
+# Compressed swap in RAM (zram): the laptop has 4 GB and no disk swap, so this
+# is what keeps Thorium usable. Run once as root from /etc/rc.local.
+# The matching kernel settings are in /etc/sysctl.d/90-toros-zram.conf.
+SIZE=2G		# uncompressed; costs about a third of what is actually swapped
+ALGO=zstd
+
+grep -q '^/dev/zram' /proc/swaps && exit 0
+modprobe zram || exit 1
+dev=$(zramctl --find --size "$SIZE" --algorithm "$ALGO") || exit 1
+mkswap -q -L toros-zram "$dev" && swapon -p 100 -o discard "$dev" || exit 1
+# Keep what was used in the last second in RAM under pressure, so the desktop
+# stalls less when memory runs out (the kernel's MGLRU thrashing protection).
+[ -w /sys/kernel/mm/lru_gen/min_ttl_ms ] && echo 1000 > /sys/kernel/mm/lru_gen/min_ttl_ms
+exit 0

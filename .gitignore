@@ -1,0 +1,6 @@
+out/
+keys/
+local/
+__pycache__/
+# the working log stays on the build PC
+PLAN.md

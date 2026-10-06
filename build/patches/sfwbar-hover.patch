@@ -1,0 +1,37 @@
+--- a/src/gui/basewidget.c	2026-10-05 07:21:34.845215875 +0300
++++ b/src/gui/basewidget.c	2026-10-05 07:21:34.852838759 +0300
+@@ -877,6 +877,20 @@
+       &base_widget_double_click_time, NULL);
+ }
+ 
++/* torOS: give every widget a :hover state (stock sfwbar only has it on real
++ * buttons), so clickable rows and labels can react to the pointer in CSS */
++static gboolean base_widget_hover ( GtkWidget *self, GdkEventCrossing *ev,
++    gpointer d )
++{
++  if(ev->detail == GDK_NOTIFY_INFERIOR)
++    return FALSE;
++  if(ev->type == GDK_ENTER_NOTIFY)
++    gtk_widget_set_state_flags(self, GTK_STATE_FLAG_PRELIGHT, FALSE);
++  else
++    gtk_widget_unset_state_flags(self, GTK_STATE_FLAG_PRELIGHT);
++  return FALSE;
++}
++
+ static void base_widget_init ( BaseWidget *self )
+ {
+   BaseWidgetPrivate *priv;
+@@ -899,7 +913,12 @@
+   g_ptr_array_add(base_widgets, self);
+ 
+   gtk_widget_add_events(GTK_WIDGET(self),
+-      GDK_BUTTON_RELEASE_MASK | GDK_SCROLL_MASK);
++      GDK_BUTTON_RELEASE_MASK | GDK_SCROLL_MASK |
++      GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK);
++  g_signal_connect(self, "enter-notify-event",
++      G_CALLBACK(base_widget_hover), NULL);
++  g_signal_connect(self, "leave-notify-event",
++      G_CALLBACK(base_widget_hover), NULL);
+   if(!gtk_drag_dest_get_target_list(GTK_WIDGET(self)))
+     gtk_drag_dest_set(GTK_WIDGET(self), GTK_DEST_DEFAULT_ALL, NULL, 0,
+         GDK_ACTION_MOVE);

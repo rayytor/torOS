@@ -1,0 +1,4 @@
+# <device>        <dir>  <type>  <options>                      <dump> <pass>
+LABEL=torOS       /      ext4    rw,noatime,commit=60           0      1
+LABEL=TOROS_ESP   /boot  vfat    rw,noatime,umask=0077          0      2
+tmpfs             /tmp   tmpfs   defaults,nosuid,nodev,size=1G  0      0

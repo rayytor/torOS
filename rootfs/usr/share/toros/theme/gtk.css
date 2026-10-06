@@ -1,0 +1,4 @@
+/* torOS accent colour for GTK apps. Written by toros-theme from
+   /usr/share/toros/palette; changes made here are lost. */
+@define-color accent_bg_color #@accent@;
+@define-color accent_fg_color #@accent_fg@;

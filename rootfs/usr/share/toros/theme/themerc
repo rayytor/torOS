@@ -1,0 +1,67 @@
+# torOS window theme for labwc: title bars, menus and the window switcher in
+# libadwaita's colours. Template: toros-theme fills in the colours and writes
+# ~/.local/share/themes/torOS/labwc/themerc next to the title bar buttons.
+
+border.width: 1
+window.active.border.color: #@border@
+window.inactive.border.color: #@border@
+
+# title bar: 24 px round buttons like libadwaita's
+window.titlebar.padding.width: 8
+window.titlebar.padding.height: 6
+window.active.title.bg.color: #@headerbar@
+window.inactive.title.bg.color: #@bg@
+window.*.title.bg: Solid
+window.active.label.text.color: #@fg@
+window.inactive.label.text.color: #@dim@
+window.label.text.justify: center
+window.button.width: 24
+window.button.height: 24
+window.button.spacing: 8
+window.button.hover.bg.color: #00000000
+window.active.button.unpressed.image.color: #@fg@
+window.inactive.button.unpressed.image.color: #@dim@
+
+window.active.shadow.size: 40
+window.inactive.shadow.size: 28
+window.active.shadow.color: #00000050
+window.inactive.shadow.color: #00000030
+
+# menus
+menu.border.width: 1
+menu.border.color: #@border@
+menu.items.bg.color: #@popover@
+menu.items.text.color: #@fg@
+menu.items.active.bg.color: #@select@
+menu.items.active.text.color: #@fg@
+menu.items.padding.x: 12
+menu.items.padding.y: 7
+menu.width.min: 160
+menu.separator.width: 1
+menu.separator.padding.width: 0
+menu.separator.padding.height: 4
+menu.separator.color: #@border@
+menu.title.bg.color: #@popover@
+menu.title.text.color: #@dim@
+menu.title.text.justify: Left
+
+# window switcher (Alt+Tab)
+osd.bg.color: #@popover@
+osd.border.color: #@border@
+osd.border.width: 1
+osd.label.text.color: #@fg@
+osd.window-switcher.style-classic.padding: 8
+osd.window-switcher.style-classic.item.padding.x: 12
+osd.window-switcher.style-classic.item.padding.y: 6
+osd.window-switcher.style-classic.item.active.border.width: 0
+osd.window-switcher.style-classic.item.active.bg.color: #@select@
+osd.window-switcher.preview.border.width: 2
+osd.window-switcher.preview.border.color: #@accent@
+
+# where a window will land when dragged to a screen edge
+snapping.overlay.region.bg.color: #@accent@40
+snapping.overlay.edge.bg.color: #@accent@40
+snapping.overlay.region.border.width: 2
+snapping.overlay.edge.border.width: 2
+snapping.overlay.region.border.color: #@accent@
+snapping.overlay.edge.border.color: #@accent@

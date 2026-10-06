@@ -1,0 +1,66 @@
+[2026-10-04 21:55:13] toros-bt toggle
+sudo: a password is required
+Changing power on succeeded
+[2026-10-04 21:55:13] Pairing… switch the hearing aid off and on now.
+Waiting to connect to bluetoothd...[19P[0;94m[bluetoothctl]> [0m[K[[0;92mNEW[0m] Media /org/bluez/hci0 
+[0;94m[bluetoothctl]> [0m[K	SupportedUUIDs: 0000110a-0000-1000-8000-00805f9b34fb
+[0;94m[bluetoothctl]> [0m[K	SupportedUUIDs: 0000110b-0000-1000-8000-00805f9b34fb
+[0;94m[bluetoothctl]> [0m[KAgent registered
+[0;94m[bluetoothctl]> [0magent NoInputNoOutput
+Agent is already registered
+[0;94m[bluetoothctl]> [0mdefault-agent
+[0;94m[bluetoothctl]> [0mscan on
+[0;94m[bluetoothctl]> [0m[KDefault agent request successful
+[0;94m[bluetoothctl]> [0m[KSetDiscoveryFilter success
+[0;94m[bluetoothctl]> [0m[KDiscovery started
+[0;94m[bluetoothctl]> [0m[K[[0;93mCHG[0m] Controller 02:00:00:00:00:02 Discovering: yes
+[0;94m[bluetoothctl]> [0m[K[[0;92mNEW[0m] Device 02:00:00:00:03:05 02-00-00-00-03-05
+[0;94m[bluetoothctl]> [0m[K[[0;92mNEW[0m] Device 02:00:00:00:03:02 02-00-00-00-03-02
+[0;94m[bluetoothctl]> [0m[K[[0;92mNEW[0m] Device 02:00:00:00:03:01 Nearby-device
+[0;94m[bluetoothctl]> [0m[K[[0;92mNEW[0m] Device 02:00:00:00:03:03 Nearby-LED-strip
+[0;94m[bluetoothctl]> [0m[K[[0;93mCHG[0m] Device 02:00:00:00:03:02 RSSI: 0xffffffca (-54)
+[0;94m[bluetoothctl]> [0m[K[[0;93mCHG[0m] Device 02:00:00:00:03:01 RSSI: 0xffffffa5 (-91)
+[0;94m[bluetoothctl]> [0m[K[[0;93mCHG[0m] Device 02:00:00:00:03:01 RSSI: 0xffffffad (-83)
+[0;94m[bluetoothctl]> [0m[K[[0;92mNEW[0m] Device 02:00:00:00:03:04 02-00-00-00-03-04
+[0;94m[bluetoothctl]> [0m[K[[0;92mNEW[0m] Device 02:00:00:00:02:01 R-Phonak işitme cihazı
+[0;94m[bluetoothctl]> [0mpair 02:00:00:00:02:01
+Attempting to pair with 02:00:00:00:02:01
+[0;94m[bluetoothctl]> [0m[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;93mCHG[0m] Device 02:00:00:00:02:01 Connected: yes
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;93mCHG[0m] Device 02:00:00:00:02:01 Bonded: yes
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;93mCHG[0m] Device 02:00:00:00:02:01 Modalias: bluetooth:v0282p059Bd9300
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;93mCHG[0m] Device 02:00:00:00:02:01 UUIDs: 0000110b-0000-1000-8000-00805f9b34fb
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;93mCHG[0m] Device 02:00:00:00:02:01 UUIDs: 0000110e-0000-1000-8000-00805f9b34fb
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;93mCHG[0m] Device 02:00:00:00:02:01 UUIDs: 0000111e-0000-1000-8000-00805f9b34fb
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;93mCHG[0m] Device 02:00:00:00:02:01 UUIDs: 00001200-0000-1000-8000-00805f9b34fb
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;93mCHG[0m] Device 02:00:00:00:02:01 ServicesResolved: yes
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;93mCHG[0m] Device 02:00:00:00:02:01 Paired: yes
+[0;94m[R-Phonak işitme cihazı]> [0m[KPairing successful
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;93mCHG[0m] Device 02:00:00:00:02:01 ServicesResolved: no
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;93mSIGNAL[0m] BREDR.Disconnected - org.bluez.Reason.Remote, Connection terminated by remote user
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;93mSIGNAL[0m] Disconnected - org.bluez.Reason.Remote, Connection terminated by remote user
+[0;94m[R-Phonak işitme cihazı]> [0m[0;94m[bluetoothctl]> [0m[K[K[[0;93mCHG[0m] Device 02:00:00:00:02:01 Connected: no
+[0;94m[bluetoothctl]> [0mtrust 02:00:00:00:02:01
+[0;94m[bluetoothctl]> [0m[K[[0;93mCHG[0m] Device 02:00:00:00:02:01 Trusted: yes
+[0;94m[bluetoothctl]> [0m[KChanging 02:00:00:00:02:01 trust succeeded
+[0;94m[bluetoothctl]> [0mconnect 02:00:00:00:02:01
+Attempting to connect to 02:00:00:00:02:01
+[0;94m[bluetoothctl]> [0m[K[[0;91mDEL[0m] Device 02:00:00:00:03:02 02-00-00-00-03-02
+[0;94m[bluetoothctl]> [0m[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;93mCHG[0m] Device 02:00:00:00:02:01 Connected: yes
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;92mNEW[0m] Endpoint /org/bluez/hci0/dev_02_00_00_00_02_01/sep1 
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;92mNEW[0m] Endpoint /org/bluez/hci0/dev_02_00_00_00_02_01/sep2 
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;92mNEW[0m] Endpoint /org/bluez/hci0/dev_02_00_00_00_02_01/sep3 
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;92mNEW[0m] Transport /org/bluez/hci0/dev_02_00_00_00_02_01/sep1/fd0 
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;93mCHG[0m] Transport /org/bluez/hci0/dev_02_00_00_00_02_01/sep1/fd0 Delay: 0x07d0 (2000)
+[0;94m[R-Phonak işitme cihazı]> [0m[KConnection successful
+[0;94m[R-Phonak işitme cihazı]> [0m[K[[0;93mCHG[0m] Device 02:00:00:00:02:01 ServicesResolved: yes
+[0;94m[R-Phonak işitme cihazı]> [0mscan off
+[0;94m[R-Phonak işitme cihazı]> [0mquit
+[0;94m[R-Phonak işitme cihazı]> [0m[K[2026-10-04 21:55:54] Connected.
+[2026-10-04 22:13:03] toros-bt toggle
+Attempting to disconnect from 02:00:00:00:02:01
+[[0;93mCHG[0m] Device 02:00:00:00:02:01 ServicesResolved: no
+[[0;93mSIGNAL[0m] BREDR.Disconnected - org.bluez.Reason.Local, Connection terminated by local host
+[[0;93mSIGNAL[0m] Disconnected - org.bluez.Reason.Local, Connection terminated by local host
+[[0;93mCHG[0m] Device 02:00:00:00:02:01 Connected: no
+Disconnection successful
+[2026-10-04 22:13:05] Disconnected.

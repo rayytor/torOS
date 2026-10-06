@@ -1,0 +1,3 @@
+# torOS: share the screen without asking which one (the laptop has one)
+[screencast]
+chooser_type=none

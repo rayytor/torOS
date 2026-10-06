@@ -1,0 +1,30 @@
+torOS: no full mode set when the desktop takes the laptop's screen over.
+
+wlroots sets the connector's "max bpc" to 8 with its first mode set. The
+driver's default is 12, and any change of that property forces a full mode
+set (i915 clears mode_changed for a fast set, but not connectors_changed):
+the panel is powered off and on again, 1.1 s on the laptop. Measured there:
+the mode set takes 19 ms when the value is already 8 and 1.1 s when it is 12.
+The panel has 6 bits per colour, so nothing else changes.
+
+--- a/drivers/gpu/drm/i915/display/intel_dp.c	2026-10-06 07:42:12.481654069 +0300
++++ b/drivers/gpu/drm/i915/display/intel_dp.c	2026-10-06 07:42:12.482481982 +0300
+@@ -6542,6 +6542,18 @@
+ 	else if (DISPLAY_VER(display) >= 5)
+ 		drm_connector_attach_max_bpc_property(&connector->base, 6, 12);
+ 
++	/*
++	 * torOS: start the built-in panel with the "max bpc" the desktop
++	 * asks for (wlroots: 8 for its 8-bit buffers) instead of the largest
++	 * value. A change of this property always costs a full mode set, so
++	 * with the default of 12 the screen went dark for a second when the
++	 * desktop took over from the boot logo.
++	 */
++	if (intel_dp_is_edp(intel_dp) && connector->base.state->max_requested_bpc > 8) {
++		connector->base.state->max_requested_bpc = 8;
++		connector->base.state->max_bpc = 8;
++	}
++
+ 	/* Register HDMI colorspace for case of lspcon */
+ 	if (intel_bios_encoder_is_lspcon(dp_to_dig_port(intel_dp)->base.devdata)) {
+ 		drm_connector_attach_content_type_property(&connector->base);

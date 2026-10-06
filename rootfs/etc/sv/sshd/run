@@ -1,0 +1,4 @@
+#!/bin/sh
+# torOS: the host key is part of the image (see build.sh), so unlike Void's
+# service this one does not generate keys at boot.
+exec /usr/bin/sshd -D

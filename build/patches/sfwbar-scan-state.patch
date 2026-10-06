@@ -1,0 +1,38 @@
+--- a/modules/wifi-iwd.c	2026-10-05 07:23:27.298628483 +0300
++++ b/modules/wifi-iwd.c	2026-10-05 07:23:27.307269485 +0300
+@@ -356,6 +356,24 @@
+     g_dbus_method_invocation_return_value(invocation, NULL);
+ }
+ 
++/* torOS: stock sfwbar leaves the button on "Scanning ..." for good when iwd
++ * refuses the scan or never reports it finished; always return to "Scan" */
++static gboolean iw_scan_timeout ( gpointer d )
++{
++  trigger_emit("wifi-scan-complete");
++  return G_SOURCE_REMOVE;
++}
++
++static void iw_scan_cb ( GDBusConnection *con, GAsyncResult *res, gpointer d )
++{
++  GVariant *result;
++
++  if( (result = g_dbus_connection_call_finish(con, res, NULL)) )
++    g_variant_unref(result);
++  else
++    trigger_emit("wifi-scan-complete");
++}
++
+ static void iw_scan_start ( gchar *path )
+ {
+   iw_device_t *device;
+@@ -366,7 +384,9 @@
+   g_debug("iwd: initiating scan");
+   trigger_emit("wifi-scan");
+   g_dbus_connection_call(iw_con, iw_serv, path, iw_iface_station, "Scan", NULL,
+-      NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
++      NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL,
++      (GAsyncReadyCallback)iw_scan_cb, NULL);
++  g_timeout_add_seconds(12, iw_scan_timeout, NULL);
+ }
+ 
+ static void iw_network_connect_cb ( GDBusConnection *con, GAsyncResult *res,

@@ -1,0 +1,20 @@
+21:54:43.99 [WARN ] dbus: call error: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.login1 was not provided by any .service files
+22:15:19.91 [WARN ] dbus: call error: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.login1 was not provided by any .service files
+22:15:21.02 [WARN ] dbus: call error: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.login1 was not provided by any .service files
+22:15:21.87 [WARN ] dbus: call error: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.login1 was not provided by any .service files
+22:15:22.37 [WARN ] dbus: call error: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.login1 was not provided by any .service files
+22:15:22.82 [WARN ] dbus: call error: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.login1 was not provided by any .service files
+22:15:23.68 [WARN ] dbus: call error: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.login1 was not provided by any .service files
+22:15:27.88 [WARN ] dbus: call error: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.login1 was not provided by any .service files
+22:15:28.22 [WARN ] dbus: call error: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.login1 was not provided by any .service files
+22:15:28.98 [WARN ] dbus: call error: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.login1 was not provided by any .service files
+22:15:30.26 [WARN ] dbus: call error: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.login1 was not provided by any .service files
+22:15:31.04 [WARN ] dbus: call error: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.login1 was not provided by any .service files
+
+(sfwbar:966): GLib-GIO-CRITICAL **: 22:20:27.284: g_dbus_connection_unregister_object: assertion 'G_IS_DBUS_CONNECTION (connection)' failed
+
+(sfwbar:966): GLib-GIO-CRITICAL **: 22:20:27.284: g_dbus_connection_register_object: assertion 'G_IS_DBUS_CONNECTION (connection)' failed
+
+(sfwbar:966): GLib-GIO-CRITICAL **: 22:20:27.286: g_dbus_connection_unregister_object: assertion 'G_IS_DBUS_CONNECTION (connection)' failed
+
+(sfwbar:966): GLib-GIO-CRITICAL **: 22:20:27.286: g_dbus_connection_register_object: assertion 'G_IS_DBUS_CONNECTION (connection)' failed

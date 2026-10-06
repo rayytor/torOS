@@ -1,0 +1,48 @@
+--- a/src/module.c	2026-10-06 08:03:01.278498593 +0300
++++ b/src/module.c	2026-10-06 08:03:01.286211993 +0300
+@@ -110,15 +110,31 @@
+   return g_strdup(((ModuleInterfaceV1 *)(link->data))->provider);
+ }
+ 
+-static gint module_source_func ( module_init_closure_t *closure )
++/* torOS: run a module's init function and report to module_init(), which
++ * frees the closure as soon as it sees "ready". Stock sfwbar read
++ * closure->result after that: when the next module's closure had taken the
++ * same memory by then (zeroed), the modules' thread took the init for failed
++ * and ended, and loading that next module waited for it for ever, with no
++ * panel on the screen. So the result is returned, not read back. */
++static gboolean module_init_run ( module_init_closure_t *closure )
+ {
+-  if( !(closure->result = closure->func()) )
+-    closure->context = NULL;
++  gboolean result = closure->func();
++
+   g_mutex_lock(&closure->mutex);
++  closure->result = result;
++  if(!result)
++    closure->context = NULL;
+   closure->ready = TRUE;
+   g_cond_signal(&closure->cond);
+   g_mutex_unlock(&closure->mutex);
+ 
++  return result;
++}
++
++static gint module_source_func ( module_init_closure_t *closure )
++{
++  module_init_run(closure);
++
+   return G_SOURCE_REMOVE;
+ }
+ 
+@@ -130,9 +146,7 @@
+   g_main_context_push_thread_default(closure->context);
+   loop = g_main_loop_new(closure->context, FALSE);
+ 
+-  module_source_func(closure);
+-
+-  if(closure->result)
++  if(module_init_run(closure))
+     g_main_loop_run(loop);
+   g_main_loop_unref(loop);
+ 

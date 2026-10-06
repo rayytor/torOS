@@ -1,0 +1,134 @@
+dbus-daemon[811]: [session uid=1000 pid=811 pidfd=5] Activating service name='org.freedesktop.Notifications' requested by ':1.9' (uid=1000 pid=1218 comm="notify-send -a Bluetooth -i audio-headphones-symbo")
+dbus-daemon[811]: [session uid=1000 pid=811 pidfd=5] Successfully activated service 'org.freedesktop.Notifications'
+dbus-daemon[811]: [session uid=1000 pid=811 pidfd=5] Activating service name='ca.desrt.dconf' requested by ':1.13' (uid=1000 pid=7953 comm="/usr/bin/python3 /usr/bin/blueman-manager")
+dbus-daemon[811]: [session uid=1000 pid=811 pidfd=5] Activating service name='org.blueman.Applet' requested by ':1.13' (uid=1000 pid=7953 comm="/usr/bin/python3 /usr/bin/blueman-manager")
+dbus-daemon[811]: [session uid=1000 pid=811 pidfd=5] Successfully activated service 'ca.desrt.dconf'
+dbus-daemon[811]: [session uid=1000 pid=811 pidfd=5] Activating service name='org.a11y.Bus' requested by ':1.16' (uid=1000 pid=7969 comm="/usr/bin/python3 /usr/bin/blueman-applet")
+dbus-daemon[811]: [session uid=1000 pid=811 pidfd=5] Successfully activated service 'org.a11y.Bus'
+blueman-applet 22.14.10 WARNING  PluginManager:93 load_plugin: Failed to start plugin GameControllerWakelock: Only X11 platform is supported
+blueman-applet 22.14.10 ERROR    PluginManager:91 load_plugin: Unable to load plugin module NMPANSupport
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/site-packages/blueman/main/NetworkManager.py", line 9, in <module>
+    gi.require_version('NM', '1.0')
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/site-packages/gi/__init__.py", line 150, in require_version
+    raise ValueError(f"Namespace {namespace} not available")
+ValueError: Namespace NM not available
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/site-packages/blueman/main/PluginManager.py", line 89, in load_plugin
+    importlib.import_module(self.module_path.__name__ + f".{plugin}")
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "/usr/lib/python3.14/site-packages/blueman/plugins/applet/NMPANSupport.py", line 8, in <module>
+    from blueman.main.NetworkManager import NMPANConnection, NMConnectionError
+  File "/usr/lib/python3.14/site-packages/blueman/main/NetworkManager.py", line 11, in <module>
+    raise ImportError('NM python bindings not found.')
+ImportError: NM python bindings not found.
+blueman-applet 22.14.10 ERROR    PluginManager:91 load_plugin: Unable to load plugin module NMDUNSupport
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/site-packages/blueman/main/NetworkManager.py", line 9, in <module>
+    gi.require_version('NM', '1.0')
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/site-packages/gi/__init__.py", line 150, in require_version
+    raise ValueError(f"Namespace {namespace} not available")
+ValueError: Namespace NM not available
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/site-packages/blueman/main/PluginManager.py", line 89, in load_plugin
+    importlib.import_module(self.module_path.__name__ + f".{plugin}")
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "/usr/lib/python3.14/site-packages/blueman/plugins/applet/NMDUNSupport.py", line 8, in <module>
+    from blueman.main.NetworkManager import NMDUNConnection, NMConnectionError
+  File "/usr/lib/python3.14/site-packages/blueman/main/NetworkManager.py", line 11, in <module>
+    raise ImportError('NM python bindings not found.')
+ImportError: NM python bindings not found.
+blueman-applet 22.14.10 WARNING  TransferService:212 _make_share_path: Failed to get Download dir from XDG
+dbus-daemon[811]: [session uid=1000 pid=811 pidfd=5] Successfully activated service 'org.blueman.Applet'
+dbus-daemon[7986]: Activating service name='org.a11y.atspi.Registry' requested by ':1.0' (uid=1000 pid=7969 comm="/usr/bin/python3 /usr/bin/blueman-applet")
+dbus-daemon[7986]: Successfully activated service 'org.a11y.atspi.Registry'
+SpiRegistry daemon is running with well-known name - org.a11y.atspi.Registry
+dbus-daemon[811]: [session uid=1000 pid=811 pidfd=5] Activating service name='org.blueman.Applet' requested by ':1.13' (uid=1000 pid=7953 comm="/usr/bin/python3 /usr/bin/blueman-manager")
+blueman-applet 22.14.27 WARNING  PluginManager:93 load_plugin: Failed to start plugin GameControllerWakelock: Only X11 platform is supported
+blueman-applet 22.14.27 ERROR    PluginManager:91 load_plugin: Unable to load plugin module NMPANSupport
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/site-packages/blueman/main/NetworkManager.py", line 9, in <module>
+    gi.require_version('NM', '1.0')
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/site-packages/gi/__init__.py", line 150, in require_version
+    raise ValueError(f"Namespace {namespace} not available")
+ValueError: Namespace NM not available
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/site-packages/blueman/main/PluginManager.py", line 89, in load_plugin
+    importlib.import_module(self.module_path.__name__ + f".{plugin}")
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "/usr/lib/python3.14/site-packages/blueman/plugins/applet/NMPANSupport.py", line 8, in <module>
+    from blueman.main.NetworkManager import NMPANConnection, NMConnectionError
+  File "/usr/lib/python3.14/site-packages/blueman/main/NetworkManager.py", line 11, in <module>
+    raise ImportError('NM python bindings not found.')
+ImportError: NM python bindings not found.
+blueman-applet 22.14.27 ERROR    PluginManager:91 load_plugin: Unable to load plugin module NMDUNSupport
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/site-packages/blueman/main/NetworkManager.py", line 9, in <module>
+    gi.require_version('NM', '1.0')
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/site-packages/gi/__init__.py", line 150, in require_version
+    raise ValueError(f"Namespace {namespace} not available")
+ValueError: Namespace NM not available
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/site-packages/blueman/main/PluginManager.py", line 89, in load_plugin
+    importlib.import_module(self.module_path.__name__ + f".{plugin}")
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "/usr/lib/python3.14/site-packages/blueman/plugins/applet/NMDUNSupport.py", line 8, in <module>
+    from blueman.main.NetworkManager import NMDUNConnection, NMConnectionError
+  File "/usr/lib/python3.14/site-packages/blueman/main/NetworkManager.py", line 11, in <module>
+    raise ImportError('NM python bindings not found.')
+ImportError: NM python bindings not found.
+blueman-applet 22.14.27 WARNING  TransferService:212 _make_share_path: Failed to get Download dir from XDG
+dbus-daemon[811]: [session uid=1000 pid=811 pidfd=5] Successfully activated service 'org.blueman.Applet'
+labwc: backend/backend.c:51: wlr_backend_finish: Assertion `wl_list_empty(&backend->events.new_input.listener_list)' failed.

@@ -1,0 +1,21 @@
+#!/bin/sh
+# Grow the root partition and its file system to the end of the disk. The image
+# is only as large as its files, so after write-usb.sh (or an install to the
+# eMMC) the rest of the disk would stay unused. Run as root from /etc/rc.local;
+# does nothing once the partition reaches the end of the disk.
+ROOT=$(findmnt -no SOURCE /) || exit 0
+P=${ROOT#/dev/}
+[ -e "/sys/class/block/$P/partition" ] || exit 0
+DISK=$(lsblk -no PKNAME "$ROOT")
+N=$(cat "/sys/class/block/$P/partition")
+END=$(( $(cat "/sys/class/block/$P/start") + $(cat "/sys/class/block/$P/size") ))
+FREE_MB=$(( ($(cat "/sys/class/block/$DISK/size") - END) / 2048 ))
+echo "$ROOT on /dev/$DISK: $FREE_MB MB unused after it"
+[ "$FREE_MB" -gt 64 ] || exit 0
+# Only when nothing else follows the root partition
+for s in "/sys/class/block/$DISK"/*/start; do
+	[ "$(cat "$s")" -lt "$END" ] || { echo "another partition follows; leaving it alone"; exit 0; }
+done
+echo ", +" | sfdisk --no-reread -N "$N" "/dev/$DISK" || exit 1
+partx -u "/dev/$DISK"
+resize2fs "$ROOT"

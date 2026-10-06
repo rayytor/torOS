@@ -1,0 +1,126 @@
+#!/bin/sh
+# torOS light/dark switch.
+#   toros-theme toggle | light | dark   switch the whole desktop now
+#   toros-theme get                     print the current choice
+#   toros-theme files                   only write the config files (toros-session
+#                                       does this before the desktop starts)
+#   toros-theme start                   wallpaper and GTK settings at login
+#                                       (from labwc's autostart)
+#
+# Colours come from /usr/share/toros/palette and are filled into the templates
+# in /usr/share/toros/theme. The choice is kept in ~/.config/toros/scheme.
+set -u
+
+PALETTE=/usr/share/toros/palette
+TEMPLATES=/usr/share/toros/theme
+CONF="${XDG_CONFIG_HOME:-$HOME/.config}"
+DATA="${XDG_DATA_HOME:-$HOME/.local/share}"
+STATE="$CONF/toros/scheme"
+KEYS="bg fg dim headerbar popover select border view view_fg desktop accent_text"
+
+. "$PALETTE" || exit 1
+
+current() {
+	[ "$(cat "$STATE" 2>/dev/null)" = dark ] && echo dark || echo light
+}
+
+# colour NAME: the value of NAME in the scheme being written
+colour() { eval "printf %s \"\$${MODE}_$1\""; }
+
+# fill TEMPLATE FILE: copy a template, replacing @name@ with its colour
+fill() {
+	mkdir -p "$(dirname "$2")" && sed "$SED" "$TEMPLATES/$1" > "$2.new" && mv "$2.new" "$2"
+}
+
+# One of foot's two colour sections
+foot_colours() {
+	echo
+	echo "[colors-$1]"
+	eval "echo background=\$${1}_view; echo foreground=\$${1}_view_fg"
+	eval "echo selection-background=\$${1}_select; echo selection-foreground=\$${1}_view_fg"
+	eval "set -- \$${1}_term \$${1}_term_bright"
+	i=0
+	for c in "$@"; do
+		if [ $i -lt 8 ]; then echo "regular$i=$c"; else echo "bright$((i - 8))=$c"; fi
+		i=$((i + 1))
+	done
+}
+
+# button FILE GLYPH-COLOUR DISC-OPACITY SHAPE: one title bar button, a glyph on
+# a round disc as in libadwaita's header bars
+button() {
+	printf '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#%s" fill-opacity="%s"/><g fill="none" stroke="#%s" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">%s</g></svg>\n' \
+		"$(colour fg)" "$3" "$2" "$4" > "$1"
+}
+
+write_files() {
+	MODE=$1
+	SED="s/@scheme@/$MODE/g;s/@accent@/$accent/g;s/@accent_fg@/$accent_fg/g"
+	for k in $KEYS; do
+		SED="$SED;s/@$k@/$(colour "$k")/g"
+	done
+
+	fill fuzzel.ini "$CONF/fuzzel/fuzzel.ini"
+	fill mako "$CONF/mako/config"
+	fill swaylock "$CONF/swaylock/config"
+	fill gtk.css "$CONF/gtk-3.0/gtk.css"
+	fill gtk.css "$CONF/gtk-4.0/gtk.css"
+	fill foot.ini "$CONF/foot/foot.ini"
+	{ foot_colours dark; foot_colours light; } >> "$CONF/foot/foot.ini"
+
+	theme="$DATA/themes/torOS/labwc"
+	fill themerc "$theme/themerc"
+	close='<path d="M8.75 8.75l6.5 6.5m0-6.5l-6.5 6.5"/>'
+	iconify='<path d="M8.5 15.25h7"/>'
+	max='<rect x="8.75" y="8.75" width="6.5" height="6.5" rx="1"/>'
+	max_toggled='<rect x="8" y="10.5" width="5.5" height="5.5" rx="1"/><path d="M10.75 8h4.25a1 1 0 0 1 1 1v4.25"/>'
+	for b in close iconify max max_toggled; do
+		eval "shape=\$$b"
+		button "$theme/$b-active.svg" "$(colour fg)" 0.10 "$shape"
+		button "$theme/${b}_hover-active.svg" "$(colour fg)" 0.20 "$shape"
+		button "$theme/$b-inactive.svg" "$(colour dim)" 0.06 "$shape"
+		button "$theme/${b}_hover-inactive.svg" "$(colour fg)" 0.20 "$shape"
+	done
+}
+
+# GTK3 apps (the panel too) follow gtk-theme, GTK4/libadwaita apps follow
+# color-scheme. Only written when it changes.
+gtk_settings() {
+	if [ "$1" = dark ]; then scheme=prefer-dark; gtk=adw-gtk3-dark; else scheme=default; gtk=adw-gtk3; fi
+	set -- color-scheme "$scheme" gtk-theme "$gtk"
+	while [ $# -gt 0 ]; do
+		[ "$(gsettings get org.gnome.desktop.interface "$1")" = "'$2'" ] ||
+			gsettings set org.gnome.desktop.interface "$1" "$2"
+		shift 2
+	done
+}
+
+wallpaper() {
+	MODE=$1
+	old=$(pgrep -u "$(id -u)" -x swaybg)
+	setsid swaybg -m fill -c "#$(colour desktop)" -i "/usr/share/toros/wallpaper-$1.png" >/dev/null 2>&1 &
+	# the old picture stays until the new one is on the screen
+	# shellcheck disable=SC2086
+	[ -z "$old" ] || { sleep 0.6; kill $old 2>/dev/null; }
+}
+
+switch() {
+	mkdir -p "$(dirname "$STATE")" && echo "$1" > "$STATE"
+	write_files "$1"
+	gtk_settings "$1"
+	kill -HUP "${LABWC_PID:-$(pgrep -u "$(id -u)" -x labwc)}" 2>/dev/null
+	if [ "$1" = dark ]; then pkill -USR1 -u "$(id -u)" -x foot; else pkill -USR2 -u "$(id -u)" -x foot; fi
+	pgrep -u "$(id -u)" -x mako >/dev/null && makoctl reload
+	# the panel's quick settings show the choice (see toros-quick.widget)
+	pkill -RTMIN+6 -u "$(id -u)" -x sfwbar
+	wallpaper "$1"
+}
+
+case "${1:-}" in
+get)	current ;;
+files)	write_files "$(current)" ;;
+start)	gtk_settings "$(current)"; wallpaper "$(current)" ;;
+light|dark)	switch "$1" ;;
+toggle)	if [ "$(current)" = dark ]; then switch light; else switch dark; fi ;;
+*)	sed -n '2,8s/^# \{0,1\}//p' "$0" >&2; exit 1 ;;
+esac

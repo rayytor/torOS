@@ -1,0 +1,6 @@
+%wheel ALL=(ALL:ALL) ALL
+
+# Suspend, restart, power off, the hardware report and radio unblocking work
+# without a password. sudo applies the LAST matching rule, so this line must
+# stay below the general one above.
+%wheel ALL=(root) NOPASSWD: /usr/bin/zzz, /usr/bin/reboot, /usr/bin/poweroff, /usr/lib/toros/hwlog, /usr/bin/rfkill unblock bluetooth, /usr/bin/rfkill unblock all

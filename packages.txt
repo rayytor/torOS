@@ -1,0 +1,173 @@
+# torOS package list (Void Linux, x86_64 glibc). One package per line.
+
+# base
+base-files
+runit-void
+xbps
+coreutils
+findutils
+diffutils
+dash
+bash
+grep
+gzip
+sed
+gawk
+less
+util-linux
+which
+tar
+zstd
+shadow
+procps-ng
+iana-etc
+tzdata
+glibc-locales
+ncurses
+kmod
+eudev
+kbd
+sudo
+nvi
+e2fsprogs
+dosfstools
+pciutils
+usbutils
+iproute2
+iputils
+ca-certificates
+curl
+acpid
+
+# kernel, boot, firmware
+linux
+dracut
+efibootmgr
+intel-ucode
+linux-firmware-intel
+linux-firmware-network
+sof-firmware
+
+# network
+iwd
+openresolv
+wireless-regdb
+nftables
+
+# remote updates from the desktop PC (push.sh)
+openssh
+rsync
+
+# bluetooth
+bluez
+blueman
+
+# session plumbing
+dbus
+seatd
+
+# graphics drivers (UHD 600)
+mesa-dri
+mesa-vulkan-intel
+
+# zapret runtime libraries (nfqws is compiled during the image build)
+libnetfilter_queue
+libnfnetlink
+libmnl
+libcap
+zlib
+
+# desktop session (phase 2)
+labwc
+foot
+fuzzel
+mako
+libnotify
+swaybg
+swayidle
+swaylock
+wlopm
+wlr-randr
+brightnessctl
+grim
+slurp
+wl-clipboard
+dumb_runtime_dir
+xdg-user-dirs
+xdg-utils
+shared-mime-info
+hicolor-icon-theme
+adwaita-icon-theme
+adwaita-fonts
+gsettings-desktop-schemas
+dconf
+
+# audio
+pipewire
+wireplumber
+libspa-bluetooth
+alsa-pipewire
+
+# panel runtime libraries (sfwbar is compiled during the image build)
+gtk+3
+gtk-layer-shell
+json-c
+libpulseaudio
+libxkbcommon
+
+# Fonts
+font-inter
+liberation-fonts-ttf
+noto-fonts-emoji
+
+# Thorium browser (the browser itself is unpacked from its release package)
+nss
+nspr
+alsa-lib
+libcups
+libXcomposite
+libXdamage
+libXrandr
+libXfixes
+libgbm
+at-spi2-core
+libcurl
+vulkan-loader
+intel-media-driver
+libva
+
+# Portal for screen sharing from the browser. It runs only while Thorium does
+# (/usr/lib/toros/browser). The GTK portal is left out on purpose: it adds
+# 25 MB and nothing that Thorium and GTK apps do not already do themselves.
+xdg-desktop-portal
+xdg-desktop-portal-wlr
+
+# Core apps (GTK4/libadwaita): files, text editor, pictures, PDF, Bluetooth
+nautilus
+gnome-text-editor
+loupe
+papers
+adw-bluetooth
+
+# polkit, started on demand: USB sticks in Files and zapret-gtk's root helper
+# (rules in /etc/polkit-1/rules.d; there is no password dialog and no elogind)
+polkit
+
+# measuring (/usr/lib/toros/apptime, hardware video decode check)
+lswt
+libva-utils
+
+# Oynaz (GTK4/libadwaita YouTube client, built from ~/Projects/oynaz)
+gtk4
+libadwaita
+libsoup3
+glib-networking
+sqlite
+gstreamer1
+gst-plugins-base1
+gst-plugins-good1
+gst-plugins-bad1
+gst-plugins-rs1
+gst-libav
+yt-dlp
+nodejs

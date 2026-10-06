@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<!-- torOS labwc configuration. W = Super, A = Alt, S = Shift, C = Ctrl. -->
+<labwc_config>
+
+  <core>
+    <gap>4</gap>
+    <xwaylandPersistence>no</xwaylandPersistence>
+  </core>
+
+  <!-- The torOS theme is written by toros-theme to
+       ~/.local/share/themes/torOS/labwc (colours from /usr/share/toros/palette). -->
+  <theme>
+    <name>torOS</name>
+    <icon>Adwaita</icon>
+    <cornerRadius>12</cornerRadius>
+    <dropShadows>yes</dropShadows>
+    <titlebar>
+      <layout>:iconify,max,close</layout>
+    </titlebar>
+    <font name="Inter" size="11" />
+    <font place="ActiveWindow" name="Inter" size="11" weight="bold" />
+    <font place="InactiveWindow" name="Inter" size="11" weight="bold" />
+  </theme>
+
+  <!-- Four workspaces. The panel's dots (the pager in sfwbar.config) use
+       these names. -->
+  <desktops>
+    <popupTime>600</popupTime>
+    <names>
+      <name>1</name>
+      <name>2</name>
+      <name>3</name>
+      <name>4</name>
+    </names>
+  </desktops>
+
+  <windowSwitcher preview="yes" outlines="yes">
+    <osd show="yes" style="classic" />
+    <fields>
+      <field content="icon" width="5%" />
+      <field content="desktop_entry_name" width="30%" />
+      <field content="title" width="65%" />
+    </fields>
+  </windowSwitcher>
+
+  <keyboard>
+    <default />
+    <layoutScope>global</layoutScope>
+
+    <!-- The same keys as GNOME -->
+    <!-- workspaces: go to / take the window along -->
+    <keybind key="W-Page_Up"><action name="GoToDesktop" to="left" wrap="no" /></keybind>
+    <keybind key="W-Page_Down"><action name="GoToDesktop" to="right" wrap="no" /></keybind>
+    <keybind key="C-A-Left"><action name="GoToDesktop" to="left" wrap="no" /></keybind>
+    <keybind key="C-A-Right"><action name="GoToDesktop" to="right" wrap="no" /></keybind>
+    <keybind key="W-Home"><action name="GoToDesktop" to="1" /></keybind>
+    <keybind key="W-End"><action name="GoToDesktop" to="4" /></keybind>
+    <keybind key="W-S-Page_Up"><action name="SendToDesktop" to="left" wrap="no" /></keybind>
+    <keybind key="W-S-Page_Down"><action name="SendToDesktop" to="right" wrap="no" /></keybind>
+    <keybind key="C-A-S-Left"><action name="SendToDesktop" to="left" wrap="no" /></keybind>
+    <keybind key="C-A-S-Right"><action name="SendToDesktop" to="right" wrap="no" /></keybind>
+    <keybind key="W-S-Home"><action name="SendToDesktop" to="1" /></keybind>
+    <keybind key="W-S-End"><action name="SendToDesktop" to="4" /></keybind>
+    <!-- switch windows (of all workspaces) / windows of the application in use -->
+    <keybind key="A-Tab"><action name="NextWindow" workspace="all" /></keybind>
+    <keybind key="A-S-Tab"><action name="PreviousWindow" workspace="all" /></keybind>
+    <keybind key="W-Tab"><action name="NextWindow" workspace="all" /></keybind>
+    <keybind key="W-S-Tab"><action name="PreviousWindow" workspace="all" /></keybind>
+    <keybind key="A-grave"><action name="NextWindow" workspace="all" identifier="current" /></keybind>
+    <keybind key="W-grave"><action name="NextWindow" workspace="all" identifier="current" /></keybind>
+    <!-- maximise, restore, halves, hide, show the desktop -->
+    <keybind key="W-Up"><action name="Maximize" /></keybind>
+    <keybind key="W-Down"><action name="UnMaximize" /></keybind>
+    <keybind key="W-Left"><action name="ToggleSnapToEdge" direction="left" /></keybind>
+    <keybind key="W-Right"><action name="ToggleSnapToEdge" direction="right" /></keybind>
+    <keybind key="W-h"><action name="Iconify" /></keybind>
+    <keybind key="W-d"><action name="ToggleShowDesktop" /></keybind>
+    <keybind key="W-a"><action name="Execute" command="fuzzel" /></keybind>
+
+    <!-- apps -->
+    <keybind key="Super_L" onRelease="yes">
+      <action name="Execute" command="fuzzel" />
+    </keybind>
+    <keybind key="W-r">
+      <action name="Execute" command="fuzzel" />
+    </keybind>
+    <keybind key="W-Return">
+      <action name="Execute" command="foot" />
+    </keybind>
+    <keybind key="W-q">
+      <action name="Close" />
+    </keybind>
+    <keybind key="W-l">
+      <action name="Execute" command="swaylock -f" />
+    </keybind>
+
+    <!-- Wi-Fi network picker -->
+    <keybind key="W-w">
+      <action name="Execute" command="toros-wifi" />
+    </keybind>
+
+    <!-- hearing aid -->
+    <keybind key="W-b">
+      <action name="Execute" command="toros-bt toggle" />
+    </keybind>
+
+    <!-- audio -->
+    <keybind key="XF86AudioRaiseVolume">
+      <action name="Execute" command="wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+" />
+    </keybind>
+    <keybind key="XF86AudioLowerVolume">
+      <action name="Execute" command="wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-" />
+    </keybind>
+    <keybind key="XF86AudioMute">
+      <action name="Execute" command="wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" />
+    </keybind>
+    <keybind key="XF86AudioMicMute">
+      <action name="Execute" command="wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle" />
+    </keybind>
+
+    <!-- brightness -->
+    <keybind key="XF86MonBrightnessUp">
+      <action name="Execute" command="brightnessctl set +5%" />
+    </keybind>
+    <keybind key="XF86MonBrightnessDown">
+      <action name="Execute" command="brightnessctl --min-value=1 set 5%-" />
+    </keybind>
+
+    <!-- screenshots: whole screen / selected area, saved to ~/Pictures -->
+    <keybind key="Print">
+      <action name="Execute" command="sh -c 'mkdir -p ~/Pictures; grim ~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png'" />
+    </keybind>
+    <keybind key="S-Print">
+      <action name="Execute" command="sh -c 'mkdir -p ~/Pictures; grim -g &quot;$(slurp)&quot; ~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png'" />
+    </keybind>
+  </keyboard>
+
+  <libinput>
+    <device category="touchpad">
+      <tap>yes</tap>
+      <tapAndDrag>yes</tapAndDrag>
+      <disableWhileTyping>yes</disableWhileTyping>
+      <!-- <naturalScroll>yes</naturalScroll> -->
+    </device>
+  </libinput>
+
+</labwc_config>

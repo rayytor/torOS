@@ -1,0 +1,44 @@
+# torOS: when booted by test/qemu.sh (which passes a fw_cfg flag), run the
+# self-test and report on the serial port. Does nothing on real hardware.
+modprobe -q qemu_fw_cfg 2>/dev/null
+if [ -e /sys/firmware/qemu_fw_cfg/by_name/opt/toros/selftest ]; then
+	/usr/lib/toros/selftest > /dev/ttyS0 2>&1 &
+fi
+# test/vm.py can also ask for zapret to stay off: its fake packets are meant
+# for the ISP's filter and break TLS behind QEMU's user-mode network.
+if [ -e /sys/firmware/qemu_fw_cfg/by_name/opt/toros/nozapret ]; then
+	touch /etc/sv/zapret/down
+fi
+
+# Under the torOS kernel the device scan that loads the drivers for Wi-Fi,
+# Bluetooth, sound and the rest runs here, as soon as the udevd service (started
+# right after this script) is up; boot does not wait for it (see
+# /etc/runit/core-services/02-udev.sh). The laptop's firmware remembers Wi-Fi
+# and Bluetooth as soft-blocked (this is why Bluetooth scans found nothing on
+# the first test), so both are unblocked once their drivers are there.
+(
+	case "$(uname -r)" in
+	*-toros)
+		while [ ! -S /run/udev/control ]; do sleep 0.02; done
+		udevadm trigger --action=add --type=subsystems
+		udevadm trigger --action=add --type=devices
+		;;
+	esac
+	udevadm settle
+	rfkill unblock all 2>/dev/null
+	# test/vm.py asks for a simulated Wi-Fi card (one open network, "VirtWifi")
+	# so the panel's Wi-Fi window can be tried by hand in the VM. It sits on
+	# the VM's network card, which is only there after the scan above.
+	if [ -e /sys/firmware/qemu_fw_cfg/by_name/opt/toros/virtwifi ]; then
+		modprobe virt_wifi && ip link set eth0 up && ip link add link eth0 name wlan0 type virt_wifi
+	fi
+) &
+
+# Compressed swap in RAM; the log is empty when it worked.
+/usr/lib/toros/zram > /var/log/toros-zram.log 2>&1
+
+# Use the whole stick (or eMMC): the image is only as large as its files.
+/usr/lib/toros/growroot > /var/log/toros-growroot.log 2>&1 &
+
+# Hardware log readable without root (also from the USB stick on another PC).
+( sleep 25; /usr/lib/toros/hwlog boot ) &

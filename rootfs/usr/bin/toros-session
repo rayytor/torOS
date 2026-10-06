@@ -1,0 +1,28 @@
+#!/bin/sh
+# Start the torOS desktop (labwc) from a console login.
+
+if [ -z "$XDG_RUNTIME_DIR" ] || [ ! -d "$XDG_RUNTIME_DIR" ]; then
+	echo "toros-session: XDG_RUNTIME_DIR is not set up (pam_dumb_runtime_dir missing?)" >&2
+	/usr/lib/toros/splash text
+	exit 1
+fi
+
+export XDG_SESSION_TYPE=wayland
+export XDG_CURRENT_DESKTOP=labwc:wlroots
+
+# No GPU acceleration inside the QEMU test VM: use the software renderer there.
+if grep -qs QEMU /sys/class/dmi/id/sys_vendor; then
+	export WLR_RENDERER=pixman
+fi
+
+LOG="${XDG_STATE_HOME:-$HOME/.local/state}/toros"
+mkdir -p "$LOG"
+# Window theme, launcher, notification and terminal colours for the saved
+# light/dark choice
+toros-theme files
+# -V: labwc and wlroots log what they do with a time stamp on every line, which
+# shows where the time goes when the desktop starts
+dbus-run-session labwc -V > "$LOG/session.log" 2>&1
+# If the boot splash is still up (the desktop never started), show the console
+/usr/lib/toros/splash text
+echo "Desktop session ended (log: $LOG/session.log)."

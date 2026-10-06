@@ -1,0 +1,53 @@
+#!/bin/sh
+# Check gz83/thorium for a newer SSE4 build of Thorium and, if there is one,
+# put its version and checksum into build/in-container.sh. Nothing else
+# changes: the browser is only replaced by the next ./build.sh and ./push.sh.
+#   build/update-thorium        check, download and pin the newest release
+#   build/update-thorium -n     only say what is available
+# The laptop's Celeron N4020 has no AVX, so only the SSE4 package fits.
+set -eu
+cd "$(dirname "$0")/.."
+SCRIPT=build/in-container.sh
+REPO=gz83/thorium
+
+have=$(sed -n 's/^THORIUM_VER=//p' "$SCRIPT")
+[ -n "$have" ] || { echo "THORIUM_VER not found in $SCRIPT" >&2; exit 1; }
+
+# newest release (pre-releases included: every M154 build is labelled beta)
+# that has an SSE4 .deb: prints "VERSION URL"
+found=$(curl -fsSL "https://api.github.com/repos/$REPO/releases?per_page=20" | python3 -c '
+import json, re, sys
+best = None
+for rel in json.load(sys.stdin):
+    for a in rel.get("assets", []):
+        m = re.fullmatch(r"thorium-browser_([0-9.]+)_SSE4\.deb", a["name"])
+        if m:
+            ver = tuple(int(x) for x in m.group(1).split("."))
+            if best is None or ver > best[0]:
+                best = (ver, m.group(1), a["browser_download_url"])
+if best:
+    print(best[1], best[2])
+')
+[ -n "$found" ] || { echo "no SSE4 package found in the releases of $REPO" >&2; exit 1; }
+new=${found%% *}; url=${found#* }
+
+echo "pinned:  $have"
+echo "newest:  $new"
+if [ "$new" = "$have" ]; then echo "Thorium is up to date."; exit 0; fi
+newest=$(printf '%s\n%s\n' "$have" "$new" | sort -V | tail -n 1)
+if [ "$newest" != "$new" ]; then echo "The pinned version is newer than the newest release; nothing to do."; exit 0; fi
+[ "${1:-}" = -n ] && { echo "Run build/update-thorium to pin $new."; exit 0; }
+
+mkdir -p out/cache
+deb="out/cache/thorium-${new}_SSE4.deb"
+echo "downloading $url"
+curl -fL --progress-bar -o "$deb.part" "$url"
+# a Debian package starts with "!<arch>"; anything else is an error page
+[ "$(head -c 7 "$deb.part")" = '!<arch>' ] || { echo "the download is not a .deb package" >&2; rm -f "$deb.part"; exit 1; }
+mv "$deb.part" "$deb"
+sum=$(sha256sum "$deb" | cut -d' ' -f1)
+
+sed -i -e "s/^THORIUM_VER=.*/THORIUM_VER=$new/" -e "s/^THORIUM_SHA=.*/THORIUM_SHA=$sum/" "$SCRIPT"
+echo "Pinned Thorium $new (sha256 $sum)."
+echo "The checksum is of the file just downloaded, so it only guards later builds."
+echo "Next: ./build.sh, test/qemu.sh selftest, ./push.sh"

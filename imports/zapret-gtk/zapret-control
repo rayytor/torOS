@@ -1,0 +1,204 @@
+#!/bin/sh
+# VERSION: 9
+set -e
+export LC_ALL=C
+
+restart_service() {
+    systemctl restart zapret 2>/dev/null || rc-service zapret restart 2>/dev/null || sv restart zapret 2>/dev/null || service zapret restart 2>/dev/null || dinitctl restart zapret 2>/dev/null || true
+}
+
+stop_service() {
+    systemctl stop zapret 2>/dev/null || rc-service zapret stop 2>/dev/null || sv down zapret 2>/dev/null || service zapret stop 2>/dev/null || dinitctl stop zapret 2>/dev/null || killall -9 nfqws tpws dvtws 2>/dev/null || pkill -9 -x nfqws 2>/dev/null || pkill -9 -x tpws 2>/dev/null || true
+}
+
+start_service() {
+    systemctl start zapret 2>/dev/null || rc-service zapret start 2>/dev/null || sv up zapret 2>/dev/null || service zapret start 2>/dev/null || dinitctl start zapret 2>/dev/null || true
+}
+
+is_zapret_proc() {
+    _p="$1"
+    [ -d "/proc/$_p" ] || return 1
+    _c=$(cat "/proc/$_p/comm" 2>/dev/null || true)
+    case "$_c" in
+        nfqws|tpws|dvtws|mdig|ip2net) return 0 ;;
+    esac
+    _cmd=$(tr '\0' ' ' < "/proc/$_p/cmdline" 2>/dev/null || true)
+    case "$_cmd" in
+        *"/opt/zapret/blockcheck.sh"*|*"/opt/zapret/install_easy.sh"*|*"zapret_installer_job.sh"*|*"/usr/bin/zapret-control"*) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+kill_proc_tree() {
+    _parent="$1"
+    [ -z "$_parent" ] && return
+    for _child in $(pgrep -P "$_parent" 2>/dev/null); do
+        kill_proc_tree "$_child"
+    done
+    if is_zapret_proc "$_parent"; then
+        kill -9 "$_parent" 2>/dev/null || true
+    fi
+}
+
+case "$1" in
+    start)
+        start_service
+        ;;
+    stop)
+        stop_service
+        ;;
+    restart)
+        restart_service
+        ;;
+    cat-config)
+        if [ -f /opt/zapret/config ]; then
+            cat /opt/zapret/config
+        fi
+        ;;
+    apply-strategy)
+        # Reads single strategy string from stdin
+        read -r raw_strat
+        # Whitelist: alphanumeric, -, _, =, +, :, ,, ., /, <, >, space
+        if echo "$raw_strat" | grep -q '[^a-zA-Z0-9_\-=+:,.<>/ ]'; then
+            echo "Security Error: Prohibited characters in strategy string." >&2
+            exit 1
+        fi
+        if [ -f /opt/zapret/config ]; then
+            awk -v new_opt="$raw_strat" '
+                BEGIN { in_opt = 0; replaced = 0 }
+                /^NFQWS_OPT=/ {
+                    print "NFQWS_OPT=\"" new_opt "\""
+                    replaced = 1
+                    q = gsub(/"/, "\"", $0)
+                    if (q % 2 != 0) {
+                        in_opt = 1
+                    }
+                    next
+                }
+                in_opt {
+                    if (index($0, "\"") > 0) {
+                        in_opt = 0
+                    }
+                    next
+                }
+                /^--filter-/ || /^--dpi-desync/ || /^"$/ { next }
+                { print }
+                END {
+                    if (!replaced) {
+                        print "NFQWS_OPT=\"" new_opt "\""
+                    }
+                }
+            ' /opt/zapret/config > /opt/zapret/config.tmp && mv -f /opt/zapret/config.tmp /opt/zapret/config
+            chmod 644 /opt/zapret/config
+        fi
+        restart_service
+        ;;
+    apply-hostlist)
+        # Mode argument: "none" or "hostlist"
+        mode="$2"
+        case "$mode" in
+            none|hostlist) ;;
+            *) echo "Security Error: Invalid filter mode." >&2; exit 1 ;;
+        esac
+
+        mkdir -p /opt/zapret/ipset
+        tmp_target="/opt/zapret/ipset/zapret-hosts-user.txt.tmp"
+        final_target="/opt/zapret/ipset/zapret-hosts-user.txt"
+
+        cat > "$tmp_target"
+        mv -f "$tmp_target" "$final_target"
+        chmod 644 "$final_target"
+        chown root:root "$final_target" 2>/dev/null || true
+
+        if [ -f /opt/zapret/config ]; then
+            sed -i "s|^MODE_FILTER=.*|MODE_FILTER=$mode|" /opt/zapret/config
+        fi
+        restart_service
+        ;;
+    blockcheck)
+        shift
+        repeats="$1"
+        scan_level="$2"
+        shift 2
+        domains="$*"
+        if [ -f /opt/zapret/blockcheck.sh ]; then
+            if ! echo "$repeats" | grep -Eq '^[0-9]+$'; then repeats=1; fi
+            case "$scan_level" in
+                quick|standard|force) ;;
+                *) scan_level="standard" ;;
+            esac
+            cd /opt/zapret
+            BATCH=1 REPEATS="$repeats" SCANLEVEL="$scan_level" SKIP_TPWS=1 ENABLE_HTTP=1 ENABLE_HTTPS_TLS12=1 ENABLE_HTTPS_TLS13=1 ZAPRET_BASE="/opt/zapret" DOMAINS="$domains" /bin/sh /opt/zapret/blockcheck.sh
+        fi
+        ;;
+    easy-install)
+        if [ -f /opt/zapret/install_easy.sh ]; then
+            export ZAPRET_BASE="/opt/zapret"
+            cd /opt/zapret
+            printf "Y\nY\nN\n1\nN\nN\nY\nN\n\n\n" | /bin/sh /opt/zapret/install_easy.sh
+            sed -i 's/^NFQWS_ENABLE=.*/NFQWS_ENABLE=1/' /opt/zapret/config 2>/dev/null || true
+            rm -f /opt/zapret/zapret-control.sh 2>/dev/null || true
+            restart_service
+        fi
+        ;;
+    kill-pid)
+        target_pid="$2"
+        if [ -n "$target_pid" ] && echo "$target_pid" | grep -Eq '^[0-9]+$'; then
+            kill_proc_tree "$target_pid"
+        fi
+        for p in $(pgrep -f '/opt/zapret/blockcheck.sh' 2>/dev/null); do
+            kill -9 "$p" 2>/dev/null || true
+        done
+        for p in $(pgrep -f '/opt/zapret/install_easy.sh' 2>/dev/null); do
+            kill -9 "$p" 2>/dev/null || true
+        done
+        for p in $(pgrep -f 'zapret_installer_job.sh' 2>/dev/null); do
+            kill -9 "$p" 2>/dev/null || true
+        done
+        pkill -9 -x nfqws 2>/dev/null || true
+        pkill -9 -x tpws 2>/dev/null || true
+        pkill -9 -x dvtws 2>/dev/null || true
+        pkill -9 -x mdig 2>/dev/null || true
+        pkill -9 -x ip2net 2>/dev/null || true
+        ;;
+    cleanup-session)
+        target_pid="$2"
+        if [ -n "$target_pid" ] && echo "$target_pid" | grep -Eq '^[0-9]+$' && [ "$target_pid" -gt 0 ]; then
+            kill_proc_tree "$target_pid"
+        fi
+        for p in $(pgrep -f '/opt/zapret/blockcheck.sh' 2>/dev/null); do kill -9 "$p" 2>/dev/null || true; done
+        for p in $(pgrep -f '/opt/zapret/install_easy.sh' 2>/dev/null); do kill -9 "$p" 2>/dev/null || true; done
+        for p in $(pgrep -f 'zapret_installer_job.sh' 2>/dev/null); do kill -9 "$p" 2>/dev/null || true; done
+        rm -f /run/polkit-1/rules.d/90-zapret-gtk.rules 2>/dev/null || true
+        ;;
+    clean-session)
+        rm -f /run/polkit-1/rules.d/90-zapret-gtk.rules 2>/dev/null || true
+        ;;
+    update)
+        cd /opt/zapret
+        git fetch origin
+        git reset --hard origin/master
+        make -B
+        [ -f /opt/zapret/install_bin.sh ] && sh /opt/zapret/install_bin.sh || true
+        restart_service
+        ;;
+    uninstall)
+        stop_service
+        systemctl disable zapret 2>/dev/null || true
+        systemctl disable zapret-list-update.timer 2>/dev/null || true
+        rc-update del zapret default 2>/dev/null || true
+        rm -rf /etc/runit/runsvdir/default/zapret /var/service/zapret /etc/service/zapret /run/runit/service/zapret 2>/dev/null || true
+        if command -v update-rc.d >/dev/null 2>&1; then update-rc.d -f zapret remove 2>/dev/null || true; elif command -v chkconfig >/dev/null 2>&1; then chkconfig --del zapret 2>/dev/null || true; fi
+        dinitctl disable zapret 2>/dev/null || true
+        rm -f /etc/systemd/system/zapret* /usr/lib/systemd/system/zapret* 2>/dev/null || true
+        rm -f /etc/init.d/zapret /etc/rc.d/zapret /etc/dinit.d/zapret /etc/dinit.d/boot.d/zapret /etc/sv/zapret 2>/dev/null || true
+        systemctl daemon-reload 2>/dev/null || true
+        rm -rf /opt/zapret
+        rm -f /run/polkit-1/rules.d/90-zapret-gtk.rules /etc/polkit-1/rules.d/90-zapret-gtk.rules /etc/polkit-1/localauthority/50-local.d/90-zapret-gtk.pkla /usr/bin/zapret-control /opt/zapret/zapret-control.sh 2>/dev/null || true
+        exit 0
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|cat-config|apply-strategy|apply-hostlist <mode>|blockcheck <repeats> <level> [domains]|easy-install|kill-pid <pid>|cleanup-session <pid>|clean-session|update|uninstall}"
+        exit 1
+        ;;
+esac

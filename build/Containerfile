@@ -1,0 +1,13 @@
+# Build environment for torOS images: Void Linux with image and compiler tools.
+FROM ghcr.io/void-linux/void-glibc-full:latest
+ARG MIRROR=https://ftp.lysator.liu.se/pub/voidlinux/current
+RUN echo "repository=$MIRROR" > /etc/xbps.d/00-repository-main.conf && \
+    xbps-install -Syu xbps && xbps-install -yu && \
+    for p in bash dosfstools mtools e2fsprogs util-linux systemd-boot rsync \
+        gcc make pkg-config libnetfilter_queue-devel libmnl-devel libcap-devel zlib-devel \
+        meson ninja tar gtk+3-devel gtk-layer-shell-devel json-c-devel wayland-devel wayland-protocols \
+        pulseaudio-devel pipewire-devel libxkbcommon-devel xz patch curl binutils \
+        flex bison bc perl kmod zstd openssl-devel elfutils-devel \
+        rust cargo glib-devel gtk4-devel libadwaita-devel libsoup3-devel sqlite-devel gstreamer1-devel gst-plugins-base1-devel; do \
+        xbps-query "$p" >/dev/null 2>&1 || xbps-install -y "$p" || exit 1; \
+    done && rm -rf /var/cache/xbps/*

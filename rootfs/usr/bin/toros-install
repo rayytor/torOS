@@ -1,0 +1,112 @@
+#!/bin/sh
+# Install torOS on the laptop's internal disk. ERASES THAT WHOLE DISK.
+#   toros-install            the internal disk: the only disk that is neither
+#                            removable nor the one torOS is running from
+#   toros-install /dev/XXX   another disk
+# Run as root on torOS started from the USB stick (from the PC: ./install.sh).
+# Nothing is written before the question is answered with the word "erase".
+#
+# The running system is copied as it is: programs, settings, the home
+# directory, saved Wi-Fi networks and Bluetooth pairings. The internal disk
+# gets the same layout, partition names and labels as the stick (TOROS_ESP,
+# torOS), so its boot files are the ones every build makes and ./push.sh
+# updates it like the stick. With both in the laptop the kernel finds the
+# internal disk first (it is there a good 0.4 s before any USB disk), but
+# /boot could come from either: take the stick out before the first start.
+set -eu
+
+die() { echo "toros-install: $*" >&2; exit 1; }
+step() { printf '==> %s\n' "$*"; }
+
+[ "$(id -u)" = 0 ] || die "run it as root"
+[ -d /sys/firmware/efi/efivars ] || die "this system was not started through UEFI"
+ROOTDEV=$(findmnt -no SOURCE /)
+ROOTDISK=/dev/$(lsblk -no PKNAME "$ROOTDEV")
+mountpoint -q /boot || die "/boot is not mounted"
+
+DISK=${1:-}
+if [ -z "$DISK" ]; then
+	n=0
+	for d in $(lsblk -dnpo NAME,TYPE,RM | awk '$2 == "disk" && $3 == 0 {print $1}'); do
+		case "$d" in /dev/zram*|/dev/loop*|*boot[0-9]) continue ;; esac
+		[ "$d" != "$ROOTDISK" ] || continue
+		DISK=$d; n=$((n + 1))
+	done
+	[ "$n" = 1 ] || die "$n disks could be meant; name one: toros-install /dev/XXX"
+fi
+[ -b "$DISK" ] && [ "$(lsblk -dno TYPE "$DISK")" = disk ] || die "$DISK is not a disk"
+[ "$DISK" != "$ROOTDISK" ] || die "torOS is running from $DISK"
+! lsblk -nro MOUNTPOINTS "$DISK" | grep -q . || die "a partition of $DISK is in use (mounted)"
+ESP_MB=256
+NEED_MB=$(( ESP_MB + $(df --output=used -BM / | tail -n1 | tr -dc 0-9) * 12 / 10 + 1024 ))
+HAVE_MB=$(( $(blockdev --getsize64 "$DISK") / 1048576 ))
+[ "$HAVE_MB" -ge "$NEED_MB" ] || die "$DISK has $HAVE_MB MB, torOS needs $NEED_MB MB"
+
+# Partition N of the disk (mmcblk0 -> mmcblk0p1, sda -> sda1)
+part() { case "$DISK" in *[0-9]) echo "${DISK}p$1" ;; *) echo "$DISK$1" ;; esac; }
+
+echo "torOS build $(cat /etc/toros/build-id 2>/dev/null) will be installed on $DISK."
+echo "EVERYTHING on that disk is erased, all of these partitions and their files:"
+lsblk -o NAME,SIZE,FSTYPE,LABEL "$DISK"
+printf 'Type the word erase to go on, anything else to stop: '
+read -r answer || answer=
+[ "$answer" = erase ] || { echo "Nothing was changed."; exit 1; }
+
+# The firmware's boot entries name the boot partition by its ID. If the disk
+# already starts with one of the same place and size, keep that ID, so
+# entries that are there now still find the partition.
+ESP_TYPE=C12A7328-F81F-11D2-BA4B-00A0C93EC93B
+KEEP_ID=
+if [ -b "$(part 1)" ] && [ "$(lsblk -dno PARTTYPE "$(part 1)" | tr a-f A-F)" = "$ESP_TYPE" ] \
+	&& [ "$(cat "/sys/class/block/$(basename "$(part 1)")/start")" = 2048 ] \
+	&& [ "$(cat "/sys/class/block/$(basename "$(part 1)")/size")" = $(( ESP_MB * 2048 )) ]; then
+	KEEP_ID=$(lsblk -dno PARTUUID "$(part 1)")
+fi
+
+step "Partitioning $DISK"
+sfdisk -q --wipe always --wipe-partitions always "$DISK" <<EOF
+label: gpt
+start=1MiB, size=${ESP_MB}MiB, type=$ESP_TYPE, name="TOROS_ESP"${KEEP_ID:+, uuid=$KEEP_ID}
+type=4F68BCE3-E8CD-4DB1-96E7-FBCAF984B709, name="torOS"
+EOF
+partx -u "$DISK" 2>/dev/null || true
+for _ in $(seq 50); do [ -b "$(part 2)" ] && break; sleep 0.1; done
+[ -b "$(part 1)" ] && [ -b "$(part 2)" ] || die "the new partitions did not appear"
+mkfs.vfat -F 32 -n TOROS_ESP "$(part 1)" >/dev/null
+mkfs.ext4 -q -F -L torOS -m 1 "$(part 2)"
+
+T=$(mktemp -d /tmp/toros-install.XXXXXX)
+cleanup() {
+	mountpoint -q "$T/boot" && umount "$T/boot"
+	mountpoint -q "$T" && umount "$T"
+	rmdir "$T" 2>/dev/null || true
+}
+trap cleanup EXIT
+mount "$(part 2)" "$T"
+
+step "Copying the system ($(df --output=used -h / | tail -n1 | tr -d ' '))"
+# -x: only the root file system itself; what is mounted in it (/proc, /dev,
+# /run, /tmp, /boot) is left out and gets an empty directory
+rsync -aHXx --numeric-ids --exclude=/lost+found / "$T/"
+
+step "Copying the boot files"
+mount "$(part 1)" "$T/boot"
+cp -r /boot/. "$T/boot/"
+# This firmware has an entry of its own ("Linpus lite") for a loader of this
+# name; it serves as a second way in should our entry below get lost
+cp "$T/boot/EFI/BOOT/BOOTX64.EFI" "$T/boot/EFI/BOOT/grubx64.efi"
+diff -rq /boot "$T/boot" | grep -v 'grubx64.efi$' | grep . && die "the boot files were not copied correctly"
+sync
+
+step "Adding torOS to the firmware's boot entries"
+for b in $(efibootmgr | sed -n 's/^Boot\([0-9A-Fa-f]\{4\}\)\*\{0,1\} torOS\t.*/\1/p'); do
+	efibootmgr -q -b "$b" -B || true
+done
+efibootmgr -q -c -d "$DISK" -p 1 -L torOS -l '\EFI\BOOT\BOOTX64.EFI' \
+	|| echo "The firmware did not take the entry; choose the internal disk in its boot menu (F12)."
+efibootmgr | grep -E '^BootOrder|torOS' || true
+
+cleanup
+trap - EXIT
+step "Done"
+echo "torOS is on $DISK. Switch the laptop off, take the USB stick out and start it."

@@ -1,0 +1,28 @@
+torOS: fix a NULL dereference in iwd's RSSI polling fallback.
+
+When a driver rejects CMD_SET_CQM with ENOTSUP (mt7921 does while not
+connected), iwd starts polling the signal level, and the poll reads
+netdev->handshake->aa, which is NULL until a connection exists. Anything
+that registers a signal level agent (the panel does) then crashes iwd on
+every start. Let netdev_rssi_polling_update() decide, which only polls
+while the interface is operational.
+
+--- a/src/netdev.c
++++ b/src/netdev.c
+@@ -783,2 +783,7 @@
+ 	struct l_genl_msg *msg;
++
++	if (!netdev->handshake) {
++		l_timeout_modify(netdev->rssi_poll_timeout, 6);
++		return;
++	}
+ 
+@@ -3938,7 +3943,3 @@
+ 
+-		if (netdev->rssi_poll_timeout)
+-			return;
+-
+-		netdev->rssi_poll_timeout = l_timeout_create(1,
+-						netdev_rssi_poll, netdev, NULL);
++		netdev_rssi_polling_update(netdev);
+ 

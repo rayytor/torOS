@@ -1,0 +1,8 @@
+#!/bin/sh
+# Open the blueman device manager, and stop blueman's background processes
+# again when its window closes. They cost 50-75 MB of RAM, and the panel's
+# Bluetooth button and toros-bt cover everyday use without them.
+sudo -n /usr/bin/rfkill unblock bluetooth 2>/dev/null
+blueman-manager
+pkill -u "$(id -u)" -f '/usr/bin/blueman-(applet|tray)'
+exit 0

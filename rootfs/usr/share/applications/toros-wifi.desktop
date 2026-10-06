@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Wi-Fi networks
+Comment=Choose a Wi-Fi network and connect
+Exec=toros-wifi
+Icon=network-wireless
+Categories=Settings;Network;
+Keywords=wifi;wireless;network;internet;

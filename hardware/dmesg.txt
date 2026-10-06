@@ -1,0 +1,447 @@
+[   26.122774] audit: type=1130 audit(1791114116.497:166): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=chrony-wait comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   26.137956] audit: type=1334 audit(1791114116.513:167): prog-id=37 op=UNLOAD
+[   26.646974] audit: type=1130 audit(1791114117.020:168): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=tlp comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   27.019206] audit: type=1130 audit(1791114117.392:169): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=dpkg-db-backup comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   27.019218] audit: type=1131 audit(1791114117.392:170): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=dpkg-db-backup comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   30.727352] audit: type=1131 audit(1791114121.100:171): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   31.609285] audit: type=1105 audit(1791114121.980:172): pid=4936 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_env,pam_env,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/pkexec" hostname=? addr=? terminal=? res=success'
+[   31.664196] audit: type=1105 audit(1791114122.036:173): pid=4944 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_env,pam_env,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/pkexec" hostname=? addr=? terminal=? res=success'
+[   46.168210] audit: type=1131 audit(1791114136.540:174): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=systemd-hostnamed comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   46.210785] audit: type=1334 audit(1791114136.584:175): prog-id=43 op=UNLOAD
+[   46.640269] audit: type=1131 audit(1791114137.012:176): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=blueman-mechanism comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  169.901306] warning: `ThreadPoolForeg' uses wireless extensions which will stop working for Wi-Fi 7 hardware; use nl80211
+[  249.722104] audit: type=1100 audit(1791114340.100:177): pid=5459 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:authentication grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  249.725658] audit: type=1101 audit(1791114340.104:178): pid=5459 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  249.766662] audit: type=1105 audit(1791114340.144:179): pid=5451 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_env,pam_env,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/pkexec" hostname=? addr=? terminal=? res=success'
+[  254.737670] audit: type=1334 audit(1791114345.116:180): prog-id=45 op=UNLOAD
+[  254.738108] audit: type=1334 audit(1791114345.116:181): prog-id=44 op=UNLOAD
+[  254.741932] audit: type=1334 audit(1791114345.120:182): prog-id=51 op=LOAD
+[  254.742606] audit: type=1334 audit(1791114345.120:183): prog-id=52 op=LOAD
+[  254.743090] audit: type=1334 audit(1791114345.124:184): prog-id=53 op=LOAD
+[  254.861182] audit: type=1130 audit(1791114345.240:185): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=systemd-hostnamed comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  285.567712] audit: type=1131 audit(1791114375.942:186): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=systemd-hostnamed comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  285.608548] audit: type=1334 audit(1791114375.986:187): prog-id=51 op=UNLOAD
+[  339.663580] audit: type=1100 audit(1791114430.039:188): pid=5965 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:authentication grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  339.666553] audit: type=1101 audit(1791114430.043:189): pid=5965 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  339.702801] audit: type=1105 audit(1791114430.079:190): pid=5959 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_env,pam_env,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/pkexec" hostname=? addr=? terminal=? res=success'
+[  352.530077] audit: type=1325 audit(1791114442.907:191): table=zapret:34 family=1 entries=4 op=nft_unregister_chain pid=6375 subj=unconfined comm="nft"
+[  352.530089] audit: type=1300 audit(1791114442.907:191): arch=c000003e syscall=46 success=yes exit=148 a0=3 a1=7ffeb26c36e0 a2=0 a3=0 items=0 ppid=6306 pid=6375 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="nft" exe="/usr/sbin/nft" subj=unconfined key=(null)
+[  352.530094] audit: type=1327 audit(1791114442.907:191): proctitle=6E6674002D66002D
+[  352.545751] audit: type=1325 audit(1791114442.923:192): table=zapret:35 family=1 entries=27 op=nft_unregister_chain pid=6377 subj=unconfined comm="nft"
+[  352.545764] audit: type=1300 audit(1791114442.923:192): arch=c000003e syscall=46 success=yes exit=616 a0=3 a1=7ffd61d74560 a2=0 a3=0 items=0 ppid=6306 pid=6377 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="nft" exe="/usr/sbin/nft" subj=unconfined key=(null)
+[  352.545768] audit: type=1327 audit(1791114442.923:192): proctitle=6E6674002D66002D
+[  352.601957] audit: type=1131 audit(1791114442.979:193): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=zapret comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  352.781206] audit: type=1325 audit(1791114443.159:194): table=zapret:36 family=1 entries=28 op=nft_register_chain pid=6486 subj=unconfined comm="nft"
+[  352.781218] audit: type=1300 audit(1791114443.159:194): arch=c000003e syscall=46 success=yes exit=5072 a0=3 a1=7ffd96e07ef0 a2=0 a3=0 items=0 ppid=6386 pid=6486 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="nft" exe="/usr/sbin/nft" subj=unconfined key=(null)
+[  352.781222] audit: type=1327 audit(1791114443.159:194): proctitle=6E6674002D66002D
+[  362.117034] kauditd_printk_skb: 22 callbacks suppressed
+[  362.117039] audit: type=1100 audit(1791114452.495:203): pid=6529 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:authentication grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  362.120366] audit: type=1101 audit(1791114452.499:204): pid=6529 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  362.160405] audit: type=1105 audit(1791114452.539:205): pid=6523 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_env,pam_env,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/pkexec" hostname=? addr=? terminal=? res=success'
+[  362.286115] audit: type=1325 audit(1791114452.663:206): table=zapret:44 family=1 entries=4 op=nft_unregister_chain pid=6614 subj=unconfined comm="nft"
+[  362.286127] audit: type=1300 audit(1791114452.663:206): arch=c000003e syscall=46 success=yes exit=148 a0=3 a1=7fff4648a3c0 a2=0 a3=0 items=0 ppid=6545 pid=6614 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="nft" exe="/usr/sbin/nft" subj=unconfined key=(null)
+[  362.286132] audit: type=1327 audit(1791114452.663:206): proctitle=6E6674002D66002D
+[  362.297950] audit: type=1325 audit(1791114452.675:207): table=zapret:45 family=1 entries=27 op=nft_unregister_chain pid=6616 subj=unconfined comm="nft"
+[  362.297962] audit: type=1300 audit(1791114452.675:207): arch=c000003e syscall=46 success=yes exit=616 a0=3 a1=7ffe4143c5d0 a2=0 a3=0 items=0 ppid=6545 pid=6616 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="nft" exe="/usr/sbin/nft" subj=unconfined key=(null)
+[  362.297967] audit: type=1327 audit(1791114452.675:207): proctitle=6E6674002D66002D
+[  362.354757] audit: type=1131 audit(1791114452.731:208): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=zapret comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  379.981490] audit: type=1100 audit(1791114470.359:209): pid=6638 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:authentication grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  379.984811] audit: type=1101 audit(1791114470.363:210): pid=6638 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  380.046816] audit: type=1105 audit(1791114470.423:211): pid=6632 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_env,pam_env,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/pkexec" hostname=? addr=? terminal=? res=success'
+[  380.295098] audit: type=1325 audit(1791114470.671:212): table=zapret:46 family=1 entries=28 op=nft_register_chain pid=6753 subj=unconfined comm="nft"
+[  380.295110] audit: type=1300 audit(1791114470.671:212): arch=c000003e syscall=46 success=yes exit=5072 a0=3 a1=7ffcfea65880 a2=0 a3=0 items=0 ppid=6646 pid=6753 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="nft" exe="/usr/sbin/nft" subj=unconfined key=(null)
+[  380.295114] audit: type=1327 audit(1791114470.671:212): proctitle=6E6674002D66002D
+[  380.300830] audit: type=1325 audit(1791114470.679:213): table=zapret:47 family=1 entries=1 op=nft_register_rule pid=6754 subj=unconfined comm="nft"
+[  380.300842] audit: type=1300 audit(1791114470.679:213): arch=c000003e syscall=46 success=yes exit=540 a0=3 a1=7ffe954b4460 a2=0 a3=0 items=0 ppid=6646 pid=6754 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="nft" exe="/usr/sbin/nft" subj=unconfined key=(null)
+[  380.300846] audit: type=1327 audit(1791114470.679:213): proctitle=6E6674006164640072756C6500696E6574007A617072657400707265726F7574696E670069636D7000747970650074696D652D657863656564656400637400737461746500696E76616C69640064726F70
+[  380.313408] audit: type=1325 audit(1791114470.691:214): table=zapret:48 family=1 entries=1 op=nft_register_rule pid=6755 subj=unconfined comm="nft"
+[  397.516236] kauditd_printk_skb: 18 callbacks suppressed
+[  397.516241] audit: type=1100 audit(1791114487.895:221): pid=6821 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:authentication grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  397.519157] audit: type=1101 audit(1791114487.895:222): pid=6821 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  397.564851] audit: type=1105 audit(1791114487.943:223): pid=6815 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_env,pam_env,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/pkexec" hostname=? addr=? terminal=? res=success'
+[  397.695207] audit: type=1325 audit(1791114488.071:224): table=zapret:54 family=1 entries=4 op=nft_unregister_chain pid=6903 subj=unconfined comm="nft"
+[  397.695442] audit: type=1300 audit(1791114488.071:224): arch=c000003e syscall=46 success=yes exit=148 a0=3 a1=7ffc3874bb10 a2=0 a3=0 items=0 ppid=6834 pid=6903 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="nft" exe="/usr/sbin/nft" subj=unconfined key=(null)
+[  397.695448] audit: type=1327 audit(1791114488.071:224): proctitle=6E6674002D66002D
+[  397.706215] audit: type=1325 audit(1791114488.083:225): table=zapret:55 family=1 entries=27 op=nft_unregister_chain pid=6905 subj=unconfined comm="nft"
+[  397.706228] audit: type=1300 audit(1791114488.083:225): arch=c000003e syscall=46 success=yes exit=616 a0=3 a1=7ffe317a4c60 a2=0 a3=0 items=0 ppid=6834 pid=6905 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="nft" exe="/usr/sbin/nft" subj=unconfined key=(null)
+[  397.706232] audit: type=1327 audit(1791114488.083:225): proctitle=6E6674002D66002D
+[  397.765309] audit: type=1131 audit(1791114488.143:226): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=zapret comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  454.510816] kauditd_printk_skb: 60 callbacks suppressed
+[  454.510822] audit: type=1100 audit(1791114544.890:251): pid=7533 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:authentication grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  454.514774] audit: type=1101 audit(1791114544.894:252): pid=7533 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  454.557537] audit: type=1105 audit(1791114544.938:253): pid=7527 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_env,pam_env,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/pkexec" hostname=? addr=? terminal=? res=success'
+[  454.678810] audit: type=1325 audit(1791114545.058:254): table=zapret:74 family=1 entries=4 op=nft_unregister_chain pid=7615 subj=unconfined comm="nft"
+[  454.678823] audit: type=1300 audit(1791114545.058:254): arch=c000003e syscall=46 success=yes exit=148 a0=3 a1=7ffe60ba60f0 a2=0 a3=0 items=0 ppid=7546 pid=7615 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="nft" exe="/usr/sbin/nft" subj=unconfined key=(null)
+[  454.678828] audit: type=1327 audit(1791114545.058:254): proctitle=6E6674002D66002D
+[  454.694742] audit: type=1325 audit(1791114545.074:255): table=zapret:75 family=1 entries=27 op=nft_unregister_chain pid=7617 subj=unconfined comm="nft"
+[  454.694754] audit: type=1300 audit(1791114545.074:255): arch=c000003e syscall=46 success=yes exit=616 a0=3 a1=7ffcf33e2310 a2=0 a3=0 items=0 ppid=7546 pid=7617 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="nft" exe="/usr/sbin/nft" subj=unconfined key=(null)
+[  454.694759] audit: type=1327 audit(1791114545.074:255): proctitle=6E6674002D66002D
+[  454.742747] audit: type=1131 audit(1791114545.122:256): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=zapret comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  577.313090] usb 1-8: new low-speed USB device number 4 using xhci_hcd
+[  577.462724] usb 1-8: New USB device found, idVendor=0461, idProduct=554a, bcdDevice= 5.07
+[  577.462750] usb 1-8: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[  577.462758] usb 1-8: Product: HP 125 White Wired Keyboard
+[  577.462765] usb 1-8: Manufacturer: Primax
+[  578.138325] input: Primax HP 125 White Wired Keyboard as /devices/pci0000:00/0000:00:15.0/usb1/1-8/1-8:1.0/0003:0461:554A.0002/input/input19
+[  578.265930] hid-generic 0003:0461:554A.0002: input,hidraw1: USB HID v1.11 Keyboard [Primax HP 125 White Wired Keyboard] on usb-0000:00:15.0-8/input0
+[  578.271477] input: Primax HP 125 White Wired Keyboard Consumer Control as /devices/pci0000:00/0000:00:15.0/usb1/1-8/1-8:1.1/0003:0461:554A.0003/input/input20
+[  578.326198] input: Primax HP 125 White Wired Keyboard System Control as /devices/pci0000:00/0000:00:15.0/usb1/1-8/1-8:1.1/0003:0461:554A.0003/input/input21
+[  578.326874] hid-generic 0003:0461:554A.0003: input,hidraw2: USB HID v1.11 Device [Primax HP 125 White Wired Keyboard] on usb-0000:00:15.0-8/input1
+[  578.327071] usbcore: registered new interface driver usbhid
+[  578.327079] usbhid: USB HID core driver
+[  736.882322] kauditd_printk_skb: 60 callbacks suppressed
+[  736.882328] audit: type=1123 audit(1791114827.259:281): pid=8558 uid=1000 auid=1000 ses=1 subj=unconfined msg='cwd="/home/rayyan" cmd=69707461626C6573202D74206D616E676C65202D4C202D6E202D76 exe="/usr/bin/sudo" terminal=pts/1 res=failed'
+[  739.381500] audit: type=1100 audit(1791114829.759:282): pid=8565 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:authentication grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  739.384209] audit: type=1101 audit(1791114829.763:283): pid=8565 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  739.400379] audit: type=1105 audit(1791114829.779:284): pid=8559 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_env,pam_env,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/pkexec" hostname=rayyan addr=? terminal=pts/1 res=success'
+[  744.556348] audit: type=1123 audit(1791114834.936:285): pid=8579 uid=1000 auid=1000 ses=1 subj=unconfined msg='cwd="/home/rayyan" cmd=6E6674206C6973742072756C65736574 exe="/usr/bin/sudo" terminal=pts/1 res=failed'
+[  751.055619] audit: type=1100 audit(1791114841.436:286): pid=8594 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:authentication grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  751.058114] audit: type=1101 audit(1791114841.436:287): pid=8594 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  751.106063] audit: type=1105 audit(1791114841.484:288): pid=8588 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_env,pam_env,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/pkexec" hostname=rayyan addr=? terminal=pts/1 res=success'
+[  791.862239] audit: type=1100 audit(1791114882.240:289): pid=8655 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:authentication grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  791.865221] audit: type=1101 audit(1791114882.244:290): pid=8655 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[  791.907658] audit: type=1105 audit(1791114882.288:291): pid=8649 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_env,pam_env,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/pkexec" hostname=rayyan addr=? terminal=pts/1 res=success'
+[  887.788117] audit: type=1111 audit(1791114978.170:292): pid=806 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='op=connection-update uuid=211c6765-820c-4111-9fa4-3e1b269f0730 name="SUPERBOX_Wi-Fi_F93B" args=ipv6.method,connection.timestamp,ipv4.ignore-auto-dns,ipv4.dns pid=8753 uid=1000 result=success exe="/usr/sbin/NetworkManager" hostname=? addr=? terminal=? res=success'
+[  887.827337] audit: type=1111 audit(1791114978.210:293): pid=806 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='op=connection-activate uuid=211c6765-820c-4111-9fa4-3e1b269f0730 name="SUPERBOX_Wi-Fi_F93B" pid=8752 uid=1000 result=success exe="/usr/sbin/NetworkManager" hostname=? addr=? terminal=? res=success'
+[  887.878125] audit: type=1130 audit(1791114978.262:294): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  887.879213] wlan0: deauthenticating from 02:00:00:00:01:02 by local choice (Reason: 3=DEAUTH_LEAVING)
+[  888.854422] wlan0: authenticate with 02:00:00:00:01:02 (local address=02:00:00:00:00:01)
+[  888.862504] wlan0: send auth to 02:00:00:00:01:02 (try 1/3)
+[  888.891367] wlan0: authenticated
+[  888.893183] wlan0: associate with 02:00:00:00:01:02 (try 1/3)
+[  888.926034] wlan0: RX AssocResp from 02:00:00:00:01:02 (capab=0x1831 status=0 aid=10)
+[  888.937880] wlan0: associated
+[  889.017469] wlan0: Limiting TX power to 30 (30 - 0) dBm as advertised by 02:00:00:00:01:02
+[  899.442982] audit: type=1131 audit(1791114989.826:295): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  908.699575] audit: type=1130 audit(1791114999.082:296): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=systemd-tmpfiles-clean comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  908.699588] audit: type=1131 audit(1791114999.082:297): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=systemd-tmpfiles-clean comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 1170.315281] audit: type=1100 audit(1791115260.701:298): pid=9789 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:authentication grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[ 1170.318027] audit: type=1101 audit(1791115260.705:299): pid=9789 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[ 1170.359950] audit: type=1105 audit(1791115260.745:300): pid=9783 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_env,pam_env,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/pkexec" hostname=rayyan addr=? terminal=pts/1 res=success'
+[ 1192.767242] audit: type=1100 audit(1791115283.153:301): pid=9832 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:authentication grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[ 1192.769807] audit: type=1101 audit(1791115283.157:302): pid=9832 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[ 1192.811302] audit: type=1105 audit(1791115283.197:303): pid=9826 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_env,pam_env,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/pkexec" hostname=rayyan addr=? terminal=pts/1 res=success'
+[ 1242.334552] audit: type=1100 audit(1791115332.722:304): pid=9906 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:authentication grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[ 1242.337715] audit: type=1101 audit(1791115332.726:305): pid=9906 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[ 1242.355243] audit: type=1105 audit(1791115332.742:306): pid=9900 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_env,pam_env,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/pkexec" hostname=rayyan addr=? terminal=pts/1 res=success'
+[ 1257.167742] audit: type=1111 audit(1791115347.554:307): pid=806 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='op=connection-update uuid=211c6765-820c-4111-9fa4-3e1b269f0730 name="SUPERBOX_Wi-Fi_F93B" args=connection.timestamp,ipv4.dns-options pid=9934 uid=1000 result=success exe="/usr/sbin/NetworkManager" hostname=? addr=? terminal=? res=success'
+[ 1262.553864] audit: type=1100 audit(1791115352.942:308): pid=9953 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:authentication grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[ 1262.557114] audit: type=1101 audit(1791115352.942:309): pid=9953 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[ 1262.576916] audit: type=1105 audit(1791115352.966:310): pid=9947 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_env,pam_env,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/pkexec" hostname=rayyan addr=? terminal=pts/1 res=success'
+[ 1333.663358] audit: type=1100 audit(1791115424.051:311): pid=10285 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:authentication grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[ 1333.666421] audit: type=1101 audit(1791115424.051:312): pid=10285 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="rayyan" exe="/usr/lib/polkit-1/polkit-agent-helper-1" hostname=? addr=? terminal=? res=success'
+[ 1333.695176] audit: type=1105 audit(1791115424.079:313): pid=10279 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_env,pam_env,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/pkexec" hostname=? addr=? terminal=? res=success'
+[ 1344.167099] usb 1-8: USB disconnect, device number 4
+[ 2130.807548] audit: type=1101 audit(1791116221.203:314): pid=10477 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 2130.807623] audit: type=1103 audit(1791116221.203:315): pid=10477 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 2130.807761] audit: type=1006 audit(1791116221.203:316): pid=10477 uid=0 subj=unconfined old-auid=4294967295 auid=0 tty=(none) old-ses=4294967295 ses=3 res=1
+[ 2130.807792] audit: type=1300 audit(1791116221.203:316): arch=c000003e syscall=1 success=yes exit=1 a0=7 a1=7ffd56c5bf00 a2=1 a3=0 items=0 ppid=1188 pid=10477 auid=0 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=3 comm="cron" exe="/usr/sbin/cron" subj=unconfined key=(null)
+[ 2130.807814] audit: type=1327 audit(1791116221.203:316): proctitle=2F7573722F7362696E2F43524F4E002D66
+[ 2130.808674] audit: type=1105 audit(1791116221.207:317): pid=10477 uid=0 auid=0 ses=3 subj=unconfined msg='op=PAM:session_open grantors=pam_loginuid,pam_env,pam_env,pam_permit,pam_umask,pam_unix,pam_limits acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 2130.810885] audit: type=1110 audit(1791116221.207:318): pid=10479 uid=0 auid=0 ses=3 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 2130.811981] audit: type=1104 audit(1791116221.207:319): pid=10477 uid=0 auid=0 ses=3 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 2130.812073] audit: type=1106 audit(1791116221.207:320): pid=10477 uid=0 auid=0 ses=3 subj=unconfined msg='op=PAM:session_close grantors=pam_loginuid,pam_env,pam_env,pam_permit,pam_umask,pam_unix,pam_limits acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 2910.817375] audit: type=1101 audit(1791117001.224:321): pid=10617 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 2910.817455] audit: type=1103 audit(1791117001.224:322): pid=10617 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 2910.817594] audit: type=1006 audit(1791117001.224:323): pid=10617 uid=0 subj=unconfined old-auid=4294967295 auid=0 tty=(none) old-ses=4294967295 ses=4 res=1
+[ 2910.817602] audit: type=1300 audit(1791117001.224:323): arch=c000003e syscall=1 success=yes exit=1 a0=7 a1=7ffd56c5bf00 a2=1 a3=0 items=0 ppid=1188 pid=10617 auid=0 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4 comm="cron" exe="/usr/sbin/cron" subj=unconfined key=(null)
+[ 2910.817609] audit: type=1327 audit(1791117001.224:323): proctitle=2F7573722F7362696E2F43524F4E002D66
+[ 2910.818618] audit: type=1105 audit(1791117001.224:324): pid=10617 uid=0 auid=0 ses=4 subj=unconfined msg='op=PAM:session_open grantors=pam_loginuid,pam_env,pam_env,pam_permit,pam_umask,pam_unix,pam_limits acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 2910.819141] audit: type=1110 audit(1791117001.228:325): pid=10619 uid=0 auid=0 ses=4 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 2910.820324] audit: type=1104 audit(1791117001.228:326): pid=10617 uid=0 auid=0 ses=4 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 2910.820410] audit: type=1106 audit(1791117001.228:327): pid=10617 uid=0 auid=0 ses=4 subj=unconfined msg='op=PAM:session_close grantors=pam_loginuid,pam_env,pam_env,pam_permit,pam_umask,pam_unix,pam_limits acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 4343.454982] wlan0: disconnect from AP 02:00:00:00:01:02 for new auth to 02:00:00:00:01:01
+[ 4343.569367] wlan0: authenticate with 02:00:00:00:01:01 (local address=02:00:00:00:00:01)
+[ 4343.705216] wlan0: send auth to 02:00:00:00:01:01 (try 1/3)
+[ 4343.787186] wlan0: authenticated
+[ 4343.790133] wlan0: associate with 02:00:00:00:01:01 (try 1/3)
+[ 4343.836826] wlan0: RX ReassocResp from 02:00:00:00:01:01 (capab=0x1c31 status=0 aid=10)
+[ 4343.847996] wlan0: associated
+[ 4343.897589] wlan0: Limiting TX power to 30 (30 - 0) dBm as advertised by 02:00:00:00:01:01
+[ 4344.076067] audit: type=1130 audit(1791118434.501:328): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 4354.103897] audit: type=1131 audit(1791118444.529:329): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 4481.517101] wlan0: Connection to AP 02:00:00:00:01:01 lost
+[ 4482.339290] wlan0: authenticate with 02:00:00:00:01:02 (local address=02:00:00:00:00:01)
+[ 4482.349364] wlan0: send auth to 02:00:00:00:01:02 (try 1/3)
+[ 4482.378295] wlan0: authenticated
+[ 4482.380796] wlan0: associate with 02:00:00:00:01:02 (try 1/3)
+[ 4482.411986] wlan0: RX AssocResp from 02:00:00:00:01:02 (capab=0x1831 status=0 aid=10)
+[ 4482.420854] wlan0: associated
+[ 4482.442104] wlan0: Limiting TX power to 30 (30 - 0) dBm as advertised by 02:00:00:00:01:02
+[ 4482.727142] audit: type=1130 audit(1791118573.154:330): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 4492.754786] audit: type=1131 audit(1791118583.182:331): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 4498.668952] wlan0: disconnect from AP 02:00:00:00:01:02 for new auth to 02:00:00:00:01:01
+[ 4498.746455] wlan0: authenticate with 02:00:00:00:01:01 (local address=02:00:00:00:00:01)
+[ 4498.755510] wlan0: send auth to 02:00:00:00:01:01 (try 1/3)
+[ 4498.835749] wlan0: authenticated
+[ 4498.836640] wlan0: associate with 02:00:00:00:01:01 (try 1/3)
+[ 4498.871823] wlan0: RX ReassocResp from 02:00:00:00:01:01 (capab=0x1c31 status=0 aid=10)
+[ 4498.879686] wlan0: associated
+[ 4498.930836] wlan0: Limiting TX power to 30 (30 - 0) dBm as advertised by 02:00:00:00:01:01
+[ 4499.117033] audit: type=1130 audit(1791118589.546:332): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 4509.146312] audit: type=1131 audit(1791118599.574:333): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 4832.306582] wlan0: disconnect from AP 02:00:00:00:01:01 for new auth to 02:00:00:00:01:02
+[ 4832.400220] wlan0: authenticate with 02:00:00:00:01:02 (local address=02:00:00:00:00:01)
+[ 4832.410931] wlan0: send auth to 02:00:00:00:01:02 (try 1/3)
+[ 4832.491145] wlan0: authenticated
+[ 4832.493744] wlan0: associate with 02:00:00:00:01:02 (try 1/3)
+[ 4832.536319] wlan0: RX ReassocResp from 02:00:00:00:01:02 (capab=0x1831 status=0 aid=10)
+[ 4832.548198] wlan0: associated
+[ 4832.548946] wlan0: Limiting TX power to 30 (30 - 0) dBm as advertised by 02:00:00:00:01:02
+[ 4832.774111] audit: type=1130 audit(1791118923.205:334): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 4842.800196] audit: type=1131 audit(1791118933.229:335): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 4848.734221] wlan0: disconnect from AP 02:00:00:00:01:02 for new auth to 02:00:00:00:01:01
+[ 4848.825141] wlan0: authenticate with 02:00:00:00:01:01 (local address=02:00:00:00:00:01)
+[ 4848.834257] wlan0: send auth to 02:00:00:00:01:01 (try 1/3)
+[ 4848.915439] wlan0: authenticated
+[ 4848.917593] wlan0: associate with 02:00:00:00:01:01 (try 1/3)
+[ 4848.953827] wlan0: RX ReassocResp from 02:00:00:00:01:01 (capab=0x1c31 status=0 aid=10)
+[ 4848.964146] wlan0: associated
+[ 4849.037199] wlan0: Limiting TX power to 30 (30 - 0) dBm as advertised by 02:00:00:00:01:01
+[ 4849.210377] audit: type=1130 audit(1791118939.641:336): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 4859.237752] audit: type=1131 audit(1791118949.669:337): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 5434.083815] audit: type=1130 audit(1791119524.518:338): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 5434.104771] wlan0: deauthenticating from 02:00:00:00:01:01 by local choice (Reason: 3=DEAUTH_LEAVING)
+[ 5434.963151] ata1: SATA link down (SStatus 4 SControl 300)
+[ 5435.001320] PM: suspend entry (deep)
+[ 5435.028891] Filesystems sync: 0.027 seconds
+[ 5435.032718] Freezing user space processes
+[ 5435.034301] Freezing user space processes completed (elapsed 0.001 seconds)
+[ 5435.034307] OOM killer disabled.
+[ 5435.034308] Freezing remaining freezable tasks
+[ 5435.035445] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
+[ 5435.035478] printk: Suspending console(s) (use no_console_suspend to debug)
+[ 5435.060391] queueing ieee80211 work while going to suspend
+[ 5435.359394] ACPI: EC: interrupt blocked
+[ 5435.422722] ACPI: PM: Preparing to enter system sleep state S3
+[ 5435.423139] ACPI: EC: event blocked
+[ 5435.423141] ACPI: EC: EC stopped
+[ 5435.423142] ACPI: PM: Saving platform NVS memory
+[ 5435.423198] Disabling non-boot CPUs ...
+[ 5435.424774] smpboot: CPU 1 is now offline
+[18446744061.852870] [Firmware Bug]: TSC ADJUST differs: CPU0 0 --> -543428155. Restoring
+[ 5435.445629] ACPI: PM: Low-level resume complete
+[ 5435.445695] ACPI: EC: EC started
+[ 5435.445696] ACPI: PM: Restoring platform NVS memory
+[ 5435.446854] Enabling non-boot CPUs ...
+[ 5435.446967] smpboot: Booting Node 0 Processor 1 APIC 0x2
+[ 5435.451117] CPU1 is up
+[ 5435.451300] ACPI: PM: Waking up from system sleep state S3
+[ 5436.717046] ACPI: EC: interrupt unblocked
+[ 5436.737394] ACPI: EC: event unblocked
+[ 5436.987436] usb 1-7: reset high-speed USB device number 3 using xhci_hcd
+[ 5437.066475] ata1: SATA link down (SStatus 4 SControl 300)
+[ 5437.188676] mei_hdcp 0000:00:0f.0-b638ab7e-94e2-4ea2-a552-d1c54b627f04: bound 0000:00:02.0 (ops i915_hdcp_ops [i915])
+[ 5437.189385] OOM killer enabled.
+[ 5437.189407] Restarting tasks ... done.
+[ 5437.196123] random: crng reseeded on system resumption
+[ 5437.275847] PM: suspend exit
+[ 5437.446254] audit: type=1130 audit(1791126900.996:339): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=systemd-suspend comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 5437.446295] audit: type=1131 audit(1791126900.996:340): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=systemd-suspend comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 5437.614253] audit: type=1130 audit(1791126901.164:341): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=grub-common comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 5437.614264] audit: type=1131 audit(1791126901.164:342): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=grub-common comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 5440.187042] wlan0: authenticate with 02:00:00:00:01:01 (local address=02:00:00:00:00:01)
+[ 5440.196099] wlan0: send auth to 02:00:00:00:01:01 (try 1/3)
+[ 5440.226851] wlan0: authenticated
+[ 5440.227354] wlan0: associate with 02:00:00:00:01:01 (try 1/3)
+[ 5440.263368] wlan0: RX AssocResp from 02:00:00:00:01:01 (capab=0x1c31 status=0 aid=10)
+[ 5440.273888] wlan0: associated
+[ 5440.323269] wlan0: Limiting TX power to 30 (30 - 0) dBm as advertised by 02:00:00:00:01:01
+[ 5450.398849] audit: type=1131 audit(1791126914.344:343): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 5469.069972] wlan0: disconnect from AP 02:00:00:00:01:01 for new auth to 02:00:00:00:01:02
+[ 5469.157662] wlan0: authenticate with 02:00:00:00:01:02 (local address=02:00:00:00:00:01)
+[ 5469.168335] wlan0: send auth to 02:00:00:00:01:02 (try 1/3)
+[ 5469.248562] wlan0: authenticated
+[ 5469.253375] wlan0: associate with 02:00:00:00:01:02 (try 1/3)
+[ 5469.295823] wlan0: RX ReassocResp from 02:00:00:00:01:02 (capab=0x1831 status=0 aid=10)
+[ 5469.306373] wlan0: associated
+[ 5469.401516] wlan0: Limiting TX power to 30 (30 - 0) dBm as advertised by 02:00:00:00:01:02
+[ 5469.537569] audit: type=1130 audit(1791126934.046:344): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 5479.563560] audit: type=1131 audit(1791126944.070:345): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 5489.879752] audit: type=1101 audit(1791126954.386:346): pid=12190 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 5489.879850] audit: type=1103 audit(1791126954.386:347): pid=12190 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 5489.880007] audit: type=1006 audit(1791126954.386:348): pid=12190 uid=0 subj=unconfined old-auid=4294967295 auid=0 tty=(none) old-ses=4294967295 ses=5 res=1
+[ 5489.880016] audit: type=1300 audit(1791126954.386:348): arch=c000003e syscall=1 success=yes exit=1 a0=7 a1=7ffd56c5bf00 a2=1 a3=0 items=0 ppid=1188 pid=12190 auid=0 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=5 comm="cron" exe="/usr/sbin/cron" subj=unconfined key=(null)
+[ 5489.880022] audit: type=1327 audit(1791126954.386:348): proctitle=2F7573722F7362696E2F43524F4E002D66
+[ 5489.880645] audit: type=1105 audit(1791126954.386:349): pid=12190 uid=0 auid=0 ses=5 subj=unconfined msg='op=PAM:session_open grantors=pam_loginuid,pam_env,pam_env,pam_permit,pam_umask,pam_unix,pam_limits acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 5489.881520] audit: type=1110 audit(1791126954.390:350): pid=12192 uid=0 auid=0 ses=5 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 5489.882704] audit: type=1104 audit(1791126954.390:351): pid=12190 uid=0 auid=0 ses=5 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 5489.882761] audit: type=1106 audit(1791126954.390:352): pid=12190 uid=0 auid=0 ses=5 subj=unconfined msg='op=PAM:session_close grantors=pam_loginuid,pam_env,pam_env,pam_permit,pam_umask,pam_unix,pam_limits acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 5489.888690] audit: type=1101 audit(1791126954.394:353): pid=12193 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 5522.544975] usb 1-8: new full-speed USB device number 5 using xhci_hcd
+[ 5522.684268] usb 1-8: New USB device found, idVendor=046d, idProduct=c542, bcdDevice= 3.08
+[ 5522.684293] usb 1-8: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[ 5522.684301] usb 1-8: Product: Wireless Receiver
+[ 5522.684307] usb 1-8: Manufacturer: Logitech
+[ 5522.692379] input: Logitech Wireless Receiver Mouse as /devices/pci0000:00/0000:00:15.0/usb1/1-8/1-8:1.0/0003:046D:C542.0004/input/input22
+[ 5522.746100] hid-generic 0003:046D:C542.0004: input,hidraw1: USB HID v1.11 Mouse [Logitech Wireless Receiver] on usb-0000:00:15.0-8/input0
+[ 5536.506040] usb 1-5: new full-speed USB device number 6 using xhci_hcd
+[ 5536.644595] usb 1-5: New USB device found, idVendor=046d, idProduct=c534, bcdDevice=29.01
+[ 5536.644619] usb 1-5: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[ 5536.644627] usb 1-5: Product: USB Receiver
+[ 5536.644634] usb 1-5: Manufacturer: Logitech
+[ 5536.652026] input: Logitech USB Receiver as /devices/pci0000:00/0000:00:15.0/usb1/1-5/1-5:1.0/0003:046D:C534.0005/input/input23
+[ 5536.774476] hid-generic 0003:046D:C534.0005: input,hidraw2: USB HID v1.11 Keyboard [Logitech USB Receiver] on usb-0000:00:15.0-5/input0
+[ 5536.778462] input: Logitech USB Receiver Mouse as /devices/pci0000:00/0000:00:15.0/usb1/1-5/1-5:1.1/0003:046D:C534.0006/input/input24
+[ 5536.834447] input: Logitech USB Receiver Consumer Control as /devices/pci0000:00/0000:00:15.0/usb1/1-5/1-5:1.1/0003:046D:C534.0006/input/input25
+[ 5536.834975] input: Logitech USB Receiver System Control as /devices/pci0000:00/0000:00:15.0/usb1/1-5/1-5:1.1/0003:046D:C534.0006/input/input26
+[ 5536.835455] hid-generic 0003:046D:C534.0006: input,hiddev0,hidraw3: USB HID v1.11 Mouse [Logitech USB Receiver] on usb-0000:00:15.0-5/input1
+[ 5537.603383] logitech-djreceiver 0003:046D:C534.0005: hidraw2: USB HID v1.11 Keyboard [Logitech USB Receiver] on usb-0000:00:15.0-5/input0
+[ 5537.755365] logitech-djreceiver 0003:046D:C534.0006: hiddev0,hidraw3: USB HID v1.11 Mouse [Logitech USB Receiver] on usb-0000:00:15.0-5/input1
+[ 5537.810980] logitech-djreceiver 0003:046D:C534.0006: device of type eQUAD nano Lite (0x0a) connected on slot 1
+[ 5537.812040] input: Logitech Wireless Keyboard PID:4023 Keyboard as /devices/pci0000:00/0000:00:15.0/usb1/1-5/1-5:1.1/0003:046D:C534.0006/0003:046D:4023.0007/input/input29
+[ 5537.812985] logitech-djreceiver 0003:046D:C534.0006: device of type eQUAD nano Lite (0x0a) connected on slot 2
+[ 5537.879549] hid-generic 0003:046D:4023.0007: input,hidraw4: USB HID v1.11 Keyboard [Logitech Wireless Keyboard PID:4023] on usb-0000:00:15.0-5/input1:1
+[ 5537.880067] input: Logitech Wireless Mouse PID:4054 Mouse as /devices/pci0000:00/0000:00:15.0/usb1/1-5/1-5:1.1/0003:046D:C534.0006/0003:046D:4054.0008/input/input34
+[ 5537.880441] input: Logitech Wireless Mouse PID:4054 Consumer Control as /devices/pci0000:00/0000:00:15.0/usb1/1-5/1-5:1.1/0003:046D:C534.0006/0003:046D:4054.0008/input/input35
+[ 5537.880603] hid-generic 0003:046D:4054.0008: input,hidraw5: USB HID v1.11 Mouse [Logitech Wireless Mouse PID:4054] on usb-0000:00:15.0-5/input1:2
+[ 5538.135531] input: Logitech Wireless Keyboard PID:4023 as /devices/pci0000:00/0000:00:15.0/usb1/1-5/1-5:1.1/0003:046D:C534.0006/0003:046D:4023.0007/input/input39
+[ 5538.206698] logitech-hidpp-device 0003:046D:4023.0007: input,hidraw4: USB HID v1.11 Keyboard [Logitech Wireless Keyboard PID:4023] on usb-0000:00:15.0-5/input1:1
+[ 5538.543016] logitech-hidpp-device 0003:046D:4023.0007: HID++ 2.0 device connected.
+[ 5539.783632] input: Logitech Wireless Mouse as /devices/pci0000:00/0000:00:15.0/usb1/1-5/1-5:1.1/0003:046D:C534.0006/0003:046D:4054.0008/input/input40
+[ 5539.783934] logitech-hidpp-device 0003:046D:4054.0008: input,hidraw5: USB HID v1.11 Mouse [Logitech Wireless Mouse] on usb-0000:00:15.0-5/input1:2
+[ 5556.959150] kauditd_printk_skb: 8 callbacks suppressed
+[ 5556.959157] audit: type=1101 audit(1791127021.409:360): pid=12535 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 5556.959230] audit: type=1103 audit(1791127021.409:361): pid=12535 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 5556.959363] audit: type=1006 audit(1791127021.409:362): pid=12535 uid=0 subj=unconfined old-auid=4294967295 auid=0 tty=(none) old-ses=4294967295 ses=7 res=1
+[ 5556.959371] audit: type=1300 audit(1791127021.409:362): arch=c000003e syscall=1 success=yes exit=1 a0=7 a1=7ffd56c5bf00 a2=1 a3=0 items=0 ppid=1188 pid=12535 auid=0 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=7 comm="cron" exe="/usr/sbin/cron" subj=unconfined key=(null)
+[ 5556.959388] audit: type=1327 audit(1791127021.409:362): proctitle=2F7573722F7362696E2F43524F4E002D66
+[ 5556.960004] audit: type=1105 audit(1791127021.409:363): pid=12535 uid=0 auid=0 ses=7 subj=unconfined msg='op=PAM:session_open grantors=pam_loginuid,pam_env,pam_env,pam_permit,pam_umask,pam_unix,pam_limits acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 5556.960878] audit: type=1110 audit(1791127021.409:364): pid=12537 uid=0 auid=0 ses=7 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 5556.989465] audit: type=1104 audit(1791127021.437:365): pid=12535 uid=0 auid=0 ses=7 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 5556.989587] audit: type=1106 audit(1791127021.441:366): pid=12535 uid=0 auid=0 ses=7 subj=unconfined msg='op=PAM:session_close grantors=pam_loginuid,pam_env,pam_env,pam_permit,pam_umask,pam_unix,pam_limits acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 5676.777920] audit: type=1111 audit(1791127141.296:367): pid=806 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='op=device-disconnect interface="wlan0" ifindex=2 pid=4520 uid=1000 result=success exe="/usr/sbin/NetworkManager" hostname=? addr=? terminal=? res=success'
+[ 5676.824429] audit: type=1130 audit(1791127141.344:368): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 5676.850795] wlan0: deauthenticating from 02:00:00:00:01:02 by local choice (Reason: 3=DEAUTH_LEAVING)
+[ 5679.611794] audit: type=1111 audit(1791127144.132:369): pid=806 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='op=connection-activate uuid=211c6765-820c-4111-9fa4-3e1b269f0730 name="SUPERBOX_Wi-Fi_F93B" pid=4520 uid=1000 result=success exe="/usr/sbin/NetworkManager" hostname=? addr=? terminal=? res=success'
+[ 5679.714936] wlan0: authenticate with 02:00:00:00:01:02 (local address=02:00:00:00:00:01)
+[ 5679.722767] wlan0: send auth to 02:00:00:00:01:02 (try 1/3)
+[ 5679.751576] wlan0: authenticated
+[ 5679.754749] wlan0: associate with 02:00:00:00:01:02 (try 1/3)
+[ 5679.796467] wlan0: RX AssocResp from 02:00:00:00:01:02 (capab=0x1831 status=0 aid=10)
+[ 5679.805364] wlan0: associated
+[ 5679.833936] wlan0: Limiting TX power to 30 (30 - 0) dBm as advertised by 02:00:00:00:01:02
+[ 5690.280501] audit: type=1131 audit(1791127154.795:370): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 5999.077364] audit: type=1130 audit(1791127463.596:371): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 5999.082184] wlan0: deauthenticating from 02:00:00:00:01:02 by local choice (Reason: 3=DEAUTH_LEAVING)
+[ 5999.866333] ata1: SATA link down (SStatus 4 SControl 300)
+[ 5999.878492] PM: suspend entry (deep)
+[ 5999.961447] Filesystems sync: 0.082 seconds
+[ 5999.965435] Freezing user space processes
+[ 5999.967340] Freezing user space processes completed (elapsed 0.001 seconds)
+[ 5999.967347] OOM killer disabled.
+[ 5999.967349] Freezing remaining freezable tasks
+[ 5999.968567] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
+[ 5999.968601] printk: Suspending console(s) (use no_console_suspend to debug)
+[ 6000.008879] queueing ieee80211 work while going to suspend
+[ 6000.373040] ACPI: EC: interrupt blocked
+[ 6000.439488] ACPI: PM: Preparing to enter system sleep state S3
+[ 6000.439987] ACPI: EC: event blocked
+[ 6000.439989] ACPI: EC: EC stopped
+[ 6000.439990] ACPI: PM: Saving platform NVS memory
+[ 6000.440047] Disabling non-boot CPUs ...
+[ 6000.441527] smpboot: CPU 1 is now offline
+[ 5435.429658] [Firmware Bug]: TSC ADJUST differs: CPU0 0 --> -543764757. Restoring
+[ 6000.461874] ACPI: PM: Low-level resume complete
+[ 6000.461939] ACPI: EC: EC started
+[ 6000.461941] ACPI: PM: Restoring platform NVS memory
+[ 6000.463082] Enabling non-boot CPUs ...
+[ 6000.463199] smpboot: Booting Node 0 Processor 1 APIC 0x2
+[ 6000.467352] CPU1 is up
+[ 6000.467536] ACPI: PM: Waking up from system sleep state S3
+[ 6001.751589] ACPI: EC: interrupt unblocked
+[ 6001.767499] ACPI: EC: event unblocked
+[ 6002.026769] usb 1-5: reset full-speed USB device number 6 using xhci_hcd
+[ 6002.096058] ata1: SATA link down (SStatus 4 SControl 300)
+[ 6002.282682] usb 1-7: reset high-speed USB device number 3 using xhci_hcd
+[ 6002.538635] usb 1-8: reset full-speed USB device number 5 using xhci_hcd
+[ 6002.679040] mei_hdcp 0000:00:0f.0-b638ab7e-94e2-4ea2-a552-d1c54b627f04: bound 0000:00:02.0 (ops i915_hdcp_ops [i915])
+[ 6002.679720] OOM killer enabled.
+[ 6002.679726] Restarting tasks ... done.
+[ 6002.697223] random: crng reseeded on system resumption
+[ 6002.776036] PM: suspend exit
+[ 6002.918164] audit: type=1130 audit(1791128702.448:372): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=systemd-suspend comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 6002.918267] audit: type=1131 audit(1791128702.448:373): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=systemd-suspend comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 6003.173150] audit: type=1130 audit(1791128702.704:374): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=grub-common comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 6003.173161] audit: type=1131 audit(1791128702.704:375): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=grub-common comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 6005.756060] wlan0: authenticate with 02:00:00:00:01:02 (local address=02:00:00:00:00:01)
+[ 6005.763853] wlan0: send auth to 02:00:00:00:01:02 (try 1/3)
+[ 6005.792972] wlan0: authenticated
+[ 6005.794196] wlan0: associate with 02:00:00:00:01:02 (try 1/3)
+[ 6005.825579] wlan0: RX AssocResp from 02:00:00:00:01:02 (capab=0x1831 status=0 aid=10)
+[ 6005.835817] wlan0: associated
+[ 6005.920739] wlan0: Limiting TX power to 30 (30 - 0) dBm as advertised by 02:00:00:00:01:02
+[ 6015.879738] audit: type=1131 audit(1791128715.803:376): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 6035.527310] audit: type=1101 audit(1791128736.488:377): pid=13347 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 6035.527386] audit: type=1103 audit(1791128736.488:378): pid=13347 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 6035.527524] audit: type=1006 audit(1791128736.488:379): pid=13347 uid=0 subj=unconfined old-auid=4294967295 auid=0 tty=(none) old-ses=4294967295 ses=8 res=1
+[ 6035.527533] audit: type=1300 audit(1791128736.488:379): arch=c000003e syscall=1 success=yes exit=1 a0=7 a1=7ffd56c5bf00 a2=1 a3=0 items=0 ppid=1188 pid=13347 auid=0 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=8 comm="cron" exe="/usr/sbin/cron" subj=unconfined key=(null)
+[ 6035.527540] audit: type=1327 audit(1791128736.488:379): proctitle=2F7573722F7362696E2F43524F4E002D66
+[ 6035.528164] audit: type=1105 audit(1791128736.488:380): pid=13347 uid=0 auid=0 ses=8 subj=unconfined msg='op=PAM:session_open grantors=pam_loginuid,pam_env,pam_env,pam_permit,pam_umask,pam_unix,pam_limits acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 6035.529189] audit: type=1110 audit(1791128736.488:381): pid=13349 uid=0 auid=0 ses=8 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 6035.530282] audit: type=1104 audit(1791128736.492:382): pid=13347 uid=0 auid=0 ses=8 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 6035.530347] audit: type=1106 audit(1791128736.492:383): pid=13347 uid=0 auid=0 ses=8 subj=unconfined msg='op=PAM:session_close grantors=pam_loginuid,pam_env,pam_env,pam_permit,pam_umask,pam_unix,pam_limits acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success'
+[ 6188.682549] audit: type=1130 audit(1791128889.653:384): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 6188.701224] wlan0: deauthenticating from 02:00:00:00:01:02 by local choice (Reason: 3=DEAUTH_LEAVING)
+[ 6189.523652] ata1: SATA link down (SStatus 4 SControl 300)
+[ 6189.532312] PM: suspend entry (deep)
+[ 6189.614232] Filesystems sync: 0.081 seconds
+[ 6189.622293] Freezing user space processes
+[ 6189.624318] Freezing user space processes completed (elapsed 0.002 seconds)
+[ 6189.624325] OOM killer disabled.
+[ 6189.624327] Freezing remaining freezable tasks
+[ 6189.626059] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
+[ 6189.626104] printk: Suspending console(s) (use no_console_suspend to debug)
+[ 6189.662429] queueing ieee80211 work while going to suspend
+[ 6190.018417] ACPI: EC: interrupt blocked
+[ 6190.066481] ACPI: PM: Preparing to enter system sleep state S3
+[ 6190.066983] ACPI: EC: event blocked
+[ 6190.066985] ACPI: EC: EC stopped
+[ 6190.066986] ACPI: PM: Saving platform NVS memory
+[ 6190.067042] Disabling non-boot CPUs ...
+[ 6190.068541] smpboot: CPU 1 is now offline
+[ 6000.445150] [Firmware Bug]: TSC ADJUST differs: CPU0 0 --> -543578459. Restoring
+[ 6190.088796] ACPI: PM: Low-level resume complete
+[ 6190.088867] ACPI: EC: EC started
+[ 6190.088869] ACPI: PM: Restoring platform NVS memory
+[ 6190.089961] Enabling non-boot CPUs ...
+[ 6190.090091] smpboot: Booting Node 0 Processor 1 APIC 0x2
+[ 6190.094261] CPU1 is up
+[ 6190.094450] ACPI: PM: Waking up from system sleep state S3
+[ 6191.372892] ACPI: EC: interrupt unblocked
+[ 6191.390536] ACPI: EC: event unblocked
+[ 6191.652004] usb 1-7: reset high-speed USB device number 3 using xhci_hcd
+[ 6191.712987] ata1: SATA link down (SStatus 4 SControl 300)
+[ 6191.908087] usb 1-8: reset full-speed USB device number 5 using xhci_hcd
+[ 6192.163935] usb 1-5: reset full-speed USB device number 6 using xhci_hcd
+[ 6192.307000] mei_hdcp 0000:00:0f.0-b638ab7e-94e2-4ea2-a552-d1c54b627f04: bound 0000:00:02.0 (ops i915_hdcp_ops [i915])
+[ 6192.307724] OOM killer enabled.
+[ 6192.307730] Restarting tasks ... done.
+[ 6192.314422] random: crng reseeded on system resumption
+[ 6192.392024] PM: suspend exit
+[ 6192.540662] audit: type=1130 audit(1791129453.489:385): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=systemd-suspend comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 6192.540675] audit: type=1131 audit(1791129453.489:386): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=systemd-suspend comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 6192.729961] audit: type=1130 audit(1791129453.681:387): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=grub-common comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 6192.729974] audit: type=1131 audit(1791129453.681:388): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=grub-common comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 6195.316577] wlan0: authenticate with 02:00:00:00:01:02 (local address=02:00:00:00:00:01)
+[ 6195.324388] wlan0: send auth to 02:00:00:00:01:02 (try 1/3)
+[ 6195.353363] wlan0: authenticated
+[ 6195.359394] wlan0: associate with 02:00:00:00:01:02 (try 1/3)
+[ 6195.401465] wlan0: RX AssocResp from 02:00:00:00:01:02 (capab=0x1831 status=0 aid=10)
+[ 6195.411586] wlan0: associated
+[ 6195.502248] wlan0: Limiting TX power to 30 (30 - 0) dBm as advertised by 02:00:00:00:01:02
+[ 6205.744733] audit: type=1131 audit(1791129466.809:389): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=unconfined msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 6228.007723] audit: type=1100 audit(1791129489.073:390): pid=13714 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:authentication grantors=pam_permit acct="rayyan" exe="/usr/bin/sudo" hostname=? addr=? terminal=/dev/pts/0 res=success'
+[ 6228.010348] audit: type=1101 audit(1791129489.073:391): pid=13714 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="rayyan" exe="/usr/bin/sudo" hostname=? addr=? terminal=/dev/pts/0 res=success'
+[ 6228.011313] audit: type=1123 audit(1791129489.073:392): pid=13714 uid=1000 auid=1000 ses=1 subj=unconfined msg='cwd="/home/rayyan" cmd="dmesg" exe="/usr/bin/sudo" terminal=pts/0 res=success'
+[ 6228.011322] audit: type=1110 audit(1791129489.073:393): pid=13714 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/bin/sudo" hostname=? addr=? terminal=/dev/pts/0 res=success'
+[ 6228.011360] audit: type=1105 audit(1791129489.073:394): pid=13714 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_limits,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/sudo" hostname=? addr=? terminal=/dev/pts/0 res=success'
+[ 6228.041070] audit: type=1106 audit(1791129489.105:395): pid=13714 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_close grantors=pam_limits,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/sudo" hostname=? addr=? terminal=/dev/pts/0 res=success'
+[ 6228.041116] audit: type=1104 audit(1791129489.105:396): pid=13714 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/bin/sudo" hostname=? addr=? terminal=/dev/pts/0 res=success'
+[ 6501.785569] audit: type=1100 audit(1791129762.854:397): pid=13787 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:authentication grantors=pam_permit acct="rayyan" exe="/usr/bin/sudo" hostname=? addr=? terminal=/dev/pts/1 res=success'
+[ 6501.788380] audit: type=1101 audit(1791129762.858:398): pid=13787 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:accounting grantors=pam_permit acct="rayyan" exe="/usr/bin/sudo" hostname=? addr=? terminal=/dev/pts/1 res=success'
+[ 6501.789332] audit: type=1123 audit(1791129762.858:399): pid=13787 uid=1000 auid=1000 ses=1 subj=unconfined msg='cwd="/home/rayyan" cmd="dmesg" exe="/usr/bin/sudo" terminal=pts/1 res=success'
+[ 6501.789340] audit: type=1110 audit(1791129762.858:400): pid=13787 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/bin/sudo" hostname=? addr=? terminal=/dev/pts/1 res=success'
+[ 6501.789382] audit: type=1105 audit(1791129762.858:401): pid=13787 uid=1000 auid=1000 ses=1 subj=unconfined msg='op=PAM:session_open grantors=pam_limits,pam_permit,pam_umask,pam_unix acct="root" exe="/usr/bin/sudo" hostname=? addr=? terminal=/dev/pts/1 res=success'
+rayyan@rayyan:~
+$ 

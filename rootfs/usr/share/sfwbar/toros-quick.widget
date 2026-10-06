@@ -1,0 +1,312 @@
+#Api2
+# torOS quick settings, after GNOME's system menu: the network, sound and
+# battery icons on the status panel are one button, and a click opens one
+# window with the battery level, screenshot / lock / power buttons, the volume
+# and brightness sliders, and switches for Wi-Fi, Bluetooth, the dark style and
+# the keyboard layout. The Wi-Fi and Bluetooth switches open sfwbar's own
+# network and device lists.
+
+module("pulsectl")
+module("network")
+module("bluez")
+module("xkbmap")
+
+Var wifi_thresholds = [80, 60, 40, 20];
+Var wifi_icons = [
+  "network-wireless-signal-excellent-symbolic",
+  "network-wireless-signal-good-symbolic",
+  "network-wireless-signal-ok-symbolic",
+  "network-wireless-signal-weak-symbolic",
+  "network-wireless-signal-none-symbolic"
+];
+Var scan_timeout = 20;
+
+include("wifi.widget")
+include("bluez-popup.widget")
+include("backlight.source")
+include("battery.source")
+
+Function XQuickNetIcon() {
+  If NetInfo("interface")=na() | NetInfo("interface")=""
+    Return "network-wireless-offline-symbolic";
+  If NetInfo("essid")=""
+    Return "network-wired-symbolic";
+  Return ArrayLookup(NetStat("signal"), wifi_thresholds, wifi_icons,
+      "network-wireless-signal-none-symbolic");
+}
+
+Function XQuickVolIcon() {
+  Return If(Volume("sink-mute"), "audio-volume-muted-symbolic",
+      ArrayLookup(Volume("sink-volume"), [66, 33, 1],
+        ["audio-volume-high-symbolic", "audio-volume-medium-symbolic",
+         "audio-volume-low-symbolic"], "audio-volume-muted-symbolic"));
+}
+
+Function XQuickBatIcon() {
+  Return "battery-level-" + Str(Level/10,0) + "0" +
+      If(Discharging, "", "-charging") + "-symbolic";
+}
+
+# These open a window next to the status panel's button instead of next to
+# the switch that was clicked (which disappears with the quick settings).
+Function XQuickWifi() { PopUp("XWifiWindow") }
+Function XQuickBluetooth() { XBluezPop() }
+Function XQuickSession() { PopUp("SessionPopup") }
+
+# The switches' on/off look. A window's style is only worked out when it is
+# built, so set it again whenever the thing it shows changes.
+Function XQuickPill(name, on) {
+  Config("grid '" + name + "' { style = '" + If(on, "quick_pill_on", "quick_pill") + "' }");
+}
+
+Function XQuickRefresh() {
+  XQuickPill("XQuickWifiPill", !(NetInfo("essid")="" | NetInfo("essid")=na()));
+  XQuickPill("XQuickBtPill", BluezAdapter("Powered"));
+  XQuickPill("XQuickDarkPill", Mid(ExecRead("toros-theme get"), 1, 4)="dark");
+  XQuickPill("XQuickAidPill", BluezDevice(XQuickAid, "Connected"));
+}
+
+TriggerAction "SIGRTMIN+6", XQuickRefresh()
+TriggerAction "network", XQuickRefresh()
+TriggerAction "bluez-adapter", XQuickRefresh()
+TriggerAction "bluez-conf", XQuickRefresh()
+
+Function XQuickInit() {
+  min_brightness = 5;
+  BacklightInit();
+  EmitTrigger("backlight");
+}
+
+# The hearing aid in /etc/toros/hearing-aid, as BlueZ names it
+Var XQuickAid = "/org/bluez/hci0/dev_" +
+    ReplaceAll(Extract(Read("/etc/toros/hearing-aid"), "([0-9A-Fa-f:]{17})"), ":", "_");
+
+PopUp "XQuick" {
+  style = "quick_popup"
+
+  grid "XQuickTop" {
+    style = "quick_top"
+    loc(1,1,2,1)
+    image {
+      value = XQuickBatIcon()
+      style = If(Ident($XBatteryState), "quick_battery_icon", "hidden")
+      trigger = "battery-event"
+      loc(1,1,1,1)
+    }
+    label {
+      value = Str(Level, 0) + " %"
+      style = If(Ident($XBatteryState), "quick_battery", "hidden")
+      trigger = "battery-event"
+      loc(2,1,1,1)
+    }
+    label {
+      value = ""
+      style = "quick_spacer"
+      loc(3,1,1,1)
+    }
+    image {
+      value = "camera-photo-symbolic"
+      style = "quick_round"
+      tooltip = "Screenshot (Print)"
+      action = {
+        PopUp("XQuick");
+        Exec("sh -c 'sleep 0.6; mkdir -p ~/Pictures; f=~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png; grim $f && notify-send -i $f Screenshot \"Saved to Pictures\"'");
+      }
+      loc(4,1,1,1)
+    }
+    image {
+      value = "system-lock-screen-symbolic"
+      style = "quick_round"
+      tooltip = "Lock (Super+L)"
+      action = {
+        PopUp("XQuick");
+        Exec("swaylock -f");
+      }
+      loc(5,1,1,1)
+    }
+    image {
+      value = "system-shutdown-symbolic"
+      style = "quick_round"
+      tooltip = "Power off / log out"
+      action = Function("XQuickCluster", "XQuickSession")
+      loc(6,1,1,1)
+    }
+  }
+
+  grid "XQuickVolume" {
+    style = "quick_slider"
+    loc(1,2,2,1)
+    image {
+      value = XQuickVolIcon()
+      style = "quick_slider_icon"
+      trigger = "volume"
+      tooltip = "Mute"
+      action = VolumeCtl("sink-mute toggle")
+      loc(1,1,1,1)
+    }
+    scale {
+      style = "quick_scale"
+      value = Volume("sink-volume")/100
+      trigger = "volume"
+      action[LeftClick] = VolumeCtl("sink-volume " + Str(GtkEvent("dir") * 100))
+      action[ScrollUp] = VolumeCtl("sink-volume +5")
+      action[ScrollDown] = VolumeCtl("sink-volume -5")
+      loc(2,1,1,1)
+    }
+  }
+
+  grid "XQuickBrightness" {
+    style = If(BacklightSrc != "", "quick_slider", "hidden")
+    trigger = "backlight"
+    loc(1,3,2,1)
+    image {
+      value = "display-brightness-symbolic"
+      style = "quick_slider_icon"
+      loc(1,1,1,1)
+    }
+    scale {
+      style = "quick_scale"
+      value = BacklightPct/100
+      trigger = "backlight"
+      action[LeftClick] = SetBacklight(GtkEvent("dir") * 100)
+      action[ScrollUp] = SetBacklight(BacklightPct + 5)
+      action[ScrollDown] = SetBacklight(BacklightPct - 5)
+      loc(2,1,1,1)
+    }
+  }
+
+  grid "XQuickWifiPill" {
+    style = If(NetInfo("essid")="" | NetInfo("essid")=na(), "quick_pill", "quick_pill_on")
+    trigger = "network"
+    action = Function("XQuickCluster", "XQuickWifi")
+    loc(1,4,1,1)
+    image {
+      value = "network-wireless-symbolic"
+      style = "quick_pill_icon"
+      loc(1,1,1,2)
+    }
+    label {
+      value = "Wi-Fi"
+      style = "quick_pill_title"
+      loc(2,1,1,1)
+    }
+    label {
+      value = If(NetInfo("essid")="" | NetInfo("essid")=na(), "Not connected", NetInfo("essid"))
+      style = "quick_pill_sub"
+      trigger = "network"
+      loc(2,2,1,1)
+    }
+  }
+
+  grid "XQuickBtPill" {
+    style = If(BluezAdapter("Powered"), "quick_pill_on", "quick_pill")
+    trigger = "bluez-adapter"
+    tooltip = "Right click: Bluetooth on / off"
+    action = Function("XQuickCluster", "XQuickBluetooth")
+    action[RightClick] = BluezPower(!BluezAdapter("Powered"))
+    loc(2,4,1,1)
+    image {
+      value = "bluetooth-active-symbolic"
+      style = "quick_pill_icon"
+      loc(1,1,1,2)
+    }
+    label {
+      value = "Bluetooth"
+      style = "quick_pill_title"
+      loc(2,1,1,1)
+    }
+    label {
+      value = If(!BluezAdapter("Count"), "No adapter", If(BluezAdapter("Powered"), "On", "Off"))
+      style = "quick_pill_sub"
+      trigger = "bluez-adapter"
+      loc(2,2,1,1)
+    }
+  }
+
+  grid "XQuickDarkPill" {
+    style = If(Mid(ExecRead("toros-theme get"), 1, 4)="dark", "quick_pill_on", "quick_pill")
+    trigger = "SIGRTMIN+6"
+    action = Exec("toros-theme toggle")
+    loc(1,5,1,1)
+    image {
+      value = "weather-clear-night-symbolic"
+      style = "quick_pill_icon"
+      loc(1,1,1,2)
+    }
+    label {
+      value = "Dark Style"
+      style = "quick_pill_title"
+      loc(2,1,1,1)
+    }
+    label {
+      value = If(Mid(ExecRead("toros-theme get"), 1, 4)="dark", "On", "Off")
+      style = "quick_pill_sub"
+      trigger = "SIGRTMIN+6"
+      loc(2,2,1,1)
+    }
+  }
+
+  grid "XQuickAidPill" {
+    style = If(BluezDevice(XQuickAid, "Connected"), "quick_pill_on", "quick_pill")
+    trigger = "bluez-conf"
+    tooltip = "Connect / disconnect (Super+B)"
+    action = Exec("toros-bt toggle")
+    loc(2,5,1,1)
+    image {
+      value = "audio-headphones-symbolic"
+      style = "quick_pill_icon"
+      loc(1,1,1,2)
+    }
+    label {
+      value = "Hearing aid"
+      style = "quick_pill_title"
+      loc(2,1,1,1)
+    }
+    label {
+      value = If(BluezDevice(XQuickAid, "Connected"), "Connected", "Off")
+      style = "quick_pill_sub"
+      trigger = "bluez-conf"
+      loc(2,2,1,1)
+    }
+  }
+}
+
+# The button on the status panel
+export grid "XQuickCluster" {
+  style = "quick_cluster"
+  action[0] = XQuickInit()
+  action = {
+    XQuickRefresh();
+    PopUp("XQuick");
+  }
+  action[MiddleClick] = VolumeCtl("sink-mute toggle")
+  action[ScrollUp] = VolumeCtl("sink-volume +5")
+  action[ScrollDown] = VolumeCtl("sink-volume -5")
+  image {
+    value = XQuickNetIcon()
+    style = "quick_indicator"
+    trigger = "network"
+  }
+  image {
+    value = "bluetooth-active-symbolic"
+    style = If(BluezAdapter("Powered"), "quick_indicator", "hidden")
+    trigger = "bluez-adapter"
+  }
+  image {
+    value = XQuickVolIcon()
+    style = "quick_indicator"
+    trigger = "volume"
+  }
+  button "XQuickBattery" {
+    action[0] = XBatteryInit()
+    action = Function("XQuickCluster", "XQuickPop")
+    value = XQuickBatIcon()
+    style = If(Ident($XBatteryState), "quick_indicator", "hidden")
+    interval = 100000
+  }
+}
+
+Function XQuickPop() {
+  XQuickRefresh();
+  PopUp("XQuick");
+}

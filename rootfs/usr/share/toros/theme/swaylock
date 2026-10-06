@@ -1,0 +1,27 @@
+# torOS lock screen. Template: toros-theme fills in the colours and writes
+# ~/.config/swaylock/config.
+image=/usr/share/toros/wallpaper-@scheme@.png
+scaling=fill
+color=@desktop@
+font=Inter
+indicator-radius=64
+indicator-thickness=6
+inside-color=@popover@
+inside-clear-color=@popover@
+inside-ver-color=@popover@
+inside-wrong-color=@popover@
+ring-color=@border@
+ring-clear-color=@dim@
+ring-ver-color=@accent@
+ring-wrong-color=e62d42
+key-hl-color=@accent@
+bs-hl-color=e62d42
+text-color=@fg@
+text-clear-color=@fg@
+text-ver-color=@fg@
+text-wrong-color=@fg@
+line-color=00000000
+line-clear-color=00000000
+line-ver-color=00000000
+line-wrong-color=00000000
+separator-color=00000000

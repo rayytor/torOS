@@ -1,0 +1,14 @@
+--- a/src/gui/scaleimage.c	2026-10-05 19:33:26.063586944 +0300
++++ b/src/gui/scaleimage.c	2026-10-05 19:33:26.071805139 +0300
+@@ -399,6 +399,11 @@
+     g_free(image);
+     g_free(extra);
+   }
++  /* torOS: an SVG that uses @theme_fg_color was drawn with the text colour of
++   * the moment and kept, so it stayed dark after a switch to the dark theme;
++   * draw it again when the style changes */
++  if(priv->ftype == SI_DATA)
++    g_clear_pointer(&priv->cs, cairo_surface_destroy);
+   gtk_widget_queue_resize(self);
+   GTK_WIDGET_CLASS(scale_image_parent_class)->style_updated(self);
+ }

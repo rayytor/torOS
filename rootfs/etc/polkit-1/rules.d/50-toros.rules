@@ -1,0 +1,16 @@
+// torOS: there is no polkit password dialog and no login manager, so what the
+// desktop user may do is decided here.
+
+// USB sticks and memory cards in the file manager
+polkit.addRule(function(action, subject) {
+    if (subject.isInGroup("storage") && (
+        action.id == "org.freedesktop.udisks2.filesystem-mount" ||
+        action.id == "org.freedesktop.udisks2.filesystem-mount-other-seat" ||
+        action.id == "org.freedesktop.udisks2.filesystem-unmount-others" ||
+        action.id == "org.freedesktop.udisks2.eject-media" ||
+        action.id == "org.freedesktop.udisks2.eject-media-other-seat" ||
+        action.id == "org.freedesktop.udisks2.power-off-drive" ||
+        action.id == "org.freedesktop.udisks2.power-off-drive-other-seat")) {
+        return polkit.Result.YES;
+    }
+});

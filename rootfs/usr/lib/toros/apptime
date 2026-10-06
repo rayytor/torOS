@@ -1,0 +1,26 @@
+#!/bin/sh
+# How long an app takes from start to its window being on the screen.
+#   apptime APP-ID COMMAND [ARGS...]     e.g. apptime org.gnome.TextEditor gnome-text-editor
+# Run inside the desktop session (./push.sh run '/usr/lib/toros/apptime ...').
+# Prints the time in milliseconds and closes the app again. "cold" (page cache
+# dropped first) needs root: sync; echo 3 > /proc/sys/vm/drop_caches
+[ $# -ge 2 ] || { sed -n '2,6s/^# \{0,1\}//p' "$0" >&2; exit 1; }
+id=$1; shift
+if lswt 2>/dev/null | grep -qF "$id"; then
+	echo "$id is already open; close it first" >&2; exit 1
+fi
+t0=$(date +%s%N)
+# its own process group, so that wrappers (toros-files) and the app both end
+setsid "$@" >/dev/null 2>&1 &
+pid=$!
+i=0
+while ! lswt 2>/dev/null | grep -qF "$id"; do
+	i=$((i + 1))
+	[ $i -gt 600 ] && { echo "$id: no window after 30 s"; kill -- -$pid 2>/dev/null; exit 1; }
+	sleep 0.05
+done
+t1=$(date +%s%N)
+echo "$id: $(( (t1 - t0) / 1000000 )) ms"
+kill -- -$pid 2>/dev/null
+wait $pid 2>/dev/null
+exit 0

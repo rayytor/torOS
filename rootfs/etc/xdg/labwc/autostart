@@ -1,0 +1,29 @@
+# torOS session autostart (run by labwc once the compositor is up)
+
+# The desktop has the screen now: the boot splash can go
+/usr/lib/toros/splash stop
+
+# Let D-Bus-activated services (mako, portals) find the Wayland display.
+# GTK_A11Y / NO_AT_BRIDGE: or every service D-Bus starts would bring up the
+# accessibility bus (15 MB).
+dbus-update-activation-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE GTK_A11Y NO_AT_BRIDGE
+
+# Wallpaper, and the GTK settings that go with the light or dark choice
+toros-theme start &
+
+# PipeWire starts WirePlumber and pipewire-pulse itself (see /etc/pipewire/pipewire.conf.d).
+pipewire >/dev/null 2>&1 &
+
+sfwbar -f /etc/xdg/sfwbar/sfwbar.config > "${XDG_STATE_HOME:-$HOME/.local/state}/toros/panel.log" 2>&1 &
+
+# Screen off after 10 minutes idle. Locking is manual (Super+L).
+swayidle -w \
+	timeout 600 'wlopm --off \*' \
+	resume 'wlopm --on \*' >/dev/null 2>&1 &
+
+# Read GTK4, libadwaita and the graphics driver into memory at the lowest
+# priority, so the first app starts as fast as the second.
+nice -n 19 ionice -c 3 /usr/lib/toros/prewarm >/dev/null 2>&1 &
+
+# Boot-time marker for test/measure: seconds since kernel start when the session came up.
+cut -d' ' -f1 /proc/uptime > "$XDG_RUNTIME_DIR/toros-session-up"
