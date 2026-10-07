@@ -1,0 +1,20 @@
+#!/bin/sh
+# torOS low-battery warning, as a notification. The status panel runs this
+# when the battery gets to a level worth a warning (toros-quick.widget):
+#   battery-warn low PERCENT        goes away by itself after half a minute
+#   battery-warn critical PERCENT   stays until it is clicked
+#   battery-warn clear              the charger is in: take the warning away
+# The second warning takes the place of the first if that is still shown.
+ID="${XDG_RUNTIME_DIR:-/tmp}/toros-battery-warning"
+old=$(cat "$ID" 2>/dev/null)
+
+show() {	# URGENCY MILLISECONDS TITLE TEXT
+	notify-send -p ${old:+-r "$old"} -a Battery -u "$1" -t "$2" "$3" "$4" > "$ID"
+}
+
+case "${1:-}" in
+low)	show normal 30000 "Battery low" "${2:-?} % left. Plug in the charger." ;;
+critical) show critical 0 "Battery very low" "${2:-?} % left. Plug in the charger now, or the laptop switches off soon." ;;
+clear)	[ -z "$old" ] || makoctl dismiss -n "$old" 2>/dev/null; rm -f "$ID" ;;
+*)	sed -n '2,7s/^# \{0,1\}//p' "$0" >&2; exit 1 ;;
+esac

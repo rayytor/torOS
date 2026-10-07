@@ -58,9 +58,8 @@ nftables
 openssh
 rsync
 
-# bluetooth
+# bluetooth (the panel's own popup scans, pairs and connects)
 bluez
-blueman
 
 # session plumbing
 dbus
@@ -85,13 +84,13 @@ mako
 libnotify
 swaybg
 swayidle
-swaylock
 wlopm
 wlr-randr
 brightnessctl
 grim
 slurp
 wl-clipboard
+wtype
 dumb_runtime_dir
 xdg-user-dirs
 xdg-utils
@@ -108,6 +107,11 @@ wireplumber
 libspa-bluetooth
 alsa-pipewire
 
+# screenshots and recordings (toros-shot is compiled during the image build;
+# it takes the picture with grim, above, and films with wf-recorder)
+gtk4-layer-shell
+wf-recorder
+
 # panel runtime libraries (sfwbar is compiled during the image build)
 gtk+3
 gtk-layer-shell
@@ -118,7 +122,6 @@ libxkbcommon
 # Fonts
 font-inter
 liberation-fonts-ttf
-noto-fonts-emoji
 
 # Thorium browser (the browser itself is unpacked from its release package)
 nss
@@ -142,12 +145,11 @@ libva
 xdg-desktop-portal
 xdg-desktop-portal-wlr
 
-# Core apps (GTK4/libadwaita): files, text editor, pictures, PDF, Bluetooth
+# Core apps (GTK4/libadwaita): files, text editor, pictures, PDF
 nautilus
 gnome-text-editor
 loupe
 papers
-adw-bluetooth
 
 # polkit, started on demand: USB sticks in Files and zapret-gtk's root helper
 # (rules in /etc/polkit-1/rules.d; there is no password dialog and no elogind)

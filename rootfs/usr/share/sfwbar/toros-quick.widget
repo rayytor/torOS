@@ -42,10 +42,37 @@ Function XQuickVolIcon() {
          "audio-volume-low-symbolic"], "audio-volume-muted-symbolic"));
 }
 
+# Adwaita's icons go from battery-level-0 to battery-level-100 in tens; a
+# full battery on the charger is "charged", not "charging".
 Function XQuickBatIcon() {
-  Return "battery-level-" + Str(Level/10,0) + "0" +
-      If(Discharging, "", "-charging") + "-symbolic";
+  Var tens = Val(Str(Level/10, 0));
+  Return "battery-level-" + Str(tens*10, 0) +
+      If(Discharging, "", If(tens >= 10, "-charged", "-charging")) + "-symbolic";
 }
+
+# Low battery. The panel reads the battery anyway (every ten seconds, and when
+# the kernel says it changed). When it is running down and gets to 15 %, and
+# again at 5 %, /usr/lib/toros/battery-warn shows a notification; it takes
+# the notification away when the charger is plugged in. XBatWarned is the
+# last warning shown (0 none, 1 low, 2 very low), so each comes once.
+Var XBatWarned = 0;
+
+Function XBatteryWatch() {
+  Var stage;
+  If !Ident($XBatteryState)
+    Return;
+  stage = If(!Discharging, 0, If(Level <= 5, 2, If(Level <= 15, 1, 0)));
+  If !Discharging & XBatWarned > 0 {
+    XBatWarned = 0;
+    Exec("/usr/lib/toros/battery-warn clear");
+  }
+  If stage > XBatWarned {
+    XBatWarned = stage;
+    Exec("/usr/lib/toros/battery-warn " + If(stage = 2, "critical ", "low ") + Str(Level, 0));
+  }
+}
+
+TriggerAction "battery-event", XBatteryWatch()
 
 # These open a window next to the status panel's button instead of next to
 # the switch that was clicked (which disappears with the quick settings).
@@ -110,7 +137,7 @@ PopUp "XQuick" {
       tooltip = "Screenshot (Print)"
       action = {
         PopUp("XQuick");
-        Exec("sh -c 'sleep 0.6; mkdir -p ~/Pictures; f=~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png; grim $f && notify-send -i $f Screenshot \"Saved to Pictures\"'");
+        Exec("toros-shot --delay");
       }
       loc(4,1,1,1)
     }
@@ -120,7 +147,7 @@ PopUp "XQuick" {
       tooltip = "Lock (Super+L)"
       action = {
         PopUp("XQuick");
-        Exec("swaylock -f");
+        Exec("toros-lock");
       }
       loc(5,1,1,1)
     }

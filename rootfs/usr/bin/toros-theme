@@ -62,7 +62,6 @@ write_files() {
 
 	fill fuzzel.ini "$CONF/fuzzel/fuzzel.ini"
 	fill mako "$CONF/mako/config"
-	fill swaylock "$CONF/swaylock/config"
 	fill gtk.css "$CONF/gtk-3.0/gtk.css"
 	fill gtk.css "$CONF/gtk-4.0/gtk.css"
 	fill foot.ini "$CONF/foot/foot.ini"

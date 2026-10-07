@@ -1,0 +1,17 @@
+[Desktop Entry]
+Type=Application
+Name=Screenshot
+Comment=Take a screenshot or record the screen
+Exec=toros-shot --delay
+Icon=org.toros.Shot
+Categories=Utility;Graphics;
+Keywords=screenshot;snip;capture;print;record;recording;video;highlight;
+Actions=screen;record;
+
+[Desktop Action screen]
+Name=Whole screen
+Exec=toros-shot --delay screen
+
+[Desktop Action record]
+Name=Record the screen
+Exec=toros-shot --delay record

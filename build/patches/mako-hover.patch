@@ -1,0 +1,118 @@
+diff -ru a/include/notification.h b/include/notification.h
+--- a/include/notification.h	2026-03-26 20:31:47.000000000 +0300
++++ b/include/notification.h	2026-10-06 20:57:11.435625554 +0300
+@@ -47,6 +47,7 @@
+ 	struct mako_image_data *image_data;
+ 
+ 	struct mako_hotspot hotspot;
++	bool hovered; // torOS: the pointer is on it
+ 	struct mako_timer *timer;
+ };
+ 
+diff -ru a/render.c b/render.c
+--- a/render.c	2026-03-26 20:31:47.000000000 +0300
++++ b/render.c	2026-10-06 20:57:11.435810976 +0300
+@@ -98,7 +98,7 @@
+ 
+ static int render_notification(cairo_t *cairo, struct mako_state *state, struct mako_surface *surface,
+ 		struct mako_style *style, const char *text, struct mako_icon *icon, int offset_y, int scale,
+-		struct mako_hotspot *hotspot, int progress) {
++		struct mako_hotspot *hotspot, int progress, bool hovered) {
+ 	int border_size = 2 * style->border_size;
+ 	int padding_height = style->padding.top + style->padding.bottom;
+ 	int padding_width = style->padding.left + style->padding.right;
+@@ -227,6 +227,11 @@
+ 	// Render background, keeping the path.
+ 	set_source_u32(cairo, style->colors.background);
+ 	cairo_fill_preserve(cairo);
++	if (hovered) {
++		// torOS: under the pointer, a little of the text colour on top (9 %)
++		set_source_u32(cairo, (style->colors.text & 0xFFFFFF00) | 0x17);
++		cairo_fill_preserve(cairo);
++	}
+ 
+ 	// Keep a copy of the path. We need it later to draw the border on top, but
+ 	// we have to create a new one for progress in the meantime.
+@@ -418,7 +423,7 @@
+ 		struct mako_icon *icon = (style->icons) ? notif->icon : NULL;
+ 		int notif_height = render_notification(
+ 			cairo, state, surface, style, text, icon, total_height, scale,
+-			&notif->hotspot, notif->progress);
++			&notif->hotspot, notif->progress, notif->hovered);
+ 		free(text);
+ 
+ 		int notif_width =
+@@ -470,7 +475,7 @@
+ 			format_text(style->format, text, format_hidden_text, &data);
+ 
+ 			int hidden_height = render_notification(
+-				cairo, state, surface, style, text, NULL, total_height, scale, NULL, 0);
++				cairo, state, surface, style, text, NULL, total_height, scale, NULL, 0, false);
+ 			free(text);
+ 
+ 			total_height += hidden_height;
+diff -ru a/wayland.c b/wayland.c
+--- a/wayland.c	2026-03-26 20:31:47.000000000 +0300
++++ b/wayland.c	2026-10-06 20:57:11.435740840 +0300
+@@ -192,6 +192,27 @@
+ 	wl_surface_commit(state->cursor.surface);
+ }
+ 
++/* torOS: a notification reacts to the pointer, as everything else that can be
++ * clicked does. Mark the one under the pointer; render.c draws it differently. */
++static void update_hover(struct mako_state *state) {
++	struct mako_notification *notif;
++	wl_list_for_each(notif, &state->notifications, link) {
++		bool hovered = false;
++		struct mako_seat *seat;
++		wl_list_for_each(seat, &state->seats, link) {
++			if (seat->pointer.surface != NULL &&
++					seat->pointer.surface == notif->surface &&
++					hotspot_at(&notif->hotspot, seat->pointer.x, seat->pointer.y)) {
++				hovered = true;
++			}
++		}
++		if (hovered != notif->hovered) {
++			notif->hovered = hovered;
++			set_dirty(notif->surface);
++		}
++	}
++}
++
+ static void pointer_handle_enter(void *data, struct wl_pointer *wl_pointer,
+ 		uint32_t serial, struct wl_surface *wl_surface,
+ 		wl_fixed_t surface_x, wl_fixed_t surface_y) {
+@@ -201,6 +222,7 @@
+ 	seat->pointer.x = wl_fixed_to_int(surface_x);
+ 	seat->pointer.y = wl_fixed_to_int(surface_y);
+ 	seat->pointer.surface = get_surface(state, wl_surface);
++	update_hover(state);
+ 
+ 	int scale = 1;
+ 
+@@ -235,6 +257,7 @@
+ 		uint32_t serial, struct wl_surface *wl_surface) {
+ 	struct mako_seat *seat = data;
+ 	seat->pointer.surface = NULL;
++	update_hover(seat->state);
+ }
+ 
+ static void pointer_handle_motion(void *data, struct wl_pointer *wl_pointer,
+@@ -242,6 +265,7 @@
+ 	struct mako_seat *seat = data;
+ 	seat->pointer.x = wl_fixed_to_int(surface_x);
+ 	seat->pointer.y = wl_fixed_to_int(surface_y);
++	update_hover(seat->state);
+ }
+ 
+ static void pointer_handle_button(void *data, struct wl_pointer *wl_pointer,
+@@ -715,6 +739,9 @@
+ 	schedule_frame_and_commit(surface);
+ 
+ 	surface->dirty = false;
++
++	// torOS: the notifications may have moved under a pointer that did not
++	update_hover(state);
+ }
+ 
+ static void frame_handle_done(void *data, struct wl_callback *callback,

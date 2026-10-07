@@ -1,0 +1,22 @@
+[package]
+name = "toros-shot"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "torOS screenshots and screen recordings"
+
+[dependencies]
+gtk = { package = "gtk4", version = "0.11", features = ["v4_14"] }
+# (gtk already brings cairo; named here for its PNG writer)
+cairo-rs = { version = "0.22", features = ["png"] }
+gtk4-layer-shell = "0.8"
+
+[build-dependencies]
+glib-build-tools = "0.22"
+
+[profile.release]
+opt-level = "s"
+lto = "thin"
+codegen-units = 4
+strip = true
+panic = "abort"

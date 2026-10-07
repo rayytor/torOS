@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Screenshot: a screen with an area marked out on it, drawn the way GNOME
+     draws application icons. -->
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+ <linearGradient id="a" x1="8" x2="120" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#3d3846" offset="0"/>
+  <stop stop-color="#77767b" offset=".05"/>
+  <stop stop-color="#5e5c64" offset=".1"/>
+  <stop stop-color="#5e5c64" offset=".9"/>
+  <stop stop-color="#77767b" offset=".95"/>
+  <stop stop-color="#3d3846" offset="1"/>
+ </linearGradient>
+ <clipPath id="b">
+  <rect x="14" y="24" width="100" height="74" rx="4"/>
+ </clipPath>
+ <!-- frame -->
+ <rect x="8" y="28" width="112" height="82" rx="8" fill="url(#a)"/>
+ <rect x="8" y="18" width="112" height="86" rx="8" fill="#3d3846"/>
+ <!-- what is on the screen: torOS's wallpaper -->
+ <g clip-path="url(#b)">
+  <rect x="14" y="24" width="100" height="74" fill="#99c1f1"/>
+  <path d="m14 68 20-18 14 12 22-24 20 20 10-8 14 12v36h-100z" fill="#6f84ad"/>
+  <path d="m14 76c22-10 40-10 58-3s30 5 42-1v26h-100z" fill="#33d17a"/>
+  <path d="m14 88c26-7 46-5 62 0s28 2 38-3v13h-100z" fill="#26a269"/>
+  <!-- everything but the marked area is dimmed -->
+  <path d="m14 24h100v74h-100zm16 12v50h68v-50z" fill="#241f31" fill-opacity=".4" fill-rule="evenodd"/>
+ </g>
+ <!-- the marked area's corners -->
+ <path d="m30 49v-13h13m42 0h13v13m0 24v13h-13m-42 0h-13v-13" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

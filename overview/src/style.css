@@ -1,0 +1,135 @@
+/* toros-overview. The @ov_ colours are defined in main.rs, from
+   /usr/share/toros/palette on torOS and from the GTK theme elsewhere. */
+
+window.overview {
+  background: none;
+}
+
+/* The sheet fills the place of the windows; the dock and the status panel
+   stay beside it, and it has their corners and outline. */
+.sheet {
+  margin: 6px 0 0 6px;
+  background-color: @ov_window;
+  color: @ov_fg;
+  border: 1px solid @ov_border;
+  border-radius: 18px;
+  font-size: 13px;
+}
+
+/* search field */
+.field {
+  min-height: 40px;
+  margin: 28px 0 14px 0;
+  padding: 0 16px;
+  border-radius: 21px;
+  background-color: @ov_field;
+  box-shadow: inset 0 0 0 1px @ov_border;
+  transition: box-shadow 150ms ease-out;
+}
+.field:hover {
+  box-shadow: inset 0 0 0 1px alpha(@ov_fg, 0.30);
+}
+.field:focus-within {
+  box-shadow: inset 0 0 0 2px alpha(@ov_accent, 0.75);
+}
+.field image {
+  color: @ov_dim;
+  margin-right: 10px;
+}
+entry.search {
+  all: unset;
+  min-width: 340px;
+  font-size: 15px;
+  color: @ov_fg;
+  caret-color: @ov_accent;
+}
+entry.search > text > placeholder {
+  color: @ov_dim;
+}
+entry.search > text > selection {
+  background-color: alpha(@ov_accent, 0.3);
+}
+
+flowbox,
+flowboxchild {
+  all: unset;
+}
+.windows {
+  margin: 10px 24px 4px 24px;
+}
+.apps {
+  margin: 10px 24px 24px 24px;
+}
+
+/* a tile: an open window or an application */
+button.tile {
+  all: unset;
+  border-radius: 14px;
+  transition: background-color 120ms ease-out;
+}
+button.tile:hover {
+  background-color: alpha(@ov_fg, 0.07);
+}
+button.tile:active {
+  background-color: alpha(@ov_fg, 0.16);
+}
+/* the one Enter opens */
+button.tile.selected {
+  background-color: alpha(@ov_fg, 0.11);
+}
+button.tile.selected:hover {
+  background-color: alpha(@ov_fg, 0.15);
+}
+
+button.app {
+  padding: 12px 6px 10px 6px;
+}
+button.app label {
+  margin-top: 8px;
+}
+
+button.shown {
+  padding: 12px 12px 8px 12px;
+}
+/* the window's picture, or its place until the picture is there */
+.shot {
+  border-radius: 8px;
+  background-color: @ov_surface;
+  box-shadow: 0 0 0 1px alpha(@ov_fg, 0.12), 0 2px 6px alpha(black, 0.22);
+}
+.minimized .shot {
+  opacity: 0.55;
+}
+.caption {
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+/* closes the window; it shows while the pointer is on the tile */
+button.close {
+  all: unset;
+  min-width: 24px;
+  min-height: 24px;
+  margin: 4px;
+  border-radius: 12px;
+  background-color: @ov_surface;
+  color: @ov_fg;
+  box-shadow: 0 0 0 1px alpha(@ov_fg, 0.12), 0 1px 3px alpha(black, 0.25);
+  opacity: 0;
+  transition: opacity 120ms ease-out, background-color 120ms ease-out;
+}
+.window:hover button.close {
+  opacity: 1;
+}
+button.close:hover {
+  background-color: mix(@ov_surface, @ov_fg, 0.14);
+}
+button.close:active {
+  background-color: mix(@ov_surface, @ov_fg, 0.28);
+}
+
+.nothing {
+  margin-top: 70px;
+  font-size: 15px;
+  color: @ov_dim;
+}

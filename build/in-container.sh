@@ -134,6 +134,10 @@ patch -s -d /build/sfwbar -p1 < "$SRC/build/patches/sfwbar-dock.patch"
 # modules has a race (a result read from memory that is already freed) which
 # ends the modules' thread and leaves the panel waiting for it for ever.
 patch -s -d /build/sfwbar -p1 < "$SRC/build/patches/sfwbar-module-race.patch"
+# torOS patch: action[Hold], an action that runs once the pointer's button has
+# been held on a widget for two seconds (the session menu: power off, restart,
+# log out and suspend are held instead of clicked and confirmed)
+patch -s -d /build/sfwbar -p1 < "$SRC/build/patches/sfwbar-hold.patch"
 CFLAGS="-O2 -march=goldmont-plus" meson setup /build/sfwbar/build /build/sfwbar \
 	--prefix=/usr --buildtype=plain -Dalsa=disabled -Dmpd=disabled -Dnm=disabled \
 	-Dbsdctl=disabled -Dbuild-docs=disabled >/dev/null
@@ -158,8 +162,47 @@ grep -q 'stroke="blue"' "$W/backlight.widget"
 sed -i "s/stroke=\"blue\"/stroke=\"#$(. "$SRC/rootfs/usr/share/toros/palette" && echo "$accent")\"/" "$W/backlight.widget"
 grep -q 'stroke="#[0-9a-f]\{6\}"' "$W/backlight.widget"
 
+# 4. The fill of a held row in the session menu takes as long as the hold
+grep -q '#define BASE_WIDGET_HOLD_MS 2000' /build/sfwbar/src/gui/basewidget.c
+grep -q 'transition: background-size 2s linear' "$ROOT/etc/xdg/sfwbar/sfwbar.config"
+
+# 5. The low-battery warning: the panel runs this helper, which shows the
+#    notification, replaces it and takes it away again
+grep -q 'TriggerAction "battery-event", XBatteryWatch()' "$W/toros-quick.widget"
+[ -x "$ROOT/usr/lib/toros/battery-warn" ] && [ -x "$ROOT/usr/bin/makoctl" ]
+in_root notify-send --help | grep -q -- '--replace-id' && in_root notify-send --help | grep -q -- '--print-id'
+
 if in_root ldd /usr/bin/sfwbar | grep 'not found'; then
 	echo "sfwbar: missing runtime libraries (add them to packages.txt)" >&2; exit 1
+fi
+# the status panel shows a flag for every keyboard layout, and a click on it
+# changes the layout
+[ -x "$ROOT/usr/bin/toros-layout" ]
+for l in $(sed -n 's/^XKB_DEFAULT_LAYOUT=//p' "$ROOT/etc/xdg/labwc/environment" | tr ',' ' '); do
+	[ -s "$ROOT/usr/share/toros/flags/$l.svg" ] || { echo "no flag for the keyboard layout $l (rootfs/usr/share/toros/flags)" >&2; exit 1; }
+done
+
+step "Building mako (patched)"
+# Stock mako draws a notification the same whether the pointer is on it or not;
+# see build/patches/mako-hover.patch. Only the daemon binary of the Void
+# package is replaced.
+MAKO_VER=1.11.0
+MAKO_SHA=72d11d3fca20a3dfbca0107ff875eace479751be0cf2ddd1dd5bafa131ac7282
+MAKO_TAR="$OUT/cache/mako-$MAKO_VER.tar.gz"
+[ -e "$MAKO_TAR" ] || curl -fsSL -o "$MAKO_TAR" \
+	"https://github.com/emersion/mako/archive/refs/tags/v$MAKO_VER.tar.gz"
+echo "$MAKO_SHA  $MAKO_TAR" | sha256sum -c --quiet
+in_root xbps-query -p pkgver mako | grep -q "^mako-${MAKO_VER}_"
+mkdir -p /build/mako && tar -xf "$MAKO_TAR" -C /build/mako --strip-components=1
+patch -s -d /build/mako -p1 < "$SRC/build/patches/mako-hover.patch"
+CFLAGS="-O2 -march=goldmont-plus" meson setup /build/mako/build /build/mako \
+	--prefix=/usr --buildtype=plain -Dsd-bus-provider=basu -Dicons=enabled \
+	-Dman-pages=disabled >/dev/null
+ninja -C /build/mako/build >/dev/null
+[ -x "$ROOT/usr/bin/mako" ]
+install -s -m755 /build/mako/build/mako "$ROOT/usr/bin/mako"
+if in_root ldd /usr/bin/mako | grep 'not found'; then
+	echo "mako: missing runtime libraries (add them to packages.txt)" >&2; exit 1
 fi
 
 step "Installing Thorium"
@@ -188,9 +231,9 @@ cp "$SRC/rootfs/$T/initial_preferences" "$ROOT/$T/initial_preferences"
 # /usr/bin/thorium-browser is torOS's wrapper, which also runs the
 # screen-sharing portal while the browser is open
 ln -sf /usr/lib/toros/browser "$ROOT/usr/bin/thorium-browser"
-for s in 16 24 32 48 64 128 256; do
-	install -Dm644 "$ROOT/$T/product_logo_$s.png" "$ROOT/usr/share/icons/hicolor/${s}x${s}/apps/thorium-browser.png"
-done
+# Its icon is torOS's own drawing of the logo (rootfs/usr/share/icons), in the
+# style of GNOME's application icons like the rest of the menu
+[ -s "$ROOT/usr/share/icons/hicolor/scalable/apps/thorium-browser.svg" ] || { echo "Thorium's icon is missing" >&2; exit 1; }
 # The menu entry offered the test shell that is not installed
 sed -i '/^\[Desktop Action content-shell\]/,/^$/d; s/content-shell;//' "$ROOT/usr/share/applications/thorium-browser.desktop"
 if in_root env LD_LIBRARY_PATH=/$T/lib ldd /$T/thorium | grep 'not found'; then
@@ -250,6 +293,126 @@ if in_root ldd /usr/bin/zapret-gtk | grep 'not found'; then
 	echo "zapret-gtk: missing runtime libraries (add them to packages.txt)" >&2; exit 1
 fi
 
+step "Building the picker"
+# The emoji picker and clipboard history (picker/): toros-picker is the window
+# behind Super+. and Super+V, toros-clipd the watcher from labwc's autostart.
+mkdir -p "$OUT/cache/picker-target"
+( cd "$SRC/picker" && CARGO_HOME="$OUT/cache/cargo" CARGO_TARGET_DIR="$OUT/cache/picker-target" \
+	RUSTFLAGS="-C target-cpu=goldmont-plus" cargo build --release --locked 2>&1 | tail -n 3 )
+install -Dm755 "$OUT/cache/picker-target/release/toros-picker" "$ROOT/usr/bin/toros-picker"
+install -Dm755 "$OUT/cache/picker-target/release/toros-clipd" "$ROOT/usr/bin/toros-clipd"
+if in_root ldd /usr/bin/toros-picker | grep 'not found'; then
+	echo "toros-picker: missing runtime libraries (add them to packages.txt)" >&2; exit 1
+fi
+# the watcher runs all the time, so it must stay as small as it is
+if in_root ldd /usr/bin/toros-clipd | grep -E 'libgtk|libglib'; then
+	echo "toros-clipd must not load GTK" >&2; exit 1
+fi
+# what the picker pastes with
+[ -x "$ROOT/usr/bin/wtype" ] && [ -x "$ROOT/usr/bin/wl-copy" ]
+# Apple Color Emoji, the font the picker shows and the only emoji font in the
+# image (samuelngs/apple-emoji-ttf, the build for Linux). picker/data/emoji.txt
+# lists the emoji this file can draw: after changing the version here, run
+# picker/emoji.py again.
+EMOJI_VER=macos-26-20260722-484daf4e
+EMOJI_SHA=e37c7af6265ac4a0af6d57bc65e86109a776d9966e8343334557f63da482516f
+EMOJI_TTF="$OUT/cache/AppleColorEmoji-$EMOJI_VER.ttf"
+[ -e "$EMOJI_TTF" ] || curl -fsSL -o "$EMOJI_TTF" \
+	"https://github.com/samuelngs/apple-emoji-ttf/releases/download/$EMOJI_VER/AppleColorEmoji-Linux.ttf"
+echo "$EMOJI_SHA  $EMOJI_TTF" | sha256sum -c --quiet
+install -Dm644 "$EMOJI_TTF" "$ROOT/usr/share/fonts/apple-color-emoji/AppleColorEmoji.ttf"
+
+step "Building the screenshot tool"
+# Screenshots and recordings (shot/): toros-shot is what Print, Super+Shift+S
+# and Super+Shift+R start. It runs only while it is in use.
+mkdir -p "$OUT/cache/shot-target"
+( cd "$SRC/shot" && CARGO_HOME="$OUT/cache/cargo" CARGO_TARGET_DIR="$OUT/cache/shot-target" \
+	RUSTFLAGS="-C target-cpu=goldmont-plus" cargo build --release --locked 2>&1 | tail -n 3 )
+install -Dm755 "$OUT/cache/shot-target/release/toros-shot" "$ROOT/usr/bin/toros-shot"
+if in_root ldd /usr/bin/toros-shot | grep 'not found'; then
+	echo "toros-shot: missing runtime libraries (add them to packages.txt)" >&2; exit 1
+fi
+# what it takes the picture, copies it and films with
+for p in grim wl-copy wf-recorder; do
+	[ -x "$ROOT/usr/bin/$p" ] || { echo "toros-shot needs $p (add its package to packages.txt)" >&2; exit 1; }
+done
+
+step "Building the overview"
+# What the Super key and the dock's logo open (overview/): the open windows as
+# small pictures, the applications and a search. It runs only while it is open.
+mkdir -p "$OUT/cache/overview-target"
+( cd "$SRC/overview" && CARGO_HOME="$OUT/cache/cargo" CARGO_TARGET_DIR="$OUT/cache/overview-target" \
+	RUSTFLAGS="-C target-cpu=goldmont-plus" cargo build --release --locked 2>&1 | tail -n 3 )
+install -Dm755 "$OUT/cache/overview-target/release/toros-overview" "$ROOT/usr/bin/toros-overview"
+if in_root ldd /usr/bin/toros-overview | grep 'not found'; then
+	echo "toros-overview: missing runtime libraries (add them to packages.txt)" >&2; exit 1
+fi
+# what takes the windows' pictures (with a time limit) and runs terminal programs
+for p in grim timeout foot; do
+	[ -x "$ROOT/usr/bin/$p" ] || { echo "toros-overview needs $p (add its package to packages.txt)" >&2; exit 1; }
+done
+# foot's two extra menu entries (a terminal server and its client) are of no
+# use here, and in the overview they stand beside the terminal itself
+for f in footclient.desktop foot-server.desktop; do
+	[ -e "$ROOT/usr/share/applications/$f" ] || { echo "missing: $f" >&2; exit 1; }
+	rm "$ROOT/usr/share/applications/$f"
+done
+# foot's icon is torOS's own too (the overlay replaced the SVG); the package's
+# small picture of the old one would still be taken at its size
+[ -e "$ROOT/usr/share/icons/hicolor/48x48/apps/foot.png" ] || { echo "missing: foot.png" >&2; exit 1; }
+rm "$ROOT/usr/share/icons/hicolor/48x48/apps/foot.png"
+if find "$ROOT/usr/share/icons/hicolor" -name 'foot.*' ! -path '*/scalable/apps/foot.svg' | grep .; then
+	echo "foot brings another icon than the one torOS replaces" >&2; exit 1
+fi
+
+step "Building the keyboard"
+# The keyboard on the screen (keyboard/): toros-keyboard is what Super+Ctrl+O
+# and "On-screen keyboard" in the overview show. It runs from then until it is
+# closed, also while it is put away at the edge of the screen.
+mkdir -p "$OUT/cache/keyboard-target"
+( cd "$SRC/keyboard" && CARGO_HOME="$OUT/cache/cargo" CARGO_TARGET_DIR="$OUT/cache/keyboard-target" \
+	RUSTFLAGS="-C target-cpu=goldmont-plus" cargo build --release --locked 2>&1 | tail -n 3 )
+install -Dm755 "$OUT/cache/keyboard-target/release/toros-keyboard" "$ROOT/usr/bin/toros-keyboard"
+if in_root ldd /usr/bin/toros-keyboard | grep 'not found'; then
+	echo "toros-keyboard: missing runtime libraries (add them to packages.txt)" >&2; exit 1
+fi
+# where it reads the layout in use and XKB's name for it
+[ -x "$ROOT/usr/bin/toros-layout" ] && [ -s "$ROOT/usr/share/X11/xkb/rules/evdev.lst" ]
+
+step "Building the lock screen"
+# What Super+L, "Lock" in the panel's menus and going to sleep show (lock/):
+# toros-lock, the wallpaper with the clock and behind it the account's
+# password. It runs only while the screen is locked.
+mkdir -p "$OUT/cache/lock-target"
+( cd "$SRC/lock" && CARGO_HOME="$OUT/cache/cargo" CARGO_TARGET_DIR="$OUT/cache/lock-target" \
+	RUSTFLAGS="-C target-cpu=goldmont-plus" cargo build --release --locked 2>&1 | tail -n 3 )
+install -Dm755 "$OUT/cache/lock-target/release/toros-lock" "$ROOT/usr/bin/toros-lock"
+if in_root ldd /usr/bin/toros-lock | grep 'not found'; then
+	echo "toros-lock: missing runtime libraries (add them to packages.txt)" >&2; exit 1
+fi
+# PAM checks the password by these rules (with none it would refuse every
+# password, and the screen could not be unlocked), and since the lock screen
+# is not root, through pam_unix's helper
+chmod 644 "$ROOT/etc/pam.d/toros-lock"
+grep -q '^auth .*system-auth' "$ROOT/etc/pam.d/toros-lock" && grep -q '^auth .*pam_unix.so' "$ROOT/etc/pam.d/system-auth"
+[ -u "$ROOT/usr/bin/unix_chkpwd" ] || { echo "unix_chkpwd is missing or not setuid" >&2; exit 1; }
+# what it shows: the wallpapers, the keyboard layout's flag, the icons
+[ -x "$ROOT/usr/bin/toros-layout" ]
+for i in status/avatar-default actions/go-next actions/view-reveal actions/view-conceal status/battery-level-50 \
+	devices/input-keyboard; do
+	[ -s "$ROOT/usr/share/icons/Adwaita/symbolic/$i-symbolic.svg" ] || { echo "toros-lock: no icon $i" >&2; exit 1; }
+done
+# (its keyboard for the pointer is built from the on-screen keyboard's rows
+# and icons, keyboard/; the status panel's button with the same icon opens
+# that one)
+grep -q 'action = Exec("toros-keyboard")' "$ROOT/etc/xdg/sfwbar/sfwbar.config"
+# going to sleep locks first: zzz runs the hook before it suspends
+[ -x "$ROOT/etc/zzz.d/suspend/10-toros-lock" ] && grep -q '/etc/zzz.d/suspend/\*' "$ROOT/usr/bin/zzz"
+# nothing still asks for the lock screen that was there before
+if grep -rn swaylock "$ROOT/etc/xdg" "$ROOT/usr/share/sfwbar" "$ROOT/usr/bin/toros-theme"; then
+	echo "swaylock is still used (it is toros-lock now)" >&2; exit 1
+fi
+
 step "Apps and portals"
 # The file manager would start a file indexer (localsearch) that reads the
 # whole home directory; without these files it searches by itself instead.
@@ -276,14 +439,19 @@ chown -R 0:0 "$ROOT/etc/polkit-1/rules.d" && chmod 755 "$ROOT/etc/polkit-1/rules
 for f in usr/share/dbus-1/services/org.freedesktop.impl.portal.desktop.wlr.service \
 	usr/share/dbus-1/system-services/org.freedesktop.PolicyKit1.service \
 	usr/share/applications/org.gnome.TextEditor.desktop usr/share/applications/org.gnome.Loupe.desktop \
-	usr/share/applications/org.gnome.Papers.desktop usr/share/applications/com.ezratweaver.AdwBluetooth.desktop; do
+	usr/share/applications/org.gnome.Papers.desktop; do
 	[ -e "$ROOT/$f" ] || { echo "missing: /$f" >&2; exit 1; }
 done
+# The overview shows every entry that does not hide itself, and a package may
+# bring one along unasked. Wi-Fi and Bluetooth are in the panel and have none.
+MENU="foot io.github.oynaz.Oynaz org.gnome.Loupe org.gnome.Nautilus org.gnome.Papers org.gnome.TextEditor
+	org.toros.Keyboard org.toros.Shot thorium-browser toros-picker zapret-gtk"
+shown=$(cd "$ROOT/usr/share/applications" && grep -L -E '^(NoDisplay|Hidden)=true|^OnlyShowIn=' *.desktop | sed 's/\.desktop$//' | sort | xargs)
+[ "$shown" = "$(echo $MENU | tr ' ' '\n' | sort | xargs)" ] || { echo "the application menu is not the expected one: $shown" >&2; exit 1; }
 
 step "Installing adw-gtk3"
-# The GTK3 theme that looks like libadwaita (the panel and the Bluetooth
-# manager are GTK3). Not packaged by Void; the release archive holds the
-# finished theme, light and dark.
+# The GTK3 theme that looks like libadwaita (the panel is GTK3). Not packaged
+# by Void; the release archive holds the finished theme, light and dark.
 ADW_GTK3_VER=6.5
 ADW_GTK3_SHA=a81780fadfc432be0fc3d89c4ebb41aa28e4f032d42c36f9789c57dd10cfa41c
 ADW_GTK3_TAR="$OUT/cache/adw-gtk3v$ADW_GTK3_VER.tar.xz"
@@ -305,7 +473,7 @@ for scheme in light dark; do
 	if grep -rn '@[a-z_]*@' "$ROOT/tmp/theme-check"; then
 		echo "toros-theme: a colour is missing from the palette ($scheme)" >&2; exit 1
 	fi
-	for f in .config/fuzzel/fuzzel.ini .config/mako/config .config/foot/foot.ini .config/swaylock/config \
+	for f in .config/fuzzel/fuzzel.ini .config/mako/config .config/foot/foot.ini \
 		.config/gtk-3.0/gtk.css .config/gtk-4.0/gtk.css .local/share/themes/torOS/labwc/themerc \
 		.local/share/themes/torOS/labwc/max_toggled_hover-inactive.svg; do
 		[ -s "$ROOT/tmp/theme-check/$f" ] || { echo "toros-theme did not write $f ($scheme)" >&2; exit 1; }
@@ -324,11 +492,8 @@ ln -sf /usr/share/examples/pipewire/20-pipewire-pulse.conf "$ROOT/etc/pipewire/p
 for f in 50-pipewire.conf 99-pipewire-default.conf; do
 	[ -e "$ROOT/usr/share/alsa/alsa.conf.d/$f" ] && ln -sf "/usr/share/alsa/alsa.conf.d/$f" "$ROOT/etc/alsa/conf.d/"
 done
-# blueman runs on demand only: no login autostart, and the menu entry goes
-# through the wrapper that stops its background processes afterwards
-rm -f "$ROOT/etc/xdg/autostart/blueman.desktop"
-sed -i 's|^Exec=.*|Exec=toros-bluetooth-manager|' "$ROOT/usr/share/applications/blueman-manager.desktop"
 in_root fc-cache -f >/dev/null 2>&1 || true
+in_root fc-match -f '%{family}\n' emoji | grep -qx 'Apple Color Emoji' || { echo "emoji are not drawn with Apple Color Emoji" >&2; exit 1; }
 in_root gtk-update-icon-cache -q -f /usr/share/icons/Adwaita 2>/dev/null || true
 
 step "Creating user $USER_NAME"

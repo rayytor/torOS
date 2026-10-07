@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Emoji and clipboard: a clipboard with a smiling face on its sheet, drawn
+     the way GNOME draws application icons. -->
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+ <linearGradient id="a" x1="20" x2="108" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#63452c" offset="0"/>
+  <stop stop-color="#986a44" offset=".05"/>
+  <stop stop-color="#865e3c" offset=".1"/>
+  <stop stop-color="#865e3c" offset=".9"/>
+  <stop stop-color="#986a44" offset=".95"/>
+  <stop stop-color="#63452c" offset="1"/>
+ </linearGradient>
+ <linearGradient id="b" x1="64" x2="64" y1="42" y2="98" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#f9f06b" offset="0"/>
+  <stop stop-color="#f5c211" offset="1"/>
+ </linearGradient>
+ <!-- board -->
+ <rect x="20" y="30" width="88" height="90" rx="8" fill="url(#a)"/>
+ <rect x="20" y="14" width="88" height="100" rx="8" fill="#b5835a"/>
+ <!-- sheet -->
+ <rect x="28" y="26" width="72" height="82" rx="3" fill="#deddda"/>
+ <rect x="28" y="24" width="72" height="82" rx="3" fill="#f6f5f4"/>
+ <!-- clip -->
+ <rect x="42" y="12" width="44" height="22" rx="5" fill="#5e5c64"/>
+ <rect x="42" y="8" width="44" height="22" rx="5" fill="#9a9996"/>
+ <rect x="54" y="14" width="20" height="8" rx="4" fill="#5e5c64"/>
+ <!-- face -->
+ <circle cx="64" cy="72" r="28" fill="#e5a50a"/>
+ <circle cx="64" cy="70" r="28" fill="url(#b)"/>
+ <g fill="#63452c">
+  <ellipse cx="54" cy="63" rx="3.500" ry="5"/>
+  <ellipse cx="74" cy="63" rx="3.500" ry="5"/>
+  <path d="m48 74c1.500 8 8 14 16 14s14.500-6 16-14z"/>
+ </g>
+</svg>

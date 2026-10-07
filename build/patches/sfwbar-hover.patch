@@ -1,27 +1,50 @@
---- a/src/gui/basewidget.c	2026-10-05 07:21:34.845215875 +0300
-+++ b/src/gui/basewidget.c	2026-10-05 07:21:34.852838759 +0300
-@@ -877,6 +877,20 @@
+--- a/src/gui/basewidget.c	2026-03-18 10:53:36.000000000 +0300
++++ b/src/gui/basewidget.c	2026-10-06 20:52:45.085664861 +0300
+@@ -877,6 +877,43 @@
        &base_widget_double_click_time, NULL);
  }
  
 +/* torOS: give every widget a :hover state (stock sfwbar only has it on real
-+ * buttons), so clickable rows and labels can react to the pointer in CSS */
++ * buttons), so clickable rows and labels can react to the pointer in CSS.
++ * The widget inside gets the state too: it is the one a style names
++ * ("label#clock:hover"), and GTK does not hand this state down to it. */
++static void base_widget_set_hover ( GtkWidget *self, gboolean hover )
++{
++  GtkWidget *child = base_widget_get_child(self);
++
++  if(hover)
++  {
++    gtk_widget_set_state_flags(self, GTK_STATE_FLAG_PRELIGHT, FALSE);
++    if(child)
++      gtk_widget_set_state_flags(child, GTK_STATE_FLAG_PRELIGHT, FALSE);
++  }
++  else
++  {
++    gtk_widget_unset_state_flags(self, GTK_STATE_FLAG_PRELIGHT);
++    if(child)
++      gtk_widget_unset_state_flags(child, GTK_STATE_FLAG_PRELIGHT);
++  }
++}
++
 +static gboolean base_widget_hover ( GtkWidget *self, GdkEventCrossing *ev,
 +    gpointer d )
 +{
-+  if(ev->detail == GDK_NOTIFY_INFERIOR)
-+    return FALSE;
-+  if(ev->type == GDK_ENTER_NOTIFY)
-+    gtk_widget_set_state_flags(self, GTK_STATE_FLAG_PRELIGHT, FALSE);
-+  else
-+    gtk_widget_unset_state_flags(self, GTK_STATE_FLAG_PRELIGHT);
++  if(ev->detail != GDK_NOTIFY_INFERIOR)
++    base_widget_set_hover(self, ev->type == GDK_ENTER_NOTIFY);
 +  return FALSE;
++}
++
++/* A pop-up window that closes, or changes size (sfwbar then builds it anew),
++ * takes its widgets away from under the pointer without telling them */
++static void base_widget_hover_end ( GtkWidget *self, gpointer d )
++{
++  base_widget_set_hover(self, FALSE);
 +}
 +
  static void base_widget_init ( BaseWidget *self )
  {
    BaseWidgetPrivate *priv;
-@@ -899,7 +913,12 @@
+@@ -899,7 +936,13 @@
    g_ptr_array_add(base_widgets, self);
  
    gtk_widget_add_events(GTK_WIDGET(self),
@@ -32,6 +55,7 @@
 +      G_CALLBACK(base_widget_hover), NULL);
 +  g_signal_connect(self, "leave-notify-event",
 +      G_CALLBACK(base_widget_hover), NULL);
++  g_signal_connect(self, "unmap", G_CALLBACK(base_widget_hover_end), NULL);
    if(!gtk_drag_dest_get_target_list(GTK_WIDGET(self)))
      gtk_drag_dest_set(GTK_WIDGET(self), GTK_DEST_DEFAULT_ALL, NULL, 0,
          GDK_ACTION_MOVE);

@@ -1,5 +1,5 @@
 # torOS colours, as RRGGBB. This is the only place they are written down:
-# toros-theme turns this file into the labwc, fuzzel, mako, foot, swaylock and
+# toros-theme turns this file into the labwc, fuzzel, mako, foot and
 # GTK settings, so the parts of the desktop cannot drift apart.
 #
 # The greys are libadwaita 1.9's and adw-gtk3's own, so everything matches

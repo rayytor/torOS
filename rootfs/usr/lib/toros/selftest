@@ -53,7 +53,6 @@ sec desktop
 for p in labwc sfwbar pipewire wireplumber swaybg; do
 	pgrep -f "(^|/)$p( |\$)|bin/$p" >/dev/null && echo "$p: running" || echo "$p: NOT running"
 done
-pgrep -f blueman >/dev/null && echo "blueman: running (unexpected, should be on demand)"
 pgrep -f 'pipewire -c pipewire-pulse.conf' >/dev/null && echo "pipewire-pulse: running" || echo "pipewire-pulse: NOT running"
 if pid=$(pgrep -x Xwayland); then
 	echo "Xwayland: running for $(ps -o etimes= -p "$pid") s, private memory $(awk '/^Pss_Anon|^Pss_Shmem/ {s+=$2} END {print int(s/1024)}' "/proc/$pid/smaps_rollup") MB"
@@ -79,7 +78,7 @@ echo "remembered for the next start's bar: $(cat /var/lib/toros/splash-time 2>&1
 pgrep -x splash >/dev/null && echo "splash is STILL RUNNING" || echo "splash has ended (ok)"
 sec theme
 theme_state
-for f in .config/fuzzel/fuzzel.ini .config/mako/config .config/swaylock/config .config/gtk-3.0/gtk.css \
+for f in .config/fuzzel/fuzzel.ini .config/mako/config .config/gtk-3.0/gtk.css \
 	.config/gtk-4.0/gtk.css .local/share/themes/torOS/labwc/close-active.svg; do
 	[ -s "/home/$U/$f" ] || echo "MISSING: ~/$f"
 done
@@ -104,7 +103,7 @@ sv down zapret >/dev/null; sleep 3; nft list tables; used_mb
 
 # Phase 4: apps, their start times, and the helpers that start on demand
 sec phase4
-for a in nautilus toros-files gnome-text-editor loupe papers adw-bluetooth zapret-gtk thorium-browser oynaz; do
+for a in nautilus toros-files gnome-text-editor loupe papers zapret-gtk thorium-browser oynaz; do
 	command -v "$a" >/dev/null || echo "MISSING app: $a"
 done
 tr '\n' ' ' < "/home/$U/.config/thorium/thorium-flags.conf"; echo
@@ -124,6 +123,106 @@ session 'pkexec /usr/bin/true' >/dev/null 2>&1 </dev/null \
 	&& echo "pkexec of other commands: ALLOWED (wrong)" || echo "pkexec of other commands is refused: ok"
 echo "--- panel log"; tail -n 5 "/home/$U/.local/state/toros/panel.log" 2>/dev/null
 used_mb
+
+# Emoji picker and clipboard history: the watcher runs and files what is
+# copied, and how long the picker takes from start to its first picture
+sec picker
+command -v toros-picker >/dev/null || echo "MISSING app: toros-picker"
+if pid=$(pgrep -x toros-clipd); then
+	echo "toros-clipd: running, $(awk '/^Pss:/ {print $2}' "/proc/$pid/smaps_rollup") kB"
+else
+	echo "toros-clipd: NOT running"
+fi
+session 'wl-copy "toros selftest" >/dev/null 2>&1'; sleep 1
+echo "clipboard history: $(grep -lx 'toros selftest' "$R"/toros-clip/*.txt 2>/dev/null | wc -l) item(s) with the copied text (1 expected)"
+echo "emoji font: $(session 'fc-match emoji')"
+for run in first second; do
+	t0=$(date +%s%N)
+	session 'TOROS_PICKER_BENCH=1 toros-picker' 2>&1
+	echo "$run: toros-picker drawn after $(( ($(date +%s%N) - t0) / 1000000 )) ms"
+done
+
+# Screenshots: how long the frozen screen takes from start to its first
+# picture, and that a screenshot lands in Pictures/Screenshots and on the
+# clipboard (its notification is gone again after the sleep)
+sec shot
+for a in toros-shot grim wf-recorder; do
+	command -v "$a" >/dev/null || echo "MISSING app: $a"
+done
+for run in first second; do
+	t0=$(date +%s%N)
+	session 'TOROS_SHOT_BENCH=1 toros-shot' 2>&1
+	echo "$run: toros-shot's frozen screen drawn after $(( ($(date +%s%N) - t0) / 1000000 )) ms"
+done
+session 'toros-shot screen >/dev/null 2>&1 &'; sleep 8
+echo "screenshot: $(ls "/home/$U/Pictures/Screenshots" 2>/dev/null | grep -c '\.png$') file(s), $(session 'wl-paste -l' 2>/dev/null | grep -c '^image/png$') picture(s) on the clipboard (1 and 1 expected)"
+pgrep -x toros-shot >/dev/null && echo "toros-shot is STILL RUNNING" || echo "toros-shot has ended (ok)"
+
+# The overview (the Super key): how long it takes from start to the picture
+# with the applications in it, and that nothing of it stays behind
+sec overview
+for run in first second; do
+	t0=$(date +%s%N)
+	session 'TOROS_OVERVIEW_BENCH=1 toros-overview' 2>&1
+	echo "$run: toros-overview drawn with its tiles after $(( ($(date +%s%N) - t0) / 1000000 )) ms"
+done
+pgrep -x toros-overview >/dev/null && echo "toros-overview is STILL RUNNING" || echo "toros-overview has ended (ok)"
+
+# The keyboard on the screen: how long it takes from start to its first
+# picture, and that the compositor lets it type
+sec keyboard
+for run in first second; do
+	t0=$(date +%s%N)
+	session 'TOROS_KEYBOARD_BENCH=1 toros-keyboard' 2>&1 | grep -v -e MESA -e 'G[ds]k-WARNING' -e '^$'
+	echo "$run: toros-keyboard drawn after $(( ($(date +%s%N) - t0) / 1000000 )) ms"
+done
+pgrep -x toros-keyboard >/dev/null && echo "toros-keyboard is STILL RUNNING" || echo "toros-keyboard has ended (ok)"
+
+# The lock screen: how long it takes from start to the locked screen with its
+# first picture (it then unlocks by itself) and that nothing of it stays
+# behind. Then going to sleep (zzz -n runs the hooks and sleeps five seconds
+# instead): it locks, a wrong password does not unlock and the image's first
+# password does (typed through the compositor, as the keyboard would).
+sec lock
+for run in first second; do
+	t0=$(date +%s%N)
+	# (no pipe to read what it says: the lock screen holds it open after
+	# toros-lock has come back)
+	session 'TOROS_LOCK_BENCH=1 toros-lock >/dev/null 2>&1'
+	echo "$run: toros-lock locked and drawn after $(( ($(date +%s%N) - t0) / 1000000 )) ms"
+	sleep 1
+done
+pgrep -x toros-lock >/dev/null && echo "toros-lock is STILL RUNNING" || echo "toros-lock has ended (ok)"
+zzz -n >/dev/null 2>&1 &
+sleep 3
+if lock=$(pgrep -x -n toros-lock); then
+	echo "going to sleep: locked (ok), the lock screen uses $(awk '/^Pss:/ {print int($2/1024)}' "/proc/$lock/smaps_rollup") MB"
+	session 'wtype wrong -k Return'; sleep 5
+	pgrep -x toros-lock >/dev/null && echo "a wrong password: still locked (ok)" || echo "a wrong password UNLOCKED"
+	session 'wtype toros -k Return'; sleep 3
+	if pgrep -x toros-lock >/dev/null; then
+		echo "the password did NOT unlock"; pkill -x -o toros-lock; pkill -x toros-lock
+	else
+		echo "the password: unlocked (ok)"
+	fi
+else
+	echo "going to sleep: NOT locked"
+fi
+wait
+
+# Keyboard layout: toros-layout puts another layout first and labwc reads its
+# environment again (the panel's flag follows the keyboard)
+sec layout
+log="/home/$U/.local/state/toros/session.log"
+before=$(grep -c "read environment file /home/$U/.config/labwc/environment" "$log" 2>/dev/null)
+session 'toros-layout next'; sleep 1
+echo "after 'toros-layout next': $(session 'toros-layout get') ($(sed -n 's/^XKB_DEFAULT_LAYOUT=//p' "/home/$U/.config/labwc/environment" 2>&1)), labwc read it $(( $(grep -c "read environment file /home/$U/.config/labwc/environment" "$log" 2>/dev/null) - before )) time(s) (tr and 1 expected)"
+session 'toros-layout us'; sleep 1
+echo "back to: $(session 'toros-layout get')"
+for l in $(sed -n 's/^XKB_DEFAULT_LAYOUT=//p' /etc/xdg/labwc/environment | tr ',' ' '); do
+	[ -s "/usr/share/toros/flags/$l.svg" ] || echo "MISSING flag: $l"
+done
+grep -q 'Hold' /usr/share/sfwbar/toros-session.widget && echo "session menu: rows are held (ok)" || echo "session menu: NO held rows"
 
 # Open a terminal so the screenshot taken by test/qemu.sh shows a window
 if [ -e /sys/firmware/qemu_fw_cfg/by_name/opt/toros/selftest ]; then

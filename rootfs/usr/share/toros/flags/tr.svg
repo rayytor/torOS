@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="15" viewBox="0 0 20 15">
+  <!-- torOS keyboard-layout flag for the status panel: the crescent and star
+       in the proportions of the flag law, moved a little towards the middle
+       for this 4:3 shape -->
+  <clipPath id="c"><rect width="20" height="15" rx="3"/></clipPath>
+  <g clip-path="url(#c)">
+    <rect width="20" height="15" fill="#e30a17"/>
+    <circle cx="7.90" cy="7.5" r="3.75" fill="#fff"/>
+    <circle cx="8.84" cy="7.5" r="3.00" fill="#e30a17"/>
+    <polygon points="10.69,7.50 12.09,7.05 12.09,5.57 12.95,6.76 14.35,6.31 13.49,7.50 14.35,8.69 12.95,8.24 12.09,9.43 12.09,7.95" fill="#fff"/>
+  </g>
+  <rect x="0.5" y="0.5" width="19" height="14" rx="2.5" fill="none" stroke="#000" stroke-opacity="0.18"/>
+</svg>

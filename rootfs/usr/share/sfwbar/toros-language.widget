@@ -1,0 +1,29 @@
+#Api2
+# torOS keyboard layout on the status panel: the flag of the layout in use
+# (/usr/share/toros/flags/CODE.svg, CODE as XKB names the layout: us, tr).
+# A click goes to the next layout, as Super+Space and Alt+Shift do
+# (toros-layout). The module tells the first layout of the keyboard's list,
+# and toros-layout changes layout by putting another one first.
+
+module("xkbmap")
+
+Private {
+
+# A program that types for the user (the emoji picker's wtype) brings a
+# keyboard without a layout name for a moment: keep the flag that was there.
+  Var XLangCode = "us";
+
+  Function XLangFlag() {
+    If Layout() != ""
+      XLangCode = Lower(XkbMap(Layout(), "description", "name"));
+    Return "/usr/share/toros/flags/" + XLangCode + ".svg";
+  }
+
+  export image "language" {
+    style = "language";
+    value = XLangFlag();
+    tooltip = "Keyboard: " + Layout() + "\nSuper+Space changes it";
+    action[LeftClick] = Exec("toros-layout next");
+    trigger = "language";
+  }
+}

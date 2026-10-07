@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/toros/Lock">
+    <file>icons/shift-symbolic.svg</file>
+    <file>icons/shift-on-symbolic.svg</file>
+    <file>icons/caps-symbolic.svg</file>
+    <file>icons/backspace-symbolic.svg</file>
+    <file>icons/return-symbolic.svg</file>
+  </gresource>
+</gresources>

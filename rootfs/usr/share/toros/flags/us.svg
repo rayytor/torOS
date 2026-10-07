@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="15" viewBox="0 0 20 15">
+  <!-- torOS keyboard-layout flag for the status panel, drawn for 20 pixels:
+       seven stripes instead of thirteen and eight dots for the stars -->
+  <clipPath id="c"><rect width="20" height="15" rx="3"/></clipPath>
+  <g clip-path="url(#c)">
+    <rect width="20" height="15" fill="#fff"/>
+    <rect y="0.000" width="20" height="2.143" fill="#b22234"/>
+    <rect y="4.286" width="20" height="2.143" fill="#b22234"/>
+    <rect y="8.571" width="20" height="2.143" fill="#b22234"/>
+    <rect y="12.857" width="20" height="2.143" fill="#b22234"/>
+    <rect width="9" height="8.571" fill="#3c3b6e"/>
+    <circle cx="2" cy="1.75" r="0.62" fill="#fff"/>
+    <circle cx="4.5" cy="1.75" r="0.62" fill="#fff"/>
+    <circle cx="7" cy="1.75" r="0.62" fill="#fff"/>
+    <circle cx="3.25" cy="4.29" r="0.62" fill="#fff"/>
+    <circle cx="5.75" cy="4.29" r="0.62" fill="#fff"/>
+    <circle cx="2" cy="6.83" r="0.62" fill="#fff"/>
+    <circle cx="4.5" cy="6.83" r="0.62" fill="#fff"/>
+    <circle cx="7" cy="6.83" r="0.62" fill="#fff"/>
+  </g>
+  <rect x="0.5" y="0.5" width="19" height="14" rx="2.5" fill="none" stroke="#000" stroke-opacity="0.18"/>
+</svg>

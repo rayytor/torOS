@@ -1,0 +1,3 @@
+#%PAM-1.0
+# The lock screen (toros-lock) asks for the account's password, as a login does
+auth      include   system-auth

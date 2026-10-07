@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/toros/Shot">
+    <file>icons/photo-symbolic.svg</file>
+    <file>icons/video-symbolic.svg</file>
+    <file>icons/rect-symbolic.svg</file>
+    <file>icons/free-symbolic.svg</file>
+    <file>icons/screen-symbolic.svg</file>
+    <file>icons/close-symbolic.svg</file>
+    <file>icons/stop-symbolic.svg</file>
+    <file>icons/trash-symbolic.svg</file>
+    <file>icons/sound-symbolic.svg</file>
+    <file>icons/muted-symbolic.svg</file>
+    <file>icons/marker-symbolic.svg</file>
+    <file>icons/pen-symbolic.svg</file>
+    <file>icons/eraser-symbolic.svg</file>
+    <file>icons/undo-symbolic.svg</file>
+    <file>icons/redo-symbolic.svg</file>
+  </gresource>
+</gresources>

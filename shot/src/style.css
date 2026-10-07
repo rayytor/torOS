@@ -1,0 +1,243 @@
+/* toros-shot. The @sh_ colours are defined in ui.rs, from
+   /usr/share/toros/palette on torOS and from the GTK theme elsewhere.
+   (GTK has style classes of its own, "top" and "bottom" among them: a class
+   here must not have the name of one.) */
+
+/* the windows over the screen: the frozen screen and the recording frame */
+window.shot-screen {
+  background: none;
+}
+
+.bar,
+.strip {
+  background-color: @sh_surface;
+  color: @sh_fg;
+  border: 1px solid @sh_border;
+  font-size: 13px;
+}
+
+.bar button,
+.strip button,
+.tools button {
+  all: unset;
+  min-width: 30px;
+  min-height: 30px;
+  border-radius: 9px;
+  transition: background-color 120ms ease-out, color 120ms ease-out;
+}
+.bar button:hover,
+.strip button:hover,
+.tools button:hover {
+  background-color: @sh_hover;
+}
+.bar button:checked {
+  background-color: alpha(@sh_accent, 0.18);
+  color: @sh_accent_text;
+}
+.bar button:checked:hover {
+  background-color: alpha(@sh_accent, 0.28);
+}
+.bar button:disabled {
+  color: alpha(@sh_dim, 0.5);
+}
+.bar button:active,
+.strip button:active,
+.tools button:active {
+  background-color: alpha(@sh_fg, 0.16);
+}
+.tools button:disabled {
+  color: alpha(@sh_dim, 0.5);
+}
+
+.rule {
+  min-width: 1px;
+  margin: 6px 5px;
+  background-color: @sh_border;
+}
+
+/* the bar at the top of the frozen screen */
+.bar {
+  padding: 5px;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px alpha(black, 0.35);
+}
+.modes {
+  padding: 2px;
+  border-radius: 10px;
+  background-color: @sh_field;
+}
+.modes button {
+  min-height: 26px;
+  padding: 0 11px 0 9px;
+  border-radius: 8px;
+  color: @sh_dim;
+}
+/* (the field these sit on has the colour of @sh_hover in the light style) */
+.modes button:hover {
+  background-color: alpha(@sh_fg, 0.08);
+  color: @sh_fg;
+}
+.modes button:checked {
+  background-color: @sh_surface;
+  color: @sh_fg;
+  box-shadow: 0 1px 2px alpha(black, 0.18);
+}
+.modes button:checked:hover {
+  background-color: mix(@sh_surface, @sh_fg, 0.06);
+}
+.hint {
+  padding: 3px 11px;
+  border-radius: 11px;
+  background-color: alpha(black, 0.6);
+  color: white;
+  font-size: 12px;
+}
+
+/* the strip beside the area that is recorded */
+.strip {
+  padding: 4px;
+  border-radius: 19px;
+  box-shadow: 0 3px 12px alpha(black, 0.3);
+}
+.strip button {
+  border-radius: 15px;
+}
+.strip button.start {
+  padding: 0 16px;
+  background-color: #e01b24;
+  color: white;
+  font-weight: 600;
+}
+.strip button.start:hover {
+  background-color: mix(#e01b24, white, 0.16);
+}
+.strip button.start:active {
+  background-color: mix(#e01b24, black, 0.14);
+}
+.dot {
+  min-width: 10px;
+  min-height: 10px;
+  margin-left: 8px;
+  margin-right: 4px;
+  border-radius: 5px;
+  background-color: alpha(@sh_dim, 0.6);
+  transition: background-color 200ms ease-out;
+}
+.strip.on .dot {
+  background-color: #e01b24;
+}
+.time {
+  min-width: 38px;
+  margin-right: 4px;
+  font-feature-settings: "tnum";
+}
+.strip button:checked {
+  background-color: alpha(@sh_accent, 0.2);
+  color: @sh_accent_text;
+}
+.strip button:checked:hover {
+  background-color: alpha(@sh_accent, 0.3);
+}
+/* (sound or none: the icon says which) */
+.strip button.quiet:checked {
+  background: none;
+  color: @sh_fg;
+}
+.strip button.quiet:hover {
+  background-color: @sh_hover;
+}
+.strip button.quiet:active {
+  background-color: alpha(@sh_fg, 0.16);
+}
+.strip button.stop {
+  color: #e01b24;
+}
+.strip button.stop:hover {
+  background-color: alpha(#e01b24, 0.14);
+}
+.strip button.stop:active {
+  background-color: alpha(#e01b24, 0.26);
+}
+
+/* the pulse (see recorder.rs): two pixels that change, to no visible effect */
+.pulse {
+  min-width: 2px;
+  min-height: 2px;
+  background-color: alpha(black, 0.004);
+}
+.pulse.beat {
+  background-color: alpha(black, 0.008);
+}
+
+/* the editor */
+window.shot-editor {
+  background-color: @sh_window;
+  color: @sh_fg;
+  font-size: 13px;
+}
+.tools {
+  padding: 6px 8px;
+  border-bottom: 1px solid alpha(@sh_border, 0.7);
+  background-color: @sh_surface;
+}
+.tools button:checked {
+  background-color: alpha(@sh_accent, 0.18);
+  color: @sh_accent_text;
+}
+.tools button:checked:hover {
+  background-color: alpha(@sh_accent, 0.28);
+}
+/* the inks: a drop of colour, with a ring around the chosen one */
+.tools button.swatch {
+  min-width: 28px;
+  min-height: 28px;
+  margin: 1px 0;
+  border-radius: 14px;
+  background: none;
+  transition: box-shadow 120ms ease-out;
+}
+.ink {
+  min-width: 16px;
+  min-height: 16px;
+  border-radius: 8px;
+  transition: min-width 120ms ease-out, min-height 120ms ease-out, border-radius 120ms ease-out;
+}
+.tools button.swatch:hover .ink {
+  min-width: 20px;
+  min-height: 20px;
+  border-radius: 10px;
+}
+.tools button.swatch:checked {
+  background: none;
+  box-shadow: inset 0 0 0 2px alpha(@sh_fg, 0.75);
+}
+.ink0 {
+  background-color: #f5c211;
+}
+.ink1 {
+  background-color: #26a269;
+}
+.ink2 {
+  background-color: #e01b24;
+}
+.ink3 {
+  background-color: #1c71d8;
+}
+.tools button.done {
+  padding: 0 16px;
+  background-color: @sh_accent;
+  color: @sh_accent_fg;
+  font-weight: 600;
+}
+.tools button.done:hover {
+  background-color: mix(@sh_accent, white, 0.14);
+}
+.tools button.done:active {
+  background-color: mix(@sh_accent, black, 0.12);
+}
+.stage {
+  padding: 14px;
+}
+.sheet {
+  box-shadow: 0 0 0 1px alpha(@sh_border, 0.9), 0 2px 8px alpha(black, 0.12);
+}

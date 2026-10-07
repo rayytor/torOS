@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/toros/Picker">
+    <file>icons/emoji-symbolic.svg</file>
+    <file>icons/clipboard-symbolic.svg</file>
+    <file>icons/recent-symbolic.svg</file>
+    <file>icons/smileys-symbolic.svg</file>
+    <file>icons/people-symbolic.svg</file>
+    <file>icons/animals-symbolic.svg</file>
+    <file>icons/food-symbolic.svg</file>
+    <file>icons/travel-symbolic.svg</file>
+    <file>icons/activities-symbolic.svg</file>
+    <file>icons/objects-symbolic.svg</file>
+    <file>icons/symbols-symbolic.svg</file>
+    <file>icons/flags-symbolic.svg</file>
+  </gresource>
+</gresources>

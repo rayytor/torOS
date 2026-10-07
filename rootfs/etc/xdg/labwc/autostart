@@ -5,8 +5,11 @@
 
 # Let D-Bus-activated services (mako, portals) find the Wayland display.
 # GTK_A11Y / NO_AT_BRIDGE: or every service D-Bus starts would bring up the
-# accessibility bus (15 MB).
-dbus-update-activation-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE GTK_A11Y NO_AT_BRIDGE
+# accessibility bus (15 MB). The other GTK settings from labwc's environment
+# go along, because D-Bus also starts Files, Text Editor and Image Viewer when
+# they are opened from the dock or the overview.
+dbus-update-activation-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE GTK_A11Y NO_AT_BRIDGE \
+	GTK_IM_MODULE ADW_DISABLE_PORTAL
 
 # Wallpaper, and the GTK settings that go with the light or dark choice
 toros-theme start &
@@ -16,13 +19,19 @@ pipewire >/dev/null 2>&1 &
 
 sfwbar -f /etc/xdg/sfwbar/sfwbar.config > "${XDG_STATE_HOME:-$HOME/.local/state}/toros/panel.log" 2>&1 &
 
-# Screen off after 10 minutes idle. Locking is manual (Super+L).
+# Clipboard history for the picker (Super+V, Super+. for emoji). Only this
+# small watcher keeps running; the picker's window starts when it is asked for.
+toros-clipd &
+
+# Screen off after 10 minutes idle. It is locked by Super+L and before the
+# laptop goes to sleep (toros-lock, /etc/zzz.d/suspend/10-toros-lock).
 swayidle -w \
 	timeout 600 'wlopm --off \*' \
 	resume 'wlopm --on \*' >/dev/null 2>&1 &
 
-# Read GTK4, libadwaita and the graphics driver into memory at the lowest
-# priority, so the first app starts as fast as the second.
+# Read GTK4, libadwaita, the graphics drivers and the apps (the browser most
+# of all) into memory at the lowest priority, so that the first start of an
+# app is as fast as a later one.
 nice -n 19 ionice -c 3 /usr/lib/toros/prewarm >/dev/null 2>&1 &
 
 # Boot-time marker for test/measure: seconds since kernel start when the session came up.

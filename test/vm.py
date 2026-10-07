@@ -12,7 +12,16 @@
                               one picture per change as out/vm-NAME-TTT.png (TTT = 1/100 s),
                               and says whether anything showed between the logo and the desktop
   test/vm.py click X Y [btn]  click at pixel X,Y of the 1280x800 guest screen (btn: left|right)
+  test/vm.py move X Y         move the pointer there without clicking (hover states)
+  test/vm.py drag X1 Y1 X2 Y2 [X3 Y3 ...] [hold]
+                              press at X1,Y1, move in steps to X2,Y2 (and on to further
+                              points) and let go (with "hold": keep the button down, to look
+                              at what a drag shows; "test/vm.py drag X Y X Y" lets go again)
+  test/vm.py hold X Y SECS    press the button at X,Y, keep it down for SECS seconds, let go
+                              (the session menu's rows that have to be held)
   test/vm.py key KEYS         press a key combo, e.g. meta_l-ret
+  test/vm.py keydown KEY      press a key and keep it down (KEY as QEMU names it: meta_l, spc)
+  test/vm.py keyup KEY        let it go again (to hold Super for a while before another key)
   test/vm.py type "TEXT"      type text (letters, digits, space, - . / _), then Enter
   test/vm.py running          exit 0 if the VM is still running
   test/vm.py stop
@@ -114,15 +123,42 @@ def main():
         Image.open(ppm).save(ppm[:-4] + ".png"); os.remove(ppm)
     elif cmd == "film":
         film(sys.argv[2], float(sys.argv[3]) if len(sys.argv) > 3 else 15)
-    elif cmd == "click":
+    elif cmd in ("click", "move"):
         x, y = int(sys.argv[2]), int(sys.argv[3])
         btn = sys.argv[4] if len(sys.argv) > 4 else "left"
         pos = [{"type": "abs", "data": {"axis": "x", "value": x * 32767 // W}},
                {"type": "abs", "data": {"axis": "y", "value": y * 32767 // H}}]
+        if cmd == "move":
+            qmp({"execute": "input-send-event", "arguments": {"events": pos}}); return
         ev = lambda down: {"execute": "input-send-event", "arguments": {"events":
               [{"type": "btn", "data": {"down": down, "button": btn}}]}}
         qmp({"execute": "input-send-event", "arguments": {"events": pos}}); time.sleep(0.3)
         qmp(ev(True)); time.sleep(0.1); qmp(ev(False))
+    elif cmd == "drag":
+        xy = [int(a) for a in sys.argv[2:] if a != "hold"]
+        points = list(zip(xy[0::2], xy[1::2]))
+        at = lambda x, y: {"execute": "input-send-event", "arguments": {"events": [
+              {"type": "abs", "data": {"axis": "x", "value": x * 32767 // W}},
+              {"type": "abs", "data": {"axis": "y", "value": y * 32767 // H}}]}}
+        btn = lambda down: {"execute": "input-send-event", "arguments": {"events":
+              [{"type": "btn", "data": {"down": down, "button": "left"}}]}}
+        qmp(at(*points[0])); time.sleep(0.3); qmp(btn(True)); time.sleep(0.1)
+        for (x1, y1), (x2, y2) in zip(points, points[1:]):
+            for i in range(1, 13):
+                qmp(at(x1 + (x2 - x1) * i // 12, y1 + (y2 - y1) * i // 12)); time.sleep(0.03)
+        time.sleep(0.2)
+        if "hold" not in sys.argv: qmp(btn(False))
+    elif cmd == "hold":
+        x, y = int(sys.argv[2]), int(sys.argv[3])
+        btn = lambda down: {"execute": "input-send-event", "arguments": {"events":
+              [{"type": "btn", "data": {"down": down, "button": "left"}}]}}
+        qmp({"execute": "input-send-event", "arguments": {"events": [
+              {"type": "abs", "data": {"axis": "x", "value": x * 32767 // W}},
+              {"type": "abs", "data": {"axis": "y", "value": y * 32767 // H}}]}})
+        time.sleep(0.3); qmp(btn(True)); time.sleep(float(sys.argv[4])); qmp(btn(False))
+    elif cmd in ("keydown", "keyup"):
+        qmp({"execute": "input-send-event", "arguments": {"events": [{"type": "key", "data":
+              {"down": cmd == "keydown", "key": {"type": "qcode", "data": sys.argv[2]}}}]}})
     elif cmd == "key":
         qmp({"execute": "human-monitor-command", "arguments": {"command-line": "sendkey " + sys.argv[2]}})
     elif cmd == "type":

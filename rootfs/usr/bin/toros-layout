@@ -1,0 +1,42 @@
+#!/bin/sh
+# torOS keyboard layout switch.
+#   toros-layout next    go to the next layout (Super+Space, Alt+Shift, a click
+#                        on the flag on the status panel)
+#   toros-layout CODE    go to that layout (us, tr)
+#   toros-layout get     print the layout in use
+#
+# The layouts are the ones in XKB_DEFAULT_LAYOUT in /etc/xdg/labwc/environment.
+# The one in use is always the first of the keyboard's list: to change it, the
+# list is written in another order to ~/.config/labwc/environment and labwc is
+# told to read its configuration again. The keyboard could change layout by
+# itself (XKB's grp: options), but then nothing outside the window that is
+# typed into is told, and the panel's flag would not follow.
+set -u
+
+SYSTEM=/etc/xdg/labwc/environment
+OWN="${XDG_CONFIG_HOME:-$HOME/.config}/labwc/environment"
+
+list() { sed -n 's/^XKB_DEFAULT_LAYOUT=//p' "$1" 2>/dev/null | tail -n 1 | tr ',' ' '; }
+
+all=$(list "$SYSTEM")
+[ -n "$all" ] || { echo "toros-layout: no XKB_DEFAULT_LAYOUT in $SYSTEM" >&2; exit 1; }
+now=$(list "$OWN" | cut -d' ' -f1)
+# (a layout that is no longer in the system's list does not count)
+case " $all " in *" $now "*) ;; *) now=${all%% *} ;; esac
+
+case "${1:-}" in
+get) echo "$now"; exit 0 ;;
+next)
+	to=$(echo "$all $all" | tr ' ' '\n' | sed -n "/^$now\$/{n;p;q}") ;;
+*)
+	to=${1:-}
+	case " $all " in *" $to "*) ;; *) echo "usage: toros-layout next | get | $(echo "$all" | sed "s| | \| |g")" >&2; exit 1 ;; esac ;;
+esac
+[ "$to" != "$now" ] || exit 0
+
+# the chosen layout first, the others after it in their usual order
+order=$to
+for l in $all; do [ "$l" = "$to" ] || order="$order,$l"; done
+mkdir -p "$(dirname "$OWN")"
+{ grep -v '^XKB_DEFAULT_LAYOUT=' "$OWN" 2>/dev/null; echo "XKB_DEFAULT_LAYOUT=$order"; } > "$OWN.new" && mv "$OWN.new" "$OWN"
+if [ -n "${LABWC_PID:-}" ]; then kill -HUP "$LABWC_PID"; else pkill -HUP -x labwc; fi

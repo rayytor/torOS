@@ -1,0 +1,15 @@
+#!/bin/sh
+# Lock the desktop before the laptop goes to sleep, whatever sends it there
+# (the lid, the session menu's "Suspend"): zzz runs this, as root, before it
+# suspends. toros-lock returns once the lock screen is drawn, so that is what
+# the screen shows when the laptop wakes up, and not the desktop.
+pid=$(pgrep -x labwc | head -n 1)
+[ -n "$pid" ] || exit 0
+user=$(stat -c %U "/proc/$pid")
+dir=/run/user/$(stat -c %u "/proc/$pid")
+bus=$(tr '\0' '\n' < "/proc/$pid/environ" | sed -n 's/^DBUS_SESSION_BUS_ADDRESS=//p')
+su "$user" -c "XDG_RUNTIME_DIR=$dir WAYLAND_DISPLAY=wayland-0 DBUS_SESSION_BUS_ADDRESS='$bus' /usr/bin/toros-lock" \
+	</dev/null >/dev/null 2>&1
+# the compositor gets a moment to put that picture on the screen
+sleep 0.2
+exit 0

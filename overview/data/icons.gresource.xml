@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/toros/Overview">
+    <file>icons/search-symbolic.svg</file>
+    <file>icons/close-symbolic.svg</file>
+  </gresource>
+</gresources>

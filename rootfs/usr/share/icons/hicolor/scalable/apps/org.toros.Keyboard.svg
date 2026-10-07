@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- On-screen keyboard: the keyboard itself, its rows of keys on a dark slab,
+     drawn the way GNOME draws application icons. -->
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+ <linearGradient id="a" x1="8" x2="120" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#241f31" offset="0"/>
+  <stop stop-color="#5e5c64" offset=".05"/>
+  <stop stop-color="#3d3846" offset=".1"/>
+  <stop stop-color="#3d3846" offset=".9"/>
+  <stop stop-color="#5e5c64" offset=".95"/>
+  <stop stop-color="#241f31" offset="1"/>
+ </linearGradient>
+ <!-- slab -->
+ <rect x="8" y="34" width="112" height="76" rx="10" fill="url(#a)"/>
+ <rect x="8" y="24" width="112" height="78" rx="10" fill="#5e5c64"/>
+ <!-- keys: their front edges, then their tops -->
+ <g fill="#3d3846">
+  <rect x="20" y="38" width="7" height="10" rx="2.5"/>
+  <rect x="29" y="38" width="7" height="10" rx="2.5"/>
+  <rect x="38" y="38" width="7" height="10" rx="2.5"/>
+  <rect x="47" y="38" width="7" height="10" rx="2.5"/>
+  <rect x="56" y="38" width="7" height="10" rx="2.5"/>
+  <rect x="65" y="38" width="7" height="10" rx="2.5"/>
+  <rect x="74" y="38" width="7" height="10" rx="2.5"/>
+  <rect x="83" y="38" width="7" height="10" rx="2.5"/>
+  <rect x="92" y="38" width="7" height="10" rx="2.5"/>
+  <rect x="101" y="38" width="7" height="10" rx="2.5"/>
+  <rect x="24.5" y="52" width="7" height="10" rx="2.5"/>
+  <rect x="33.5" y="52" width="7" height="10" rx="2.5"/>
+  <rect x="42.5" y="52" width="7" height="10" rx="2.5"/>
+  <rect x="51.5" y="52" width="7" height="10" rx="2.5"/>
+  <rect x="60.5" y="52" width="7" height="10" rx="2.5"/>
+  <rect x="69.5" y="52" width="7" height="10" rx="2.5"/>
+  <rect x="78.5" y="52" width="7" height="10" rx="2.5"/>
+  <rect x="87.5" y="52" width="7" height="10" rx="2.5"/>
+  <rect x="96.5" y="52" width="7" height="10" rx="2.5"/>
+  <rect x="20" y="66" width="11.5" height="10" rx="2.5"/>
+  <rect x="33.5" y="66" width="7" height="10" rx="2.5"/>
+  <rect x="42.5" y="66" width="7" height="10" rx="2.5"/>
+  <rect x="51.5" y="66" width="7" height="10" rx="2.5"/>
+  <rect x="60.5" y="66" width="7" height="10" rx="2.5"/>
+  <rect x="69.5" y="66" width="7" height="10" rx="2.5"/>
+  <rect x="78.5" y="66" width="7" height="10" rx="2.5"/>
+  <rect x="87.5" y="66" width="7" height="10" rx="2.5"/>
+  <rect x="96.5" y="66" width="11.5" height="10" rx="2.5"/>
+  <rect x="20" y="80" width="20.5" height="10" rx="2.5"/>
+  <rect x="42.5" y="80" width="43" height="10" rx="2.5"/>
+  <rect x="87.5" y="80" width="20.5" height="10" rx="2.5"/>
+ </g>
+ <g fill="#f6f5f4">
+  <rect x="20" y="36" width="7" height="10" rx="2.5"/>
+  <rect x="29" y="36" width="7" height="10" rx="2.5"/>
+  <rect x="38" y="36" width="7" height="10" rx="2.5"/>
+  <rect x="47" y="36" width="7" height="10" rx="2.5"/>
+  <rect x="56" y="36" width="7" height="10" rx="2.5"/>
+  <rect x="65" y="36" width="7" height="10" rx="2.5"/>
+  <rect x="74" y="36" width="7" height="10" rx="2.5"/>
+  <rect x="83" y="36" width="7" height="10" rx="2.5"/>
+  <rect x="92" y="36" width="7" height="10" rx="2.5"/>
+  <rect x="101" y="36" width="7" height="10" rx="2.5"/>
+  <rect x="24.5" y="50" width="7" height="10" rx="2.5"/>
+  <rect x="33.5" y="50" width="7" height="10" rx="2.5"/>
+  <rect x="42.5" y="50" width="7" height="10" rx="2.5"/>
+  <rect x="51.5" y="50" width="7" height="10" rx="2.5"/>
+  <rect x="60.5" y="50" width="7" height="10" rx="2.5"/>
+  <rect x="69.5" y="50" width="7" height="10" rx="2.5"/>
+  <rect x="78.5" y="50" width="7" height="10" rx="2.5"/>
+  <rect x="87.5" y="50" width="7" height="10" rx="2.5"/>
+  <rect x="96.5" y="50" width="7" height="10" rx="2.5"/>
+  <rect x="20" y="64" width="11.5" height="10" rx="2.5"/>
+  <rect x="33.5" y="64" width="7" height="10" rx="2.5"/>
+  <rect x="42.5" y="64" width="7" height="10" rx="2.5"/>
+  <rect x="51.5" y="64" width="7" height="10" rx="2.5"/>
+  <rect x="60.5" y="64" width="7" height="10" rx="2.5"/>
+  <rect x="69.5" y="64" width="7" height="10" rx="2.5"/>
+  <rect x="78.5" y="64" width="7" height="10" rx="2.5"/>
+  <rect x="87.5" y="64" width="7" height="10" rx="2.5"/>
+  <rect x="96.5" y="64" width="11.5" height="10" rx="2.5"/>
+  <rect x="20" y="78" width="20.5" height="10" rx="2.5"/>
+  <rect x="42.5" y="78" width="43" height="10" rx="2.5"/>
+  <rect x="87.5" y="78" width="20.5" height="10" rx="2.5"/>
+ </g>
+</svg>

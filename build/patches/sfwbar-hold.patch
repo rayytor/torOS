@@ -1,0 +1,157 @@
+diff -ru a/src/config/init.c b/src/config/init.c
+--- a/src/config/init.c	2026-10-07 16:49:29.624789935 +0300
++++ b/src/config/init.c	2026-10-07 16:50:14.977099989 +0300
+@@ -98,6 +98,8 @@
+       BASE_WIDGET_ACTION_CONFIGURE);
+   config_add_key(config_events, "DoubleClick",
+       BASE_WIDGET_ACTION_DOUBLECLICK);
++  config_add_key(config_events, "Hold",
++      BASE_WIDGET_ACTION_HOLD);
+ 
+   config_var_types = g_hash_table_new((GHashFunc)str_nhash,
+       (GEqualFunc)str_nequal);
+diff -ru a/src/gui/basewidget.c b/src/gui/basewidget.c
+--- a/src/gui/basewidget.c	2026-10-07 16:49:29.629411783 +0300
++++ b/src/gui/basewidget.c	2026-10-07 16:50:26.245225523 +0300
+@@ -194,6 +194,9 @@
+   g_clear_pointer(&priv->style, expr_cache_unref);
+   g_clear_pointer(&priv->tooltip, expr_cache_unref);
+   g_clear_pointer(&priv->actions, g_ptr_array_unref);
++  if(priv->hold_timer)
++    g_source_remove(priv->hold_timer);
++  priv->hold_timer = 0;
+   priv->trigger = NULL;
+ 
+   GTK_WIDGET_CLASS(base_widget_parent_class)->destroy(self);
+@@ -294,11 +297,84 @@
+         GINT_TO_POINTER(event), base_widget_attachment_event, NULL);
+ }
+ 
++/* torOS: action[Hold] runs once the pointer's button has been held on the
++ * widget for BASE_WIDGET_HOLD_MS (the session menu: nothing is switched off by
++ * a stray click). The widget and the one inside it are :active for as long,
++ * which is what a style fills the row with; letting go or leaving ends it. */
++#define BASE_WIDGET_HOLD_MS 2000
++
++static void base_widget_hold_end ( GtkWidget *self )
++{
++  BaseWidgetPrivate *priv;
++  GtkWidget *child;
++
++  priv = base_widget_get_instance_private(BASE_WIDGET(self));
++  if(!priv->hold_timer)
++    return;
++  g_source_remove(priv->hold_timer);
++  priv->hold_timer = 0;
++  gtk_widget_unset_state_flags(self, GTK_STATE_FLAG_ACTIVE);
++  if( (child = base_widget_get_child(self)) )
++    gtk_widget_unset_state_flags(child, GTK_STATE_FLAG_ACTIVE);
++}
++
++static gboolean base_widget_hold_tick ( gpointer self )
++{
++  BaseWidgetPrivate *priv;
++  GdkWindow *win;
++  GtkAllocation alloc;
++  gint x = 0, y = 0;
++
++  priv = base_widget_get_instance_private(BASE_WIDGET(self));
++  win = gtk_widget_get_window(self);
++  gtk_widget_get_allocation(self, &alloc);
++  if(win)
++    gdk_window_get_device_position(win, gdk_seat_get_pointer(
++          gdk_display_get_default_seat(gtk_widget_get_display(self))),
++        &x, &y, NULL);
++  if(gtk_widget_get_has_window(self))
++    alloc.x = alloc.y = 0;
++  if(!win || !gtk_widget_get_mapped(self) || x < alloc.x || y < alloc.y ||
++      x >= alloc.x + alloc.width || y >= alloc.y + alloc.height)
++  {
++    base_widget_hold_end(self);
++    return G_SOURCE_REMOVE;
++  }
++  if(g_get_monotonic_time() - priv->hold_start <
++      BASE_WIDGET_HOLD_MS * G_TIME_SPAN_MILLISECOND)
++    return G_SOURCE_CONTINUE;
++
++  base_widget_hold_end(self);
++  base_widget_action_exec(self, BASE_WIDGET_ACTION_HOLD, NULL);
++  return G_SOURCE_REMOVE;
++}
++
++static gboolean base_widget_hold_begin ( GtkWidget *self )
++{
++  BaseWidgetPrivate *priv;
++  GtkWidget *child;
++
++  if(!base_widget_check_action_slot(self, BASE_WIDGET_ACTION_HOLD))
++    return FALSE;
++
++  base_widget_hold_end(self);
++  priv = base_widget_get_instance_private(BASE_WIDGET(self));
++  priv->hold_start = g_get_monotonic_time();
++  priv->hold_timer = g_timeout_add(40, base_widget_hold_tick, self);
++  gtk_widget_set_state_flags(self, GTK_STATE_FLAG_ACTIVE, FALSE);
++  if( (child = base_widget_get_child(self)) )
++    gtk_widget_set_state_flags(child, GTK_STATE_FLAG_ACTIVE, FALSE);
++  return TRUE;
++}
++
+ static gboolean base_widget_button_press_event ( GtkWidget *self,
+     GdkEventButton *ev )
+ {
+   g_return_val_if_fail(IS_BASE_WIDGET(self),FALSE);
+ 
++  if(ev->type == GDK_BUTTON_PRESS && ev->button == 1)
++    return base_widget_hold_begin(self);
++
+   if(ev->type !=  GDK_2BUTTON_PRESS)
+     return FALSE;
+ 
+@@ -314,6 +390,9 @@
+   if(ev->type != GDK_BUTTON_RELEASE || ev->button < 1 || ev->button > 3 )
+     return FALSE;
+ 
++  if(ev->button == 1)
++    base_widget_hold_end(self);
++
+   return base_widget_action_exec(self, ev->button, (GdkEvent *)ev);
+ }
+ 
+@@ -912,6 +991,7 @@
+ static void base_widget_hover_end ( GtkWidget *self, gpointer d )
+ {
+   base_widget_set_hover(self, FALSE);
++  base_widget_hold_end(self);
+ }
+ 
+ static void base_widget_init ( BaseWidget *self )
+@@ -936,7 +1016,7 @@
+   g_ptr_array_add(base_widgets, self);
+ 
+   gtk_widget_add_events(GTK_WIDGET(self),
+-      GDK_BUTTON_RELEASE_MASK | GDK_SCROLL_MASK |
++      GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_SCROLL_MASK |
+       GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK);
+   g_signal_connect(self, "enter-notify-event",
+       G_CALLBACK(base_widget_hover), NULL);
+diff -ru a/src/gui/basewidget.h b/src/gui/basewidget.h
+--- a/src/gui/basewidget.h	2026-10-07 16:49:29.624913975 +0300
++++ b/src/gui/basewidget.h	2026-10-07 16:50:14.977054708 +0300
+@@ -50,6 +50,8 @@
+   gint dir;
+   gboolean local_state;
+   gboolean is_drag_dest;
++  guint hold_timer;
++  gint64 hold_start;
+   gboolean disabled;
+   guint user_state;
+   GdkRectangle rect;
+@@ -81,6 +83,7 @@
+   BASE_WIDGET_ACTION_DRAG = 8,
+   BASE_WIDGET_ACTION_CONFIGURE = 9,
+   BASE_WIDGET_ACTION_DOUBLECLICK = 10,
++  BASE_WIDGET_ACTION_HOLD = 11,
+   BASE_WIDGET_ACTION_LAST
+ };
+ 

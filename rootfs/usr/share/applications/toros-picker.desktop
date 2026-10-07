@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Emoji and clipboard
+Comment=Pick an emoji or paste something copied earlier
+Exec=toros-picker
+Icon=org.toros.Picker
+Categories=Utility;
+Keywords=emoji;smiley;clipboard;paste;history;

@@ -1,6 +1,8 @@
 # torOS labwc environment
+# The keyboard layouts. The first one is in use; toros-layout (Super+Space,
+# Alt+Shift, the flag on the status panel) puts another one first in
+# ~/.config/labwc/environment, which is read after this file.
 XKB_DEFAULT_LAYOUT=us,tr
-XKB_DEFAULT_OPTIONS=grp:alt_shift_toggle
 XCURSOR_THEME=Adwaita
 XCURSOR_SIZE=24
 # GTK4 compose handling without an input method daemon
@@ -11,6 +13,7 @@ NO_AT_BRIDGE=1
 # libadwaita apps read light/dark straight from the desktop settings that
 # toros-theme changes (there is no settings portal to ask)
 ADW_DISABLE_PORTAL=1
-# GTK4 apps: the OpenGL renderer starts faster and uses less memory than Vulkan
-# on this laptop's graphics chip
-GSK_RENDERER=ngl
+# GSK_RENDERER is left alone on purpose: GTK4 then draws with Vulkan on the
+# laptop, which there shows an app's window 120-160 ms sooner than OpenGL
+# ("ngl") and needs half the memory (Text Editor 33 MB against 66), and with
+# OpenGL where there is no Vulkan (the test VM).

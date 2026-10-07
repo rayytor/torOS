@@ -1,0 +1,209 @@
+/* toros-lock. The @lk_ colours are defined in screen.rs, from
+   /usr/share/toros/palette on torOS and from the GTK theme elsewhere. */
+
+window.lock {
+  background-color: @lk_desktop;
+  color: @lk_fg;
+}
+
+/* dims the wallpaper behind the password page */
+.scrim {
+  background-color: alpha(@lk_window, 0.80);
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+.scrim.on {
+  opacity: 1;
+}
+
+/* the clock, in the sky of the wallpaper */
+.clock {
+  margin-top: 84px;
+}
+.time {
+  font-size: 104px;
+  font-weight: 600;
+  font-feature-settings: "tnum";
+  letter-spacing: -2px;
+}
+.date {
+  margin-top: -6px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+/* the account */
+.avatar {
+  min-width: 96px;
+  min-height: 96px;
+  border-radius: 48px;
+  background-color: alpha(@lk_fg, 0.10);
+  color: @lk_dim;
+}
+.name {
+  margin: 14px 0 20px 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* the password field, as the overview's search field: the arrow is in it */
+.field {
+  min-width: 300px;
+  min-height: 40px;
+  padding: 0 5px 0 16px;
+  border-radius: 21px;
+  background-color: @lk_surface;
+  box-shadow: inset 0 0 0 1px @lk_border;
+  transition: box-shadow 150ms ease-out;
+}
+.field:hover {
+  box-shadow: inset 0 0 0 1px alpha(@lk_fg, 0.30);
+}
+.field:focus-within {
+  box-shadow: inset 0 0 0 2px alpha(@lk_accent, 0.75);
+}
+entry.password {
+  all: unset;
+  font-size: 15px;
+  color: @lk_fg;
+  caret-color: @lk_accent;
+}
+entry.password:disabled {
+  color: @lk_dim;
+}
+entry.password > text > placeholder {
+  color: @lk_dim;
+}
+entry.password > text > selection {
+  background-color: alpha(@lk_accent, 0.3);
+}
+/* the eye that shows what was typed, and the Caps Lock warning */
+entry.password > image {
+  margin: 6px 4px;
+  padding: 6px;
+  border-radius: 14px;
+  color: @lk_dim;
+  transition: background-color 120ms ease-out, color 120ms ease-out;
+}
+entry.password > image:hover {
+  background-color: alpha(@lk_fg, 0.08);
+  color: @lk_fg;
+}
+entry.password > image.caps-lock-indicator,
+entry.password > image.caps-lock-indicator:hover {
+  background: none;
+  color: @lk_dim;
+}
+
+button.go {
+  all: unset;
+  min-width: 30px;
+  min-height: 30px;
+  border-radius: 15px;
+  background-color: @lk_accent;
+  color: @lk_accent_fg;
+  transition: background-color 120ms ease-out;
+}
+button.go:hover {
+  background-color: mix(@lk_accent, white, 0.16);
+}
+button.go:active {
+  background-color: mix(@lk_accent, black, 0.14);
+}
+button.go:disabled {
+  background-color: alpha(@lk_fg, 0.10);
+  color: @lk_fg;
+}
+
+.message {
+  min-height: 20px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: @lk_error;
+}
+
+/* the corner: a small panel like the status panel */
+.corner {
+  margin: 0 12px 12px 0;
+  padding: 4px;
+  border-radius: 16px;
+  background-color: @lk_surface;
+  box-shadow: inset 0 0 0 1px @lk_border;
+  font-size: 12px;
+  font-weight: 600;
+}
+/* the keyboard for the pointer, and the keyboard layout's flag */
+.corner button {
+  all: unset;
+  padding: 7px 8px;
+  border-radius: 12px;
+  transition: background-color 120ms ease-out;
+}
+.corner button:hover {
+  background-color: alpha(@lk_fg, 0.08);
+}
+.corner button:active {
+  background-color: alpha(@lk_fg, 0.16);
+}
+/* (the keyboard is out) */
+.corner button.on {
+  background-color: alpha(@lk_fg, 0.14);
+}
+.corner button.on:hover {
+  background-color: alpha(@lk_fg, 0.20);
+}
+.battery {
+  padding: 4px 8px 4px 6px;
+}
+.battery image {
+  margin-right: 5px;
+}
+
+/* The keyboard for the pointer: toros-keyboard's, which is Apple's, light,
+   and dark under .dark as the desktop is (keyboard/src/style.css). The sizes
+   of the keys are in keys.rs. */
+.signin.typing {
+  margin-bottom: 250px;
+}
+.keys {
+  margin-bottom: 20px;
+  padding: 14px 12px;
+  border-radius: 22px;
+  background-color: #d1d4db;
+  color: #000000;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+.dark .keys {
+  background-color: #1e1f22;
+  color: #ffffff;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.07), 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+.key {
+  border-radius: 9px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+  font-size: 22px;
+  font-weight: 400;
+  transition: background-color 90ms ease-out;
+}
+.key:hover {
+  background-color: #eef0f3;
+}
+.key:active {
+  background-color: #b4b9c3;
+  transition: none;
+}
+.dark .key {
+  background-color: #3e3f44;
+  box-shadow: none;
+}
+.dark .key:hover {
+  background-color: #4c4d53;
+}
+.dark .key:active {
+  background-color: #6b6c73;
+}
+/* "123", "ABC", "#+=" */
+.key.word {
+  font-size: 17px;
+}

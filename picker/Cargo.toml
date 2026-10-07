@@ -1,0 +1,21 @@
+[package]
+name = "toros-picker"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "torOS emoji picker and clipboard history"
+
+[dependencies]
+gtk = { package = "gtk4", version = "0.11", features = ["v4_14"] }
+wayland-client = "0.31"
+wayland-protocols-wlr = { version = "0.3", features = ["client"] }
+
+[build-dependencies]
+glib-build-tools = "0.22"
+
+[profile.release]
+opt-level = "s"
+lto = "thin"
+codegen-units = 4
+strip = true
+panic = "abort"

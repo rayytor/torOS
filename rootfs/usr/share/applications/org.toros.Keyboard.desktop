@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=On-screen keyboard
+Comment=Type with the pointer
+Exec=toros-keyboard
+Icon=org.toros.Keyboard
+Categories=Utility;Accessibility;
+Keywords=keyboard;osk;type;typing;touchpad;

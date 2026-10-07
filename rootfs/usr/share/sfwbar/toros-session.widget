@@ -1,0 +1,117 @@
+#Api2
+# torOS session menu, in place of sfwbar's session.widget. Lock happens on a
+# click. The rows that end what is running (suspend, log out, restart, power
+# off) ask for the button to be held for two seconds instead of a second click
+# on "confirm": the row fills up while it is held and empties again when it is
+# let go early. action[Hold] is a torOS patch (build/patches/sfwbar-hold.patch),
+# and the fill's two seconds in sfwbar.config are its BASE_WIDGET_HOLD_MS.
+
+Private {
+
+# ["icon", "title", "command"]
+  Var session_hold = [
+    ["media-playback-pause-symbolic", "Suspend", "sudo -n zzz"],
+    ["system-log-out", "Log out", "labwc --exit"],
+    ["system-reboot", "Restart", "sudo -n reboot"],
+    ["system-shutdown", "Power off", "sudo -n poweroff"]
+  ];
+
+  Var SessionTmpl = "
+    grid 'session_container' {
+      grid {
+        style = 'session_hold';
+        tooltip = 'Hold for two seconds';
+        action[Hold] = {
+          PopUp('SessionPopup');
+          Exec(session_hold[@LOC@][2]);
+        }
+        loc(0,@ROW@);
+        image {
+          value = session_hold[@LOC@][0];
+          interval = 0;
+          style = 'session_icon';
+          loc(0,0);
+        }
+        label {
+          value = session_hold[@LOC@][1];
+          interval = 0;
+          style = 'session_label';
+          loc(1,0);
+        }
+      }
+    }"
+
+  Function SessionInit() {
+    for(Var i = 0; i < ArraySize(session_hold); i=i+1)
+      Config(Replace(Replace(SessionTmpl, "@LOC@", Str(i)), "@ROW@", Str(i+1)));
+  }
+
+  PopUp("SessionPopup") {
+    style = "SessionPopup";
+    grid "session_container" {
+      grid {
+        style = "session_grid";
+        action = {
+          PopUp("SessionPopup");
+          Exec("toros-lock");
+        }
+        loc(0,0);
+        image {
+          value = "system-lock-screen";
+          interval = 0;
+          style = "session_icon";
+          loc(0,0);
+        }
+        label {
+          value = "Lock";
+          interval = 0;
+          style = "session_label";
+          loc(1,0);
+        }
+      }
+      label {
+        value = "Hold to confirm";
+        interval = 0;
+        style = "session_hint";
+        loc(0,9);
+      }
+    }
+  }
+
+  export button "session" {
+    value = "system-shutdown-symbolic";
+    style = "session";
+    class = "module";
+    tooltip = "Power off / log out";
+    action[0] = SessionInit();
+    action = PopUp("SessionPopup");
+  }
+}
+
+#CSS
+
+window#SessionPopup {
+  background: rgba(0,0,0,0);
+  -GtkWidget-direction: right;
+  padding: 5px;
+}
+
+grid#SessionPopup {
+  -GtkWidget-hexpand: true;
+  margin: 5px;
+}
+
+image#session_icon {
+  -GtkWidget-hexpand: false;
+  -GtkWidget-halign: start;
+}
+
+label#session_label {
+  -GtkWidget-hexpand: true;
+  -GtkWidget-halign: start;
+}
+
+grid#session_grid,
+grid#session_hold {
+  -GtkWidget-hexpand: true;
+}

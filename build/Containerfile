@@ -6,8 +6,8 @@ RUN echo "repository=$MIRROR" > /etc/xbps.d/00-repository-main.conf && \
     for p in bash dosfstools mtools e2fsprogs util-linux systemd-boot rsync \
         gcc make pkg-config libnetfilter_queue-devel libmnl-devel libcap-devel zlib-devel \
         meson ninja tar gtk+3-devel gtk-layer-shell-devel json-c-devel wayland-devel wayland-protocols \
-        pulseaudio-devel pipewire-devel libxkbcommon-devel xz patch curl binutils \
+        pulseaudio-devel pipewire-devel libxkbcommon-devel basu-devel pam-devel xz patch curl binutils \
         flex bison bc perl kmod zstd openssl-devel elfutils-devel \
-        rust cargo glib-devel gtk4-devel libadwaita-devel libsoup3-devel sqlite-devel gstreamer1-devel gst-plugins-base1-devel; do \
+        rust cargo glib-devel gtk4-devel gtk4-layer-shell-devel libadwaita-devel libsoup3-devel sqlite-devel gstreamer1-devel gst-plugins-base1-devel; do \
         xbps-query "$p" >/dev/null 2>&1 || xbps-install -y "$p" || exit 1; \
     done && rm -rf /var/cache/xbps/*

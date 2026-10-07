@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Thorium's mark drawn the way GNOME draws application icons: a disc seen
+     from slightly above, with its front edge in a darker shade. -->
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+ <!-- front edge -->
+ <path d="m10 60h54v60a54 54 0 0 1-54-54z" fill="#3b6ecb"/>
+ <path d="m64 60h54v6a54 54 0 0 1-54 54z" fill="#7da2e0"/>
+ <!-- top -->
+ <path d="m17.235 33a54 54 0 0 1 93.53 0h-46.765a27 27 0 0 0-23.383 40.5z" fill="#1967d2"/>
+ <path d="m110.765 33a54 54 0 0 1-46.765 81l23.383-40.5a27 27 0 0 0-23.383-40.5z" fill="#aecbfa"/>
+ <path d="m64 114a54 54 0 0 1-46.765-81l23.382 40.5a27 27 0 0 0 46.766 0z" fill="#669df6"/>
+ <circle cx="64" cy="60" r="27"/>
+ <circle cx="64" cy="60" r="21" fill="#1a73e8"/>
+</svg>
